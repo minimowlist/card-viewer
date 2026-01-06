@@ -6,23 +6,13 @@ const cards = [
   },
   {
     question: "Ada momen hari ini yang bikin kamu senang?",
-    insight: "Kebahagiaan anak tidak selalu datang dari pencapaian. Kadang dari rasa diperhatikan.",
-    bridge: "Biarkan anak menyelesaikan ceritanya tanpa dipotong."
+    insight: "Kebahagiaan anak sering muncul dari rasa diperhatikan, bukan dari pencapaian.",
+    bridge: "Biarkan anak menyelesaikan ceritanya."
   },
   {
     question: "Ada bagian hari ini yang bikin kamu capek?",
-    insight: "Capek tidak selalu perlu solusi. Didengar dengan empati sering kali sudah cukup.",
-    bridge: "Tunjukkan bahwa perasaannya masuk akal."
-  },
-  {
-    question: "Kalau hari ini diulang, bagian mana yang ingin kamu ubah?",
-    insight: "Pertanyaan reflektif membantu anak belajar tanpa merasa disalahkan.",
-    bridge: "Tidak perlu diarahkan ke jawaban tertentu."
-  },
-  {
-    question: "Hal kecil apa yang bikin kamu senyum hari ini?",
-    insight: "Melatih anak mengenali hal kecil yang baik menumbuhkan rasa syukur.",
-    bridge: "Apresiasi ceritanya, sekecil apa pun."
+    insight: "Capek tidak selalu perlu solusi. Didengar sering kali sudah cukup.",
+    bridge: "Tunjukkan bahwa perasaannya wajar."
   }
 ];
 
@@ -35,6 +25,8 @@ const cardQuestion = document.getElementById("card-question");
 const cardInsight = document.getElementById("card-insight");
 const cardBridge = document.getElementById("card-bridge");
 const cardCounter = document.getElementById("card-counter");
+const guideToggle = document.getElementById("guide-toggle");
+const guideContent = document.getElementById("guide-content");
 
 // START
 document.getElementById("start-btn").onclick = () => {
@@ -43,25 +35,27 @@ document.getElementById("start-btn").onclick = () => {
   showCard();
 };
 
-// NEXT
+// NEXT ONLY
 document.getElementById("next-btn").onclick = () => {
   currentIndex = (currentIndex + 1) % cards.length;
   showCard();
 };
 
-// SHUFFLE
-document.getElementById("shuffle-btn").onclick = () => {
-  currentIndex = Math.floor(Math.random() * cards.length);
-  showCard();
+// TOGGLE GUIDE
+guideToggle.onclick = () => {
+  guideContent.classList.toggle("hidden");
+  guideToggle.textContent = guideContent.classList.contains("hidden")
+    ? "▾ Panduan obrolan"
+    : "▴ Sembunyikan panduan obrolan";
 };
 
 // RENDER
 function showCard() {
   const card = cards[currentIndex];
-
   cardQuestion.textContent = card.question;
   cardInsight.textContent = card.insight;
   cardBridge.textContent = card.bridge;
-
   cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
+  guideContent.classList.add("hidden");
+  guideToggle.textContent = "▾ Panduan obrolan";
 }
