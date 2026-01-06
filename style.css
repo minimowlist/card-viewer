@@ -21,24 +21,17 @@ body {
   text-align: center;
 }
 
-.screen {
-  display: none;
-}
+.screen { display: none; }
+.screen.active { display: block; }
 
-.screen.active {
-  display: block;
-}
-
-/* ===== START SCREEN ===== */
+/* START */
 h1 {
   font-size: 22px;
-  font-weight: 600;
   margin-bottom: 12px;
 }
 
 .subtitle {
   font-size: 15px;
-  line-height: 1.6;
   color: #4b5563;
   margin-bottom: 24px;
 }
@@ -52,10 +45,9 @@ h1 {
   background: #3b82f6;
   color: #ffffff;
   border: none;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
 }
 
-/* ===== CARD ===== */
+/* CARD */
 #card-counter {
   font-size: 13px;
   color: #6b7280;
@@ -73,11 +65,10 @@ h1 {
 
 #card-question {
   font-size: 18px;
-  line-height: 1.55;
   font-weight: 500;
 }
 
-/* ===== GUIDE CONTAINER ===== */
+/* GUIDE CONTAINER */
 #guide-content {
   margin-top: 16px;
   border-top: 1px dashed rgba(0,0,0,0.12);
@@ -97,59 +88,49 @@ h1 {
   max-height: 300px;
 }
 
-/* ===== NOTE (CATATAN) ===== */
+/* NOTE */
 #card-note {
   font-size: 14px;
-  line-height: 1.6;
   color: #1f2937;
   margin-bottom: 10px;
 
   opacity: 0;
   transform: translateY(-6px);
   transition:
-    opacity 320ms cubic-bezier(0.2, 0, 0, 1),
-    transform 320ms cubic-bezier(0.2, 0, 0, 1);
+    opacity 320ms ease,
+    transform 320ms ease;
 }
 
-/* ===== INSIGHT ===== */
+/* INSIGHT */
 #card-insight {
   font-size: 14px;
-  line-height: 1.6;
   color: #6b7280;
   font-style: italic;
 
   opacity: 0;
   transform: translateY(-6px);
   transition:
-    opacity 320ms cubic-bezier(0.2, 0, 0, 1),
-    transform 320ms cubic-bezier(0.2, 0, 0, 1);
+    opacity 320ms ease,
+    transform 320ms ease;
 }
 
-/* SHOW STATE */
 .show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ===== ACTION ===== */
-.action-buttons {
-  margin-bottom: 12px;
-}
-
+/* ACTION */
 #next-btn {
   width: 100%;
   padding: 14px;
   border-radius: 16px;
   border: none;
-  font-size: 16px;
   background: #3b82f6;
   color: #ffffff;
 }
 
-/* ===== TOGGLE ===== */
 #guide-toggle {
   font-size: 14px;
-  color: #374151;
   cursor: pointer;
   padding: 10px 0;
 }
