@@ -1,78 +1,84 @@
-document.addEventListener("DOMContentLoaded", () => {
+body {
+  font-family: system-ui, sans-serif;
+  background: #f6f7f4;
+  color: #1f2937;
+}
 
-  console.log("SCRIPT LOADED");
+#app {
+  max-width: 420px;
+  margin: auto;
+  padding: 24px;
+  text-align: center;
+}
 
-  const cards = [
-    {
-      question: "Hal apa yang paling kamu ingat dari hari ini?",
-      note: "Gunakan nada tenang dan beri jeda saat anak bercerita.",
-      insight: "Anak sering mengingat hal kecil yang bermakna bagi mereka."
-    },
-    {
-      question: "Ada momen hari ini yang bikin kamu senang?",
-      note: "Biarkan anak menyelesaikan ceritanya.",
-      insight: "Rasa senang sering muncul dari perhatian sederhana."
-    },
-    {
-      question: "Ada bagian hari ini yang bikin kamu capek?",
-      note: "Terima perasaannya sebelum memberi tanggapan.",
-      insight: "Didengar sering kali lebih menenangkan."
-    }
-  ];
+.screen { display: none; }
+.screen.active { display: block; }
 
-  let currentIndex = 0;
+h1 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
 
-  const startScreen = document.getElementById("start-screen");
-  const cardScreen = document.getElementById("card-screen");
-  const cardQuestion = document.getElementById("card-question");
-  const cardNote = document.getElementById("card-note");
-  const cardInsight = document.getElementById("card-insight");
-  const cardCounter = document.getElementById("card-counter");
-  const guideToggle = document.getElementById("guide-toggle");
-  const startBtn = document.getElementById("start-btn");
-  const nextBtn = document.getElementById("next-btn");
+.subtitle {
+  font-size: 15px;
+  color: #4b5563;
+  margin-bottom: 24px;
+}
 
-  startBtn.onclick = () => {
-    startScreen.classList.remove("active");
-    cardScreen.classList.add("active");
-    showCard();
-  };
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
 
-  nextBtn.onclick = () => {
-    currentIndex = (currentIndex + 1) % cards.length;
-    showCard();
-  };
+#card-counter {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
 
-  guideToggle.onclick = () => {
-    const isVisible = cardNote.classList.contains("show");
+#card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 16px;
+}
 
-    if (!isVisible) {
-      cardNote.classList.add("show");
+#card-question {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
 
-      setTimeout(() => {
-        cardInsight.classList.add("show");
-      }, 120);
+/* GUIDE */
+#guide {
+  border-top: 1px dashed #ddd;
+  padding-top: 14px;
+}
 
-      guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
-    } else {
-      cardNote.classList.remove("show");
-      cardInsight.classList.remove("show");
+#card-note {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
 
-      guideToggle.textContent = "▾ Panduan obrolan";
-    }
-  };
+#card-insight {
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
 
-  function showCard() {
-    const card = cards[currentIndex];
+/* HIDE */
+.hidden {
+  display: none;
+}
 
-    cardQuestion.textContent = card.question;
-    cardNote.textContent = card.note;
-    cardInsight.textContent = card.insight;
-    cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
-
-    cardNote.classList.remove("show");
-    cardInsight.classList.remove("show");
-    guideToggle.textContent = "▾ Panduan obrolan";
-  }
-
-});
+#guide-toggle {
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
