@@ -8,37 +8,52 @@
 </head>
 <body>
 
-  <div id="app">
+<div id="app">
 
-    <!-- START SCREEN -->
-    <div id="start-screen" class="screen active">
-      <h1>Kartu Obrolan Orang Tua & Anak</h1>
-      <p class="subtitle">
-        Pilih satu kartu. Ngobrol santai. Tidak ada jawaban benar atau salah.
-      </p>
-      <button id="start-btn">Mulai ngobrol</button>
+  <!-- HOME SCREEN -->
+  <div id="home-screen" class="screen active">
+    <h1>Kartu Obrolan Orang Tua & Anak</h1>
+    <p class="subtitle">
+      Pilih satu kartu. Ngobrol santai. Tidak ada jawaban benar atau salah.
+    </p>
+
+    <button id="start-btn">Mulai ngobrol</button>
+    <button id="list-btn" class="secondary">Lihat daftar kartu</button>
+  </div>
+
+  <!-- LIST SCREEN -->
+  <div id="list-screen" class="screen">
+    <h1>Daftar Kartu</h1>
+    <ul id="card-list"></ul>
+
+    <button id="back-home-1" class="secondary">Kembali ke menu</button>
+  </div>
+
+  <!-- CARD SCREEN -->
+  <div id="card-screen" class="screen">
+
+    <div id="card-counter"></div>
+
+    <div id="card">
+      <p id="card-question"></p>
+
+      <div id="info-row">
+        <span id="info-icon">ℹ️</span>
+      </div>
+
+      <p id="card-insight" class="hidden"></p>
     </div>
 
-    <!-- CARD SCREEN -->
-    <div id="card-screen" class="screen">
-
-      <!-- CARD COUNTER -->
-      <div id="card-counter">Kartu 1 dari 10</div>
-
-      <div id="card">
-        <p id="card-question"></p>
-        <p id="card-insight"></p>
-        <!-- bridge text disisipkan via JS -->
-      </div>
-
-      <div class="buttons">
-        <button id="next-btn">Kartu berikutnya</button>
-        <button id="shuffle-btn">Kocok kartu</button>
-      </div>
+    <div class="buttons">
+      <button id="next-btn">Kartu berikutnya</button>
+      <button id="shuffle-btn" class="secondary">Kocok kartu</button>
+      <button id="back-home-2" class="secondary">Kembali ke menu</button>
     </div>
 
   </div>
 
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
