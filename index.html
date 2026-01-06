@@ -3,30 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kartu Obrolan Orang Tua & Anak</title>
+  <title>Kartu Obrolan Orang Tua</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <div id="app">
 
-  <!-- HOME SCREEN -->
-  <div id="home-screen" class="screen active">
-    <h1>Kartu Obrolan Orang Tua & Anak</h1>
+  <!-- START SCREEN -->
+  <div id="start-screen" class="screen active">
+    <h1>Kartu Obrolan Orang Tua</h1>
     <p class="subtitle">
-      Pilih satu kartu. Ngobrol santai. Tidak ada jawaban benar atau salah.
+      Gunakan kartu ini sebagai panduan ngobrol santai bersama anak.
     </p>
-
-    <button id="start-btn">Mulai ngobrol</button>
-    <button id="list-btn" class="secondary">Lihat daftar kartu</button>
-  </div>
-
-  <!-- LIST SCREEN -->
-  <div id="list-screen" class="screen">
-    <h1>Daftar Kartu</h1>
-    <ul id="card-list"></ul>
-
-    <button id="back-home-1" class="secondary">Kembali ke menu</button>
+    <button id="start-btn">Mulai</button>
   </div>
 
   <!-- CARD SCREEN -->
@@ -36,18 +26,14 @@
 
     <div id="card">
       <p id="card-question"></p>
-
-      <div id="info-row">
-        <span id="info-icon">ℹ️</span>
-      </div>
-
-      <p id="card-insight" class="hidden"></p>
+      <p id="card-insight"></p>
+      <p id="card-bridge"></p>
     </div>
 
     <div class="buttons">
       <button id="next-btn">Kartu berikutnya</button>
       <button id="shuffle-btn" class="secondary">Kocok kartu</button>
-      <button id="back-home-2" class="secondary">Kembali ke menu</button>
+      <button id="back-btn" class="secondary">Kembali</button>
     </div>
 
   </div>
