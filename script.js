@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let currentIndex = 0;
-  let guideVisible = false;
 
   const startScreen = document.getElementById("start-screen");
   const cardScreen = document.getElementById("card-screen");
@@ -79,34 +78,44 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   guideToggle.onclick = () => {
-    guideVisible = !guideVisible;
+  const isOpen = guideContent.classList.contains("open");
 
-    if (guideVisible) {
-      guideContent.classList.add("open");
-      setTimeout(() => cardNote.classList.add("show"), 60);
-      setTimeout(() => cardInsight.classList.add("show"), 140);
-      guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
-    } else {
-      guideContent.classList.remove("open");
-      cardNote.classList.remove("show");
-      cardInsight.classList.remove("show");
-      guideToggle.textContent = "▾ Panduan obrolan";
-    }
-  };
+  if (!isOpen) {
+    // buka
+    guideContent.classList.add("open");
 
-  function showCard() {
-    const card = cards[currentIndex];
+    setTimeout(() => {
+      cardNote.classList.add("show");
+    }, 60);
 
-    cardQuestion.textContent = card.question;
-    cardNote.textContent = card.note;
-    cardInsight.textContent = card.insight;
-    cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
+    setTimeout(() => {
+      cardInsight.classList.add("show");
+    }, 140);
 
-    guideVisible = false;
+    guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
+  } else {
+    // tutup
     guideContent.classList.remove("open");
     cardNote.classList.remove("show");
     cardInsight.classList.remove("show");
+
     guideToggle.textContent = "▾ Panduan obrolan";
   }
+};
+
+  function showCard() {
+  const card = cards[currentIndex];
+
+  cardQuestion.textContent = card.question;
+  cardNote.textContent = card.note;
+  cardInsight.textContent = card.insight;
+  cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
+
+  guideContent.classList.remove("open");
+  cardNote.classList.remove("show");
+  cardInsight.classList.remove("show");
+  guideToggle.textContent = "▾ Panduan obrolan";
+}
 
 });
+
