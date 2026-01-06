@@ -1,58 +1,58 @@
 const cards = [
   {
     question: "Hal apa yang paling kamu ingat dari hari ini?",
-    insight: "Anak sering mengingat hal yang menurut orang dewasa terlihat sepele. Itu justru petunjuk apa yang penting buat mereka.",
+    insight: "Anak sering mengingat hal yang terlihat sepele bagi orang dewasa. Itu petunjuk penting.",
     bridge: "Kalau kamu mau cerita, aku dengerin."
   },
   {
     question: "Ada momen hari ini yang bikin kamu senang?",
-    insight: "Momen senang anak tidak selalu tentang prestasi. Kadang hanya merasa diperhatikan.",
-    bridge: "Aku penasaran, ceritain dong."
+    insight: "Momen senang anak tidak selalu tentang prestasi.",
+    bridge: "Ceritain dong, aku penasaran."
   },
   {
     question: "Ada bagian hari ini yang bikin kamu capek?",
-    insight: "Capek tidak selalu butuh solusi. Didengar tanpa dihakimi sudah sangat membantu.",
-    bridge: "Nggak apa-apa kalau mau cerita pelan-pelan."
+    insight: "Capek tidak selalu butuh solusi. Didengar saja sudah cukup.",
+    bridge: "Pelan-pelan juga nggak apa-apa."
   },
   {
     question: "Kalau hari ini diulang, bagian mana yang pengen kamu ubah?",
-    insight: "Pertanyaan ini membantu anak belajar refleksi tanpa merasa disalahkan.",
-    bridge: "Bukan harus benar ya, aku cuma pengen tau."
+    insight: "Pertanyaan ini melatih refleksi tanpa menyalahkan.",
+    bridge: "Nggak harus benar ya."
   },
   {
     question: "Hal kecil apa yang bikin kamu senyum hari ini?",
-    insight: "Melatih anak mengenali hal kecil yang baik membantu rasa syukur tanpa dipaksa.",
-    bridge: "Hal kecil juga nggak apa-apa."
+    insight: "Hal kecil sering lebih bermakna daripada yang terlihat.",
+    bridge: "Hal kecil juga penting."
   },
   {
     question: "Hari ini kamu lebih banyak senang atau capek?",
-    insight: "Perasaan bisa campur. Anak perlu tahu itu wajar.",
-    bridge: "Kalau campur juga nggak masalah."
+    insight: "Perasaan bisa campur, dan itu wajar.",
+    bridge: "Campur juga nggak masalah."
   },
   {
     question: "Kalau perasaan kamu hari ini punya warna, warnanya apa?",
-    insight: "Metafora membantu anak bicara tanpa harus menjelaskan secara logis.",
+    insight: "Metafora membantu anak bicara tanpa tekanan.",
     bridge: "Warnanya bebas kok."
   },
   {
     question: "Ada hal yang pengen kamu ceritain tapi belum sempat?",
-    insight: "Anak butuh ruang aman untuk bicara tanpa dituntut.",
+    insight: "Ruang aman membuat anak mau membuka diri.",
     bridge: "Kalau belum siap juga nggak apa-apa."
   },
   {
     question: "Hal apa yang bikin kamu ngerasa aman?",
-    insight: "Rasa aman anak sering datang dari kehadiran, bukan kata-kata.",
+    insight: "Rasa aman datang dari kehadiran, bukan ceramah.",
     bridge: "Aku pengen tau versi kamu."
   },
   {
     question: "Kapan kamu paling ngerasa jadi diri sendiri?",
-    insight: "Jawaban anak memberi sinyal di mana mereka merasa diterima.",
+    insight: "Jawaban ini memberi sinyal di mana anak merasa diterima.",
     bridge: "Aku dengerin tanpa komentar."
   }
 ];
 
 const themes = [
-  { bg: "#f7f6f3", card: "#ffffff" },
+  { bg: "#f6f7f4", card: "#ffffff" },
   { bg: "#f0f4ff", card: "#ffffff" },
   { bg: "#fff7ed", card: "#ffffff" },
   { bg: "#eefcf4", card: "#ffffff" },
@@ -61,20 +61,19 @@ const themes = [
 
 let currentIndex = 0;
 
-// Elements
+// ELEMENTS
 const startScreen = document.getElementById("start-screen");
 const cardScreen = document.getElementById("card-screen");
 const cardQuestion = document.getElementById("card-question");
 const cardInsight = document.getElementById("card-insight");
+const cardCounter = document.getElementById("card-counter");
 
-// Tambahan element bridge (kalimat pengantar)
+// BRIDGE ELEMENT (dynamic)
 const bridgeEl = document.createElement("p");
 bridgeEl.id = "card-bridge";
-bridgeEl.style.fontSize = "14px";
-bridgeEl.style.color = "#555";
-bridgeEl.style.marginTop = "6px";
 cardInsight.after(bridgeEl);
 
+// EVENTS
 document.getElementById("start-btn").addEventListener("click", () => {
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
@@ -91,6 +90,7 @@ document.getElementById("shuffle-btn").addEventListener("click", () => {
   showCard();
 });
 
+// RENDER
 function showCard() {
   const card = cards[currentIndex];
   const theme = themes[Math.floor(Math.random() * themes.length)];
@@ -101,4 +101,6 @@ function showCard() {
   cardQuestion.textContent = card.question;
   cardInsight.textContent = "Catatan untuk orang tua: " + card.insight;
   bridgeEl.textContent = "Kalimat pembuka: “" + card.bridge + "”";
+
+  cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
 }
