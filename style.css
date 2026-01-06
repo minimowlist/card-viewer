@@ -65,6 +65,10 @@ h1 {
   padding-top: 12px;
 }
 
+#card-bridge {
+  font-style: italic;
+}
+
 button {
   width: 100%;
   padding: 14px;
@@ -85,3 +89,4 @@ button {
   background: #e5e7eb;
   color: #333;
 }
+
