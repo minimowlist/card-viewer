@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kartu Obrolan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen active">
+      <h1>Kartu Obrolan Orang Tua & Anak</h1>
+      <p class="subtitle">
+        Pilih satu kartu. Ngobrol santai. Tidak ada jawaban benar atau salah.
+      </p>
+      <button id="start-btn">Mulai ngobrol</button>
+    </div>
+
+    <!-- CARD SCREEN -->
+    <div id="card-screen" class="screen">
+      <div id="card">
+        <p id="card-question"></p>
+        <p id="card-insight"></p>
+      </div>
+
+      <div class="buttons">
+        <button id="next-btn">Kartu berikutnya</button>
+        <button id="shuffle-btn">Kocok kartu</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

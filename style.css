@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg, #f7f6f3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  transition: background 0.4s ease;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  text-align: center;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #555;
+}
+
+#card {
+  background: var(--card, #ffffff);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin: 26px 0;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: background 0.4s ease;
+}
+
+#card-question {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+#card-insight {
+  font-size: 14px;
+  color: #666;
+  border-top: 1px dashed rgba(0,0,0,0.1);
+  padding-top: 12px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#start-btn,
+#next-btn {
+  background: #2f6fed;
+  color: #fff;
+}
+
+#shuffle-btn {
+  background: #e5e7eb;
+  color: #333;
+}
