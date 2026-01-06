@@ -24,6 +24,7 @@ body {
 .screen { display: none; }
 .screen.active { display: block; }
 
+/* TITLE */
 h1 {
   font-size: 22px;
   font-weight: 600;
@@ -46,8 +47,8 @@ h1 {
   border-radius: 18px;
   background: #3b82f6;
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
   border: none;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
 }
 
 /* COUNTER */
@@ -73,10 +74,22 @@ h1 {
   font-weight: 500;
 }
 
+/* GUIDE CONTENT (ANIMATED) */
 #guide-content {
   margin-top: 16px;
   border-top: 1px dashed rgba(0,0,0,0.12);
   padding-top: 14px;
+
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 220ms cubic-bezier(0.2, 0, 0, 1),
+    transform 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+#guide-content.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 #card-insight {
@@ -113,9 +126,4 @@ h1 {
   color: #374151;
   cursor: pointer;
   padding: 10px 0;
-}
-
-/* HIDDEN */
-.hidden {
-  display: none;
 }
