@@ -1,43 +1,53 @@
 const cards = [
   {
     question: "Hal apa yang paling kamu ingat dari hari ini?",
-    insight: "Kadang anak butuh waktu untuk mengingat. Tunggu sebentar sebelum menanggapi."
+    insight: "Anak sering mengingat hal yang menurut orang dewasa terlihat sepele. Itu justru petunjuk apa yang penting buat mereka.",
+    bridge: "Kalau kamu mau cerita, aku dengerin."
   },
   {
     question: "Ada momen hari ini yang bikin kamu senang?",
-    insight: "Respon sederhana seperti 'oh iya?' bikin anak mau lanjut cerita."
+    insight: "Momen senang anak tidak selalu tentang prestasi. Kadang hanya merasa diperhatikan.",
+    bridge: "Aku penasaran, ceritain dong."
   },
   {
     question: "Ada bagian hari ini yang bikin kamu capek?",
-    insight: "Capek tidak selalu perlu solusi. Didengar saja sudah cukup."
+    insight: "Capek tidak selalu butuh solusi. Didengar tanpa dihakimi sudah sangat membantu.",
+    bridge: "Nggak apa-apa kalau mau cerita pelan-pelan."
   },
   {
     question: "Kalau hari ini diulang, bagian mana yang pengen kamu ubah?",
-    insight: "Jangan buru-buru menasihati. Biarkan anak menyimpulkan sendiri."
+    insight: "Pertanyaan ini membantu anak belajar refleksi tanpa merasa disalahkan.",
+    bridge: "Bukan harus benar ya, aku cuma pengen tau."
   },
   {
     question: "Hal kecil apa yang bikin kamu senyum hari ini?",
-    insight: "Hal kecil sering lebih bermakna daripada pencapaian besar."
+    insight: "Melatih anak mengenali hal kecil yang baik membantu rasa syukur tanpa dipaksa.",
+    bridge: "Hal kecil juga nggak apa-apa."
   },
   {
     question: "Hari ini kamu lebih banyak senang atau capek?",
-    insight: "Tidak apa-apa kalau jawabannya campur. Perasaan boleh tumpang tindih."
+    insight: "Perasaan bisa campur. Anak perlu tahu itu wajar.",
+    bridge: "Kalau campur juga nggak masalah."
   },
   {
     question: "Kalau perasaan kamu hari ini punya warna, warnanya apa?",
-    insight: "Metafora membantu anak bicara tanpa harus menjelaskan panjang."
+    insight: "Metafora membantu anak bicara tanpa harus menjelaskan secara logis.",
+    bridge: "Warnanya bebas kok."
   },
   {
     question: "Ada hal yang pengen kamu ceritain tapi belum sempat?",
-    insight: "Jawaban 'tidak' juga valid. Jangan dipaksa."
+    insight: "Anak butuh ruang aman untuk bicara tanpa dituntut.",
+    bridge: "Kalau belum siap juga nggak apa-apa."
   },
   {
     question: "Hal apa yang bikin kamu ngerasa aman?",
-    insight: "Rasa aman sering datang dari hal sederhana, bukan dari kata-kata besar."
+    insight: "Rasa aman anak sering datang dari kehadiran, bukan kata-kata.",
+    bridge: "Aku pengen tau versi kamu."
   },
   {
     question: "Kapan kamu paling ngerasa jadi diri sendiri?",
-    insight: "Perhatikan konteksnya, bukan menghakimi pilihannya."
+    insight: "Jawaban anak memberi sinyal di mana mereka merasa diterima.",
+    bridge: "Aku dengerin tanpa komentar."
   }
 ];
 
@@ -51,10 +61,19 @@ const themes = [
 
 let currentIndex = 0;
 
+// Elements
 const startScreen = document.getElementById("start-screen");
 const cardScreen = document.getElementById("card-screen");
 const cardQuestion = document.getElementById("card-question");
 const cardInsight = document.getElementById("card-insight");
+
+// Tambahan element bridge (kalimat pengantar)
+const bridgeEl = document.createElement("p");
+bridgeEl.id = "card-bridge";
+bridgeEl.style.fontSize = "14px";
+bridgeEl.style.color = "#555";
+bridgeEl.style.marginTop = "6px";
+cardInsight.after(bridgeEl);
 
 document.getElementById("start-btn").addEventListener("click", () => {
   startScreen.classList.remove("active");
@@ -81,4 +100,5 @@ function showCard() {
 
   cardQuestion.textContent = card.question;
   cardInsight.textContent = "Catatan untuk orang tua: " + card.insight;
+  bridgeEl.textContent = "Kalimat pembuka: “" + card.bridge + "”";
 }
