@@ -21,10 +21,15 @@ body {
   text-align: center;
 }
 
-.screen { display: none; }
-.screen.active { display: block; }
+.screen {
+  display: none;
+}
 
-/* TITLE */
+.screen.active {
+  display: block;
+}
+
+/* ===== START SCREEN ===== */
 h1 {
   font-size: 22px;
   font-weight: 600;
@@ -38,7 +43,6 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* START BUTTON */
 #start-btn {
   width: 100%;
   min-height: 56px;
@@ -51,14 +55,13 @@ h1 {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
 }
 
-/* COUNTER */
+/* ===== CARD ===== */
 #card-counter {
   font-size: 13px;
   color: #6b7280;
   margin-bottom: 10px;
 }
 
-/* CARD */
 #card {
   background: #ffffff;
   border-radius: 22px;
@@ -74,14 +77,27 @@ h1 {
   font-weight: 500;
 }
 
-/* GUIDE CONTENT */
+/* ===== GUIDE CONTAINER ===== */
 #guide-content {
   margin-top: 16px;
   border-top: 1px dashed rgba(0,0,0,0.12);
   padding-top: 14px;
+
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+
+  transition:
+    opacity 240ms ease,
+    max-height 280ms ease;
 }
 
-/* NOTE (CATATAN) */
+#guide-content.open {
+  opacity: 1;
+  max-height: 300px;
+}
+
+/* ===== NOTE (CATATAN) ===== */
 #card-note {
   font-size: 14px;
   line-height: 1.6;
@@ -95,7 +111,7 @@ h1 {
     transform 320ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* INSIGHT */
+/* ===== INSIGHT ===== */
 #card-insight {
   font-size: 14px;
   line-height: 1.6;
@@ -109,13 +125,13 @@ h1 {
     transform 320ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* SHOW STATES */
+/* SHOW STATE */
 .show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ACTION */
+/* ===== ACTION ===== */
 .action-buttons {
   margin-bottom: 12px;
 }
@@ -130,7 +146,7 @@ h1 {
   color: #ffffff;
 }
 
-/* GUIDE TOGGLE */
+/* ===== TOGGLE ===== */
 #guide-toggle {
   font-size: 14px;
   color: #374151;
