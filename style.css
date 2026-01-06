@@ -58,14 +58,24 @@ h1 {
 }
 
 /* =========================
+   CARD COUNTER
+========================= */
+#card-counter {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+/* =========================
    CARD CONTAINER
 ========================= */
 #card {
   background: var(--card, #ffffff);
   border-radius: 22px;
   padding: 26px 22px 24px;
-  margin: 22px 0 26px;
-  min-height: 260px;
+  margin: 16px 0 26px;
+  min-height: 270px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -151,7 +161,7 @@ button:active {
 }
 
 /* =========================
-   SMALL SCREENS SAFETY
+   SMALL SCREENS
 ========================= */
 @media (max-width: 360px) {
   h1 {
