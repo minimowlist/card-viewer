@@ -37,6 +37,19 @@ h1 {
   margin-bottom: 24px;
 }
 
+/* START BUTTON */
+#start-btn {
+  width: 100%;
+  min-height: 56px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 18px;
+  background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+  border: none;
+}
+
 /* COUNTER */
 #card-counter {
   font-size: 13px;
@@ -49,14 +62,9 @@ h1 {
   background: #ffffff;
   border-radius: 22px;
   padding: 26px 22px;
-  margin: 16px 0 22px;
-  min-height: 260px;
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.08),
-    0 2px 6px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  margin: 16px 0 20px;
+  min-height: 240px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 #card-question {
@@ -65,68 +73,49 @@ h1 {
   font-weight: 500;
 }
 
+#guide-content {
+  margin-top: 16px;
+  border-top: 1px dashed rgba(0,0,0,0.12);
+  padding-top: 14px;
+}
+
 #card-insight {
   font-size: 14px;
   line-height: 1.6;
   color: #374151;
-  border-top: 1px dashed rgba(0,0,0,0.12);
-  padding-top: 12px;
+  margin-bottom: 10px;
 }
 
 #card-bridge {
   font-size: 14px;
-  line-height: 1.5;
   color: #6b7280;
   font-style: italic;
 }
 
-/* PRIMARY START BUTTON */
-#start-btn {
-  width: 100%;
-  min-height: 56px;
-  font-size: 17px;
-  font-weight: 600;
-  border-radius: 18px;
-  background: #3b82f6;
-  color: #ffffff;
-  letter-spacing: 0.3px;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
-  transition: transform 0.05s ease, box-shadow 0.2s ease;
-}
-
-#start-btn:active {
-  transform: scale(0.97);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
-}
-
-
-/* ACTION BUTTONS */
+/* ACTION */
 .action-buttons {
-  display: flex;
-  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.action-buttons button {
-  flex: 1;
+#next-btn {
+  width: 100%;
   padding: 14px;
   border-radius: 16px;
   border: none;
   font-size: 16px;
-  cursor: pointer;
-}
-
-#next-btn {
   background: #3b82f6;
   color: #ffffff;
 }
 
-button.secondary {
-  background: #e5e7eb;
-  color: #1f2937;
+/* GUIDE TOGGLE */
+#guide-toggle {
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  padding: 10px 0;
 }
 
-@media (max-width: 360px) {
-  h1 { font-size: 20px; }
-  #card-question { font-size: 17px; }
+/* HIDDEN */
+.hidden {
+  display: none;
 }
-
