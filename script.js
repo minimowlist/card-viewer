@@ -30,10 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const insightEl = document.getElementById("card-insight");
   const counterEl = document.getElementById("card-counter");
   const guideToggle = document.getElementById("guide-toggle");
-
-  // init hidden
-  noteEl.classList.add("hidden");
-  insightEl.classList.add("hidden");
+  const guideContent = document.getElementById("guide-content");
 
   startBtn.onclick = () => {
     startScreen.classList.remove("active");
@@ -47,26 +44,27 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   guideToggle.onclick = () => {
-    const isHidden = noteEl.classList.contains("hidden");
+    const open = guideContent.classList.contains("open");
 
-    noteEl.classList.toggle("hidden", !isHidden);
-    insightEl.classList.toggle("hidden", !isHidden);
-
-    guideToggle.textContent = isHidden
-      ? "Sembunyikan panduan obrolan"
-      : "Panduan obrolan";
+    if (!open) {
+      guideContent.classList.add("open");
+      guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
+    } else {
+      guideContent.classList.remove("open");
+      guideToggle.textContent = "▾ Panduan obrolan";
+    }
   };
 
   function render() {
     const c = cards[index];
+
     questionEl.textContent = c.question;
     noteEl.textContent = c.note;
     insightEl.textContent = c.insight;
     counterEl.textContent = `Kartu ${index + 1} dari ${cards.length}`;
 
-    noteEl.classList.add("hidden");
-    insightEl.classList.add("hidden");
-    guideToggle.textContent = "Panduan obrolan";
+    guideContent.classList.remove("open");
+    guideToggle.textContent = "▾ Panduan obrolan";
   }
 
 });
