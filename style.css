@@ -1,11 +1,8 @@
-/* =========================
-   RESET & BASE
-========================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
@@ -14,13 +11,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background 0.4s ease;
-  color: #2b2b2b;
 }
 
-/* =========================
-   APP CONTAINER
-========================= */
 #app {
   width: 100%;
   max-width: 420px;
@@ -28,147 +20,92 @@ body {
   text-align: center;
 }
 
-/* =========================
-   SCREEN STATES
-========================= */
-.screen {
-  display: none;
-}
+.screen { display: none; }
+.screen.active { display: block; }
 
-.screen.active {
-  display: block;
-}
-
-/* =========================
-   TYPOGRAPHY
-========================= */
 h1 {
   font-size: 22px;
-  font-weight: 600;
-  line-height: 1.3;
   margin-bottom: 12px;
-  color: #1f2937;
 }
 
 .subtitle {
   font-size: 15px;
-  line-height: 1.6;
   color: #4b5563;
   margin-bottom: 22px;
 }
 
-/* =========================
-   CARD COUNTER
-========================= */
-#card-counter {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 10px;
-  letter-spacing: 0.3px;
-}
-
-/* =========================
-   CARD CONTAINER
-========================= */
+/* CARD */
 #card {
-  background: var(--card, #ffffff);
+  background: #fff;
   border-radius: 22px;
-  padding: 26px 22px 24px;
-  margin: 16px 0 26px;
-  min-height: 270px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
-
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.08),
-    0 2px 6px rgba(0, 0, 0, 0.04);
-
-  transition: background 0.4s ease, box-shadow 0.3s ease;
+  padding: 26px 22px;
+  margin: 18px 0 24px;
+  min-height: 240px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
 }
 
-/* =========================
-   CARD CONTENT
-========================= */
 #card-question {
   font-size: 18px;
-  line-height: 1.55;
-  font-weight: 500;
-  color: #111827;
+  margin-bottom: 12px;
 }
+
+#info-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#info-icon {
+  cursor: pointer;
+  opacity: .6;
+}
+
+#info-icon:hover { opacity: 1; }
 
 #card-insight {
   font-size: 14px;
-  line-height: 1.6;
+  margin-top: 12px;
+  border-top: 1px dashed #ddd;
+  padding-top: 12px;
   color: #4b5563;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.12);
 }
 
-#card-bridge {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #6b7280;
-  font-style: italic;
+.hidden { display: none; }
+
+/* LIST */
+#card-list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0;
+  text-align: left;
 }
 
-/* =========================
-   BUTTONS
-========================= */
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+#card-list li {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
 }
 
+#card-list li:hover {
+  background: #f3f4f6;
+}
+
+/* BUTTONS */
 button {
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 16px;
+  padding: 14px;
+  margin: 8px 0;
+  border-radius: 14px;
   border: none;
   font-size: 16px;
-  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.05s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-button:active {
-  transform: scale(0.97);
+button.secondary {
+  background: #e5e7eb;
 }
 
-/* PRIMARY BUTTON */
 #start-btn,
 #next-btn {
   background: #3b82f6;
-  color: #ffffff;
-  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.35);
-}
-
-#start-btn:hover,
-#next-btn:hover {
-  background: #2563eb;
-}
-
-/* SECONDARY BUTTON */
-#shuffle-btn {
-  background: #e5e7eb;
-  color: #1f2937;
-}
-
-#shuffle-btn:hover {
-  background: #d1d5db;
-}
-
-/* =========================
-   SMALL SCREENS
-========================= */
-@media (max-width: 360px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  #card-question {
-    font-size: 17px;
-  }
+  color: white;
 }
