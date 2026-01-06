@@ -11,8 +11,43 @@ const cards = [
   },
   {
     question: "Ada bagian hari ini yang bikin kamu capek?",
-    note: "Tunjukkan bahwa perasaannya wajar, tanpa buru-buru memberi solusi.",
-    insight: "Kehadiran dan empati sering kali lebih menenangkan daripada jawaban."
+    note: "Tunjukkan bahwa perasaannya wajar sebelum memberi tanggapan.",
+    insight: "Didengar sering kali lebih menenangkan daripada diberi solusi."
+  },
+  {
+    question: "Kalau hari ini diulang, bagian mana yang ingin kamu ubah?",
+    note: "Jangan buru-buru mengoreksi jawabannya.",
+    insight: "Refleksi ringan membantu anak belajar tanpa merasa disalahkan."
+  },
+  {
+    question: "Hal kecil apa yang bikin kamu tersenyum hari ini?",
+    note: "Tunjukkan apresiasi meski ceritanya sederhana.",
+    insight: "Mengenali hal kecil yang baik menumbuhkan rasa aman dan syukur."
+  },
+  {
+    question: "Hari ini kamu lebih merasa senang atau capek?",
+    note: "Terima jawabannya apa adanya.",
+    insight: "Perasaan anak bisa campur dan itu normal."
+  },
+  {
+    question: "Ada hal yang ingin kamu ceritakan tapi belum sempat?",
+    note: "Berikan ruang tanpa memaksa.",
+    insight: "Ruang aman membuat anak lebih terbuka."
+  },
+  {
+    question: "Kapan kamu merasa paling nyaman hari ini?",
+    note: "Dengarkan tanpa membandingkan dengan pengalaman sendiri.",
+    insight: "Rasa nyaman memberi petunjuk tentang kebutuhan emosional anak."
+  },
+  {
+    question: "Ada sesuatu yang ingin kamu lakukan besok?",
+    note: "Biarkan anak membayangkan tanpa diarahkan.",
+    insight: "Harapan kecil membantu anak merasa didukung."
+  },
+  {
+    question: "Hari ini kamu merasa didengarkan atau tidak?",
+    note: "Tanggapi dengan empati, bukan pembelaan.",
+    insight: "Perasaan didengar memperkuat kelekatan anak dengan orang tua."
   }
 ];
 
@@ -27,6 +62,7 @@ const cardNote = document.getElementById("card-note");
 const cardInsight = document.getElementById("card-insight");
 const cardCounter = document.getElementById("card-counter");
 const guideToggle = document.getElementById("guide-toggle");
+const guideContent = document.getElementById("guide-content");
 
 // START
 document.getElementById("start-btn").onclick = () => {
@@ -46,18 +82,24 @@ guideToggle.onclick = () => {
   guideVisible = !guideVisible;
 
   if (guideVisible) {
-    // show note first
-    cardNote.classList.add("show");
+    guideContent.classList.add("open");
 
-    // then insight (micro-delay)
+    // catatan muncul dulu
+    setTimeout(() => {
+      cardNote.classList.add("show");
+    }, 60);
+
+    // insight menyusul
     setTimeout(() => {
       cardInsight.classList.add("show");
-    }, 100);
+    }, 140);
 
     guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
   } else {
     cardNote.classList.remove("show");
     cardInsight.classList.remove("show");
+    guideContent.classList.remove("open");
+
     guideToggle.textContent = "▾ Panduan obrolan";
   }
 };
@@ -71,8 +113,9 @@ function showCard() {
   cardInsight.textContent = card.insight;
   cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
 
-  // reset guide state
+  // RESET GUIDE STATE
   guideVisible = false;
+  guideContent.classList.remove("open");
   cardNote.classList.remove("show");
   cardInsight.classList.remove("show");
   guideToggle.textContent = "▾ Panduan obrolan";
