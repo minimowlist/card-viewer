@@ -1,18 +1,18 @@
 const cards = [
   {
     question: "Hal apa yang paling kamu ingat dari hari ini?",
-    insight: "Anak sering mengingat hal yang terlihat sepele bagi orang dewasa. Itu petunjuk tentang apa yang bermakna bagi mereka.",
-    bridge: "Gunakan nada tenang dan beri jeda saat anak bercerita."
+    note: "Gunakan nada tenang dan beri jeda saat anak bercerita.",
+    insight: "Anak sering mengingat hal yang terlihat sepele bagi orang dewasa. Itu petunjuk tentang apa yang bermakna bagi mereka."
   },
   {
     question: "Ada momen hari ini yang bikin kamu senang?",
-    insight: "Rasa senang anak sering muncul dari hal kecil yang jarang disadari orang dewasa.",
-    bridge: "Biarkan anak menyelesaikan ceritanya tanpa disela."
+    note: "Biarkan anak menyelesaikan ceritanya tanpa disela.",
+    insight: "Rasa senang anak sering muncul dari hal kecil yang jarang disadari orang dewasa."
   },
   {
     question: "Ada bagian hari ini yang bikin kamu capek?",
-    insight: "Capek tidak selalu perlu solusi. Kehadiran dan empati sering kali sudah cukup.",
-    bridge: "Tunjukkan bahwa perasaannya wajar."
+    note: "Tunjukkan bahwa perasaannya wajar, tanpa buru-buru memberi solusi.",
+    insight: "Kehadiran dan empati sering kali lebih menenangkan daripada jawaban."
   }
 ];
 
@@ -23,11 +23,10 @@ let guideVisible = false;
 const startScreen = document.getElementById("start-screen");
 const cardScreen = document.getElementById("card-screen");
 const cardQuestion = document.getElementById("card-question");
+const cardNote = document.getElementById("card-note");
 const cardInsight = document.getElementById("card-insight");
-const cardBridge = document.getElementById("card-bridge");
 const cardCounter = document.getElementById("card-counter");
 const guideToggle = document.getElementById("guide-toggle");
-const guideContent = document.getElementById("guide-content");
 
 // START
 document.getElementById("start-btn").onclick = () => {
@@ -36,7 +35,7 @@ document.getElementById("start-btn").onclick = () => {
   showCard();
 };
 
-// NEXT ONLY
+// NEXT
 document.getElementById("next-btn").onclick = () => {
   currentIndex = (currentIndex + 1) % cards.length;
   showCard();
@@ -47,10 +46,18 @@ guideToggle.onclick = () => {
   guideVisible = !guideVisible;
 
   if (guideVisible) {
-    guideContent.classList.add("show");
+    // show note first
+    cardNote.classList.add("show");
+
+    // then insight (micro-delay)
+    setTimeout(() => {
+      cardInsight.classList.add("show");
+    }, 100);
+
     guideToggle.textContent = "▴ Sembunyikan panduan obrolan";
   } else {
-    guideContent.classList.remove("show");
+    cardNote.classList.remove("show");
+    cardInsight.classList.remove("show");
     guideToggle.textContent = "▾ Panduan obrolan";
   }
 };
@@ -60,13 +67,13 @@ function showCard() {
   const card = cards[currentIndex];
 
   cardQuestion.textContent = card.question;
+  cardNote.textContent = card.note;
   cardInsight.textContent = card.insight;
-  cardBridge.textContent = card.bridge;
-
   cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
 
-  // reset guide
+  // reset guide state
   guideVisible = false;
-  guideContent.classList.remove("show");
+  cardNote.classList.remove("show");
+  cardInsight.classList.remove("show");
   guideToggle.textContent = "▾ Panduan obrolan";
 }
