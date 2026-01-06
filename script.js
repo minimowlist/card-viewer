@@ -1,58 +1,48 @@
 const cards = [
-  { question: "Hal apa yang paling kamu ingat dari hari ini?", insight: "Hal kecil sering berarti besar." },
-  { question: "Ada momen hari ini yang bikin kamu senang?", insight: "Kebahagiaan anak tidak selalu soal prestasi." },
-  { question: "Ada bagian hari ini yang bikin kamu capek?", insight: "Didengar lebih penting dari solusi." },
-  { question: "Kalau hari ini diulang, apa yang ingin diubah?", insight: "Refleksi tanpa menyalahkan." },
-  { question: "Hal kecil apa yang bikin kamu senyum?", insight: "Hal kecil menenangkan." }
+  {
+    question: "Hal apa yang paling kamu ingat dari hari ini?",
+    insight: "Anak sering mengingat hal yang terlihat sepele bagi orang dewasa. Itu petunjuk tentang apa yang bermakna bagi mereka.",
+    bridge: "Kalau mau, kamu bisa mulai dengan kalimat yang sederhana."
+  },
+  {
+    question: "Ada momen hari ini yang bikin kamu senang?",
+    insight: "Kebahagiaan anak tidak selalu datang dari pencapaian. Kadang dari rasa diperhatikan.",
+    bridge: "Biarkan anak bercerita tanpa langsung ditanggapi."
+  },
+  {
+    question: "Ada bagian hari ini yang bikin kamu capek?",
+    insight: "Capek tidak selalu perlu solusi. Didengar dengan tenang sering kali sudah cukup.",
+    bridge: "Tunjukkan bahwa perasaannya valid."
+  },
+  {
+    question: "Kalau hari ini diulang, bagian mana yang ingin kamu ubah?",
+    insight: "Pertanyaan reflektif membantu anak belajar tanpa merasa disalahkan.",
+    bridge: "Tidak perlu diarahkan ke jawaban tertentu."
+  },
+  {
+    question: "Hal kecil apa yang bikin kamu senyum hari ini?",
+    insight: "Membantu anak mengenali hal kecil yang baik menumbuhkan rasa syukur.",
+    bridge: "Apresiasi ceritanya, sekecil apa pun."
+  }
 ];
-
-// SCREEN ELEMENTS
-const home = document.getElementById("home-screen");
-const list = document.getElementById("list-screen");
-const cardScreen = document.getElementById("card-screen");
-
-// CARD ELEMENTS
-const cardQuestion = document.getElementById("card-question");
-const cardInsight = document.getElementById("card-insight");
-const cardCounter = document.getElementById("card-counter");
-const infoIcon = document.getElementById("info-icon");
-const cardList = document.getElementById("card-list");
 
 let currentIndex = 0;
 
-/* -------- SCREEN SWITCHER -------- */
-function showScreen(screen) {
-  [home, list, cardScreen].forEach(s => s.classList.remove("active"));
-  screen.classList.add("active");
-}
+// ELEMENTS
+const startScreen = document.getElementById("start-screen");
+const cardScreen = document.getElementById("card-screen");
+const cardQuestion = document.getElementById("card-question");
+const cardInsight = document.getElementById("card-insight");
+const cardBridge = document.getElementById("card-bridge");
+const cardCounter = document.getElementById("card-counter");
 
-/* -------- HOME -------- */
+// EVENTS
 document.getElementById("start-btn").onclick = () => {
-  currentIndex = 0;
-  showScreen(cardScreen);
+  startScreen.classList.remove("active");
+  cardScreen.classList.add("active");
   showCard();
 };
 
-document.getElementById("list-btn").onclick = () => {
-  showScreen(list);
-};
-
-/* -------- LIST -------- */
-cards.forEach((card, i) => {
-  const li = document.createElement("li");
-  li.textContent = `Kartu ${i + 1}`;
-  li.onclick = () => {
-    currentIndex = i;
-    showScreen(cardScreen);
-    showCard();
-  };
-  cardList.appendChild(li);
-});
-
-document.getElementById("back-home-1").onclick = () => showScreen(home);
-document.getElementById("back-home-2").onclick = () => showScreen(home);
-
-/* -------- CARD -------- */
 document.getElementById("next-btn").onclick = () => {
   currentIndex = (currentIndex + 1) % cards.length;
   showCard();
@@ -63,13 +53,18 @@ document.getElementById("shuffle-btn").onclick = () => {
   showCard();
 };
 
-infoIcon.onclick = () => {
-  cardInsight.classList.toggle("hidden");
+document.getElementById("back-btn").onclick = () => {
+  cardScreen.classList.remove("active");
+  startScreen.classList.add("active");
 };
 
+// RENDER
 function showCard() {
-  cardQuestion.textContent = cards[currentIndex].question;
-  cardInsight.textContent = cards[currentIndex].insight;
-  cardInsight.classList.add("hidden");
+  const card = cards[currentIndex];
+
+  cardQuestion.textContent = card.question;
+  cardInsight.textContent = card.insight;
+  cardBridge.textContent = card.bridge;
+
   cardCounter.textContent = `Kartu ${currentIndex + 1} dari ${cards.length}`;
 }
