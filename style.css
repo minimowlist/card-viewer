@@ -49,7 +49,7 @@ h1 {
   background: #ffffff;
   border-radius: 22px;
   padding: 26px 22px;
-  margin: 16px 0 26px;
+  margin: 16px 0 22px;
   min-height: 260px;
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.08),
@@ -59,7 +59,6 @@ h1 {
   gap: 16px;
 }
 
-/* CONTENT */
 #card-question {
   font-size: 18px;
   line-height: 1.55;
@@ -81,15 +80,14 @@ h1 {
   font-style: italic;
 }
 
-/* BUTTONS */
-.buttons {
+/* ACTION BUTTONS */
+.action-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-button {
-  width: 100%;
+.action-buttons button {
+  flex: 1;
   padding: 14px;
   border-radius: 16px;
   border: none;
@@ -97,10 +95,9 @@ button {
   cursor: pointer;
 }
 
-#start-btn,
 #next-btn {
   background: #3b82f6;
-  color: white;
+  color: #ffffff;
 }
 
 button.secondary {
