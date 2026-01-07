@@ -13,7 +13,6 @@
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
-/* ===== THEME ===== */
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -21,6 +20,7 @@
   --card:#ffffff;
   --primary:#3b82f6;
 }
+
 body{
   background:var(--bg);
   color:var(--text);
@@ -45,16 +45,32 @@ body{
   font-size:13px;
   color:var(--muted);
   opacity:0;
-  animation: breathing 3.2s cubic-bezier(.4,0,.2,1) forwards;
+  animation: heartbeat 3.2s ease-in-out forwards;
 }
 
-/* breathing = tarik → tahan → hembus */
-@keyframes breathing{
+/*
+  5 detak = 10 naik-turun
+  muncul ≈ 0.55
+  tipis  ≈ 0.22
+*/
+@keyframes heartbeat{
   0%   {opacity:0}
-  25%  {opacity:.6}   /* tarik napas */
-  55%  {opacity:.6}   /* tahan */
-  80%  {opacity:.25}  /* hembus */
-  100% {opacity:0}    /* selesai */
+  5%   {opacity:.55}
+
+  15%  {opacity:.22}
+  25%  {opacity:.55}
+
+  35%  {opacity:.22}
+  45%  {opacity:.55}
+
+  55%  {opacity:.22}
+  65%  {opacity:.55}
+
+  75%  {opacity:.22}
+  85%  {opacity:.55}
+
+  95%  {opacity:.22}
+  100% {opacity:0}
 }
 
 /* ===== APP ===== */
@@ -161,15 +177,14 @@ const splash = document.getElementById("splash-screen");
 const start  = document.getElementById("start-screen");
 
 /*
-  Timeline:
-  - 0–3200ms : breathing animation
-  - 3200–3800ms : blank white (hening)
-  - 3800ms+ : show menu
+  Timeline total 4 detik:
+  - 0–3200ms : heartbeat animation
+  - 3200–4000ms : blank screen
 */
 setTimeout(()=>{
   splash.style.display = "none";
   start.classList.add("active");
-},3800);
+},4000);
 </script>
 
 </body>
