@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kartu Obrolan Orang Tua</title>
+<title>Quality Time Bersama Anak</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
@@ -87,7 +87,7 @@ body{
 .preview-question{font-size:20px;font-weight:600}
 .preview-divider{
   margin:14px 0;
-  border-top:1px dashed var(--border); /* ⬅️ GARIS PUTUS */
+  border-top:1px dashed var(--border);
 }
 .preview-note{font-size:14.5px;color:var(--muted)}
 
@@ -216,22 +216,18 @@ input:checked + .slider::before{
 <!-- MENU -->
 <div id="menu" class="screen">
   <div class="title-wrap">
-    <h1>Kartu Obrolan Orang Tua</h1>
-    <div class="subtitle">Temani obrolan kecil yang bermakna.</div>
+    <h1>Quality Time Bersama Anak</h1>
+    <div class="subtitle">Obrolan sederhana untuk membangun kedekatan.</div>
   </div>
 
   <div class="preview-card">
-    <div class="preview-question">
-      Ada hal kecil hari ini yang pengen kamu ceritain?
-    </div>
+    <div class="preview-question" id="previewQ"></div>
     <div class="preview-divider"></div>
-    <div class="preview-note">
-      Cerita kecil sering jadi pintu menuju perasaan.
-    </div>
+    <div class="preview-note" id="previewN"></div>
   </div>
 
   <div class="micro-copy">
-    Tidak perlu lama. Cukup hadir dan mendengarkan.
+    Tidak perlu waktu lama. Yang penting hadir sepenuhnya.
   </div>
 
   <button id="start">▶︎ Mulai</button>
@@ -271,10 +267,39 @@ setTimeout(()=>{
   menu.classList.add("active");
 },3000);
 
-/* ===== DATA ===== */
+/* ===== PREVIEW DATA (5 KARTU) ===== */
+const previewCards=[
+  {
+    q:"Hal apa yang paling kamu nikmati hari ini?",
+    n:"Pertanyaan ringan untuk membuka percakapan."
+  },
+  {
+    q:"Ada momen kecil hari ini yang bikin kamu senyum?",
+    n:"Membantu anak mengingat hal positif."
+  },
+  {
+    q:"Kalau hari ini diceritakan, bagian mana yang paling seru?",
+    n:"Biarkan anak memilih ceritanya sendiri."
+  },
+  {
+    q:"Ada hal yang pengen kamu ceritain tapi belum sempat?",
+    n:"Memberi ruang tanpa memaksa."
+  },
+  {
+    q:"Bagian mana dari hari ini yang paling kamu ingat?",
+    n:"Memancing refleksi sederhana."
+  }
+];
+
+// random preview saat refresh
+const randomPreview=previewCards[Math.floor(Math.random()*previewCards.length)];
+document.getElementById("previewQ").textContent=randomPreview.q;
+document.getElementById("previewN").textContent=randomPreview.n;
+
+/* ===== CARD DATA ===== */
 const cards=[
   {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan tanpa menyela.",i:"Yang pertama muncul sering paling jujur."},
-  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya.",i:"Kebahagiaan sering datang dari hal kecil."},
+  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya, jangan buru-buru.",i:"Kebahagiaan sering datang dari hal kecil."},
   {q:"Kalau hari ini punya warna, warnanya apa?",n:"Tidak perlu jawaban benar.",i:"Metafora bantu anak menamai perasaan."}
 ];
 
