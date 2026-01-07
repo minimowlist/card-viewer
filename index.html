@@ -13,12 +13,22 @@
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
+/* ===== THEME ===== */
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
   --muted:#6b7280;
   --card:#ffffff;
   --primary:#3b82f6;
+  --border:rgba(0,0,0,.12);
+}
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#020617;
+  --primary:#60a5fa;
+  --border:rgba(255,255,255,.18);
 }
 
 body{
@@ -28,9 +38,10 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  transition:background .3s,color .3s;
 }
 
-/* ================= SPLASH ================= */
+/* ===== SPLASH ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -42,39 +53,30 @@ body{
   opacity:1;
   transition:opacity .7s ease;
 }
-
-#splash.fade-out{
-  opacity:0;
-}
+#splash.fade-out{opacity:0}
 
 .splash-text{
   font-size:13px;
   color:var(--muted);
   opacity:0;
-  animation: heartbeat 3.2s ease-in-out forwards;
+  animation:heartbeat 3.2s ease-in-out forwards;
 }
-
 @keyframes heartbeat{
-  0%   {opacity:0}
-  5%   {opacity:.55}
-
-  15%  {opacity:.22}
-  25%  {opacity:.55}
-
-  35%  {opacity:.22}
-  45%  {opacity:.55}
-
-  55%  {opacity:.22}
-  65%  {opacity:.55}
-
-  75%  {opacity:.22}
-  85%  {opacity:.55}
-
-  95%  {opacity:.22}
-  100% {opacity:0}
+  0%{opacity:0}
+  5%{opacity:.55}
+  15%{opacity:.22}
+  25%{opacity:.55}
+  35%{opacity:.22}
+  45%{opacity:.55}
+  55%{opacity:.22}
+  65%{opacity:.55}
+  75%{opacity:.22}
+  85%{opacity:.55}
+  95%{opacity:.22}
+  100%{opacity:0}
 }
 
-/* ================= APP ================= */
+/* ===== APP ===== */
 #app{
   width:100%;
   max-width:420px;
@@ -84,19 +86,9 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ================= MENU ================= */
-h1{
-  text-align:center;
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-.subtitle{
-  text-align:center;
-  font-size:15px;
-  color:var(--muted);
-  margin-bottom:26px;
-}
+/* ===== MENU ===== */
+h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
+.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
 
 .preview-card{
   background:var(--card);
@@ -105,27 +97,11 @@ h1{
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{
-  font-size:20px;
-  font-weight:600;
-  line-height:1.5;
-}
-.preview-divider{
-  margin:16px 0;
-  border-top:1px dashed rgba(0,0,0,.12);
-}
-.preview-note{
-  font-size:14.5px;
-  font-style:italic;
-  color:var(--muted);
-}
+.preview-question{font-size:20px;font-weight:600;line-height:1.5}
+.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
 
-.micro-copy{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:32px;
-}
+.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
 button{
   width:100%;
@@ -139,20 +115,63 @@ button{
   color:#fff;
 }
 
-/* ================= CARD ================= */
+/* ===== CARD ===== */
+#theme-toggle{
+  background:none;
+  border:none;
+  font-size:18px;
+  color:var(--muted);
+  margin-bottom:6px;
+  cursor:pointer;
+}
+
 #card{
   background:var(--card);
   border-radius:22px;
   padding:28px 22px;
-  margin:16px 0 20px;
-  min-height:220px;
+  margin:16px 0 14px;
+  min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
+
 #card-question{
   font-size:22px;
   font-weight:600;
   line-height:1.5;
-  transition:opacity .18s ease, transform .18s ease;
+  transition:opacity .18s ease,transform .18s ease;
+}
+
+/* ===== GUIDE ===== */
+#guide-toggle{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
+  padding:8px 0;
+}
+
+#guide-content{
+  margin-top:14px;
+  border-top:1px dashed var(--border);
+  padding-top:14px;
+  opacity:0;
+  transform:translateY(-6px);
+  transition:.22s cubic-bezier(.2,0,0,1);
+}
+#guide-content.show{
+  opacity:1;
+  transform:none;
+}
+
+#card-note{
+  font-size:14.5px;
+  line-height:1.6;
+  margin-bottom:10px;
+}
+#card-insight{
+  font-size:14px;
+  color:var(--muted);
+  font-style:italic;
 }
 </style>
 </head>
@@ -188,65 +207,96 @@ button{
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
-<!-- CARD -->
+<!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
+
+  <button id="theme-toggle">🌙</button>
+
   <div id="card">
     <div id="card-question"></div>
+
+    <div id="guide-content">
+      <div id="card-note"></div>
+      <div id="card-insight"></div>
+    </div>
   </div>
+
   <button id="next-btn">▶︎ Berikutnya</button>
+  <div id="guide-toggle">▾ Panduan obrolan</div>
+
 </div>
 
 </div>
 
 <script>
-/* ========= SPLASH FLOW ========= */
-const splash = document.getElementById("splash");
-const menu   = document.getElementById("menu");
+/* ===== SPLASH FLOW ===== */
+const splash=document.getElementById("splash");
+const menu=document.getElementById("menu");
 
+setTimeout(()=>splash.classList.add("fade-out"),3400);
 setTimeout(()=>{
-  splash.classList.add("fade-out"); // fade out layer
-},3400);
-
-setTimeout(()=>{
-  splash.remove();       // remove AFTER fade
+  splash.remove();
   menu.classList.add("active");
 },4200);
 
-/* ========= CARD LOGIC ========= */
-const startBtn = document.getElementById("start-btn");
-const cardScr  = document.getElementById("card-screen");
-const cardQ    = document.getElementById("card-question");
-const nextBtn  = document.getElementById("next-btn");
-
-const cards = [
-  "Hal apa yang paling kamu ingat dari hari ini?",
-  "Ada momen hari ini yang bikin kamu senyum?",
-  "Kalau hari ini punya warna, warnanya apa?",
-  "Ada hal kecil hari ini yang pengen kamu ceritain?",
-  "Bagian mana dari hari ini yang paling kamu suka?"
+/* ===== DATA ===== */
+const cards=[
+ {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
+ {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
+ {q:"Kalau hari ini punya warna, warnanya apa?",n:"Biarkan anak bebas menjawab.",i:"Metafora bantu ekspresi emosi."}
 ];
 
-let idx = 0;
+/* ===== CARD LOGIC ===== */
+const startBtn=document.getElementById("start-btn");
+const cardScr=document.getElementById("card-screen");
+const cardQ=document.getElementById("card-question");
+const cardN=document.getElementById("card-note");
+const cardI=document.getElementById("card-insight");
+const nextBtn=document.getElementById("next-btn");
+const guideToggle=document.getElementById("guide-toggle");
+const guideContent=document.getElementById("guide-content");
+const themeBtn=document.getElementById("theme-toggle");
+
+let idx=0,guideOpen=false;
 
 function showCard(){
-  cardQ.style.opacity = 0;
-  cardQ.style.transform = "translateY(-6px)";
+  const c=cards[idx];
+  cardQ.style.opacity=0;
+  cardQ.style.transform="translateY(-6px)";
   setTimeout(()=>{
-    cardQ.textContent = cards[idx];
-    cardQ.style.opacity = 1;
-    cardQ.style.transform = "translateY(0)";
+    cardQ.textContent=c.q;
+    cardN.textContent=c.n;
+    cardI.textContent=c.i;
+    guideOpen=false;
+    guideContent.classList.remove("show");
+    guideToggle.textContent="▾ Panduan obrolan";
+    cardQ.style.opacity=1;
+    cardQ.style.transform="translateY(0)";
   },180);
 }
 
-startBtn.onclick = ()=>{
+startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScr.classList.add("active");
   showCard();
 };
 
-nextBtn.onclick = ()=>{
-  idx = (idx + 1) % cards.length;
+nextBtn.onclick=()=>{
+  idx=(idx+1)%cards.length;
   showCard();
+};
+
+guideToggle.onclick=()=>{
+  guideOpen=!guideOpen;
+  guideContent.classList.toggle("show",guideOpen);
+  guideToggle.textContent=guideOpen
+    ?"▴ Sembunyikan panduan obrolan"
+    :"▾ Panduan obrolan";
+};
+
+themeBtn.onclick=()=>{
+  document.body.classList.toggle("dark");
+  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
