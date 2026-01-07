@@ -38,36 +38,6 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  transition:background .3s,color .3s;
-}
-
-/* ===== SPLASH (FREEZE) ===== */
-#splash{
-  position:fixed;
-  inset:0;
-  background:var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  opacity:1;
-  transition:opacity .6s ease;
-}
-#splash.fade-out{opacity:0}
-
-.splash-text{
-  font-size:13px;
-  color:var(--muted);
-  opacity:0;
-  animation:heartbeat 2.4s ease-in-out forwards;
-}
-@keyframes heartbeat{
-  0%{opacity:0}
-  20%{opacity:.6}
-  40%{opacity:.25}
-  60%{opacity:.6}
-  80%{opacity:.25}
-  100%{opacity:0}
 }
 
 /* ===== APP ===== */
@@ -81,209 +51,96 @@ body{
 .screen.active{display:block}
 
 /* ===== MENU (FREEZE) ===== */
-#menu{
-  opacity:0;
-  animation:menuFadeIn 1s ease forwards;
+#menu{display:none}
+
+/* ===== CARD SCREEN (FREEZE ENTRY) ===== */
+#card-screen{
+  opacity:1;
 }
-@keyframes menuFadeIn{to{opacity:1}}
-
-h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
-.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
-
-.preview-card{
-  background:var(--card);
-  border-radius:22px;
-  padding:26px 22px;
-  margin-bottom:30px;
-  box-shadow:0 10px 24px rgba(0,0,0,.08);
-}
-.preview-question{font-size:20px;font-weight:600;line-height:1.5}
-.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
-.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
-
-.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
-
-button{
-  width:100%;
-  min-height:56px;
-  font-size:17px;
-  font-weight:600;
-  border-radius:18px;
-  border:none;
-  cursor:pointer;
-  background:var(--primary);
-  color:#fff;
-}
-
-/* ===== CARD SCREEN ENTER (FREEZE 1.5s) ===== */
-#card-screen{opacity:0}
-#card-screen.enter{
-  animation:cardEnterFade 1.5s ease forwards;
-}
-@keyframes cardEnterFade{to{opacity:1}}
 
 /* ===== CARD ===== */
-#theme-toggle{background:none;border:none;font-size:18px;color:var(--muted);margin-bottom:6px;cursor:pointer}
 #card{
   background:var(--card);
   border-radius:22px;
   padding:28px 22px;
-  margin:16px 0 14px;
   min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
+
 #card-question{
   font-size:22px;
   font-weight:600;
   line-height:1.5;
   opacity:0;
-  transform:translateY(-6px);
+  transform:translateY(8px);
+  transition:opacity 1s ease, transform 1s ease;
 }
 
-/* ===== GUIDE (FREEZE) ===== */
-#guide-toggle{text-align:center;font-size:14px;color:var(--muted);cursor:pointer;padding:8px 0}
-#guide-content{margin-top:14px;border-top:1px dashed var(--border);padding-top:14px;opacity:0;transform:translateY(-6px);transition:.22s cubic-bezier(.2,0,0,1)}
-#guide-content.show{opacity:1;transform:none}
-#card-note{font-size:14.5px;line-height:1.6;margin-bottom:10px}
-#card-insight{font-size:14px;color:var(--muted);font-style:italic}
+button{
+  width:100%;
+  margin-top:16px;
+  min-height:56px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:18px;
+  border:none;
+  background:var(--primary);
+  color:#fff;
+  cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="splash-text">made with ❤️ by bekaldigital</div>
-</div>
-
 <div id="app">
 
-<!-- MENU -->
-<div id="menu" class="screen">
-  <h1>Kartu Obrolan Orang Tua</h1>
-  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
-
-  <div class="preview-card">
-    <div class="preview-question"></div>
-    <div class="preview-divider"></div>
-    <div class="preview-note"></div>
-  </div>
-
-  <div class="micro-copy">
-    Tidak perlu lama. Cukup hadir dan mendengarkan.
-  </div>
-
-  <button id="start-btn">▶︎ Mulai</button>
-</div>
-
 <!-- CARD SCREEN -->
-<div id="card-screen" class="screen">
-  <button id="theme-toggle">🌙</button>
-
+<div id="card-screen" class="screen active">
   <div id="card">
     <div id="card-question"></div>
-    <div id="guide-content">
-      <div id="card-note"></div>
-      <div id="card-insight"></div>
-    </div>
   </div>
-
   <button id="next-btn">▶︎ Berikutnya</button>
-  <div id="guide-toggle">▾ Panduan obrolan</div>
 </div>
 
 </div>
 
 <script>
-/* ===== PREVIEW CARD DATA (FREEZE) ===== */
-const previewCards=[
-  {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering jadi pintu menuju perasaan."},
-  {q:"Bagian mana dari hari ini yang paling kamu ingat?",n:"Yang diingat biasanya punya makna emosional."},
-  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Pertanyaan abstrak membantu anak mengekspresikan emosi."},
-  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa aman sering muncul dari kenangan kecil."},
-  {q:"Hal apa hari ini yang terasa paling menyenangkan?",n:"Fokus ke hal baik melatih kesadaran emosi."}
-];
-
-function setRandomPreview(){
-  const pick=previewCards[Math.floor(Math.random()*previewCards.length)];
-  document.querySelector(".preview-question").textContent=pick.q;
-  document.querySelector(".preview-note").textContent=pick.n;
-}
-
-/* ===== SPLASH FLOW (FREEZE) ===== */
-const splash=document.getElementById("splash");
-const menu=document.getElementById("menu");
-
-setTimeout(()=>splash.classList.add("fade-out"),2600);
-setTimeout(()=>{
-  splash.remove();
-  menu.classList.add("active");
-  setRandomPreview();
-},3200);
-
-/* ===== CARD LOGIC (SEMUA KARTU FADE 1s) ===== */
+/* ===== DATA ===== */
 const cards=[
- {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
- {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
- {q:"Kalau hari ini punya warna, warnanya apa?",n:"Biarkan anak bebas menjawab.",i:"Metafora bantu ekspresi emosi."}
+  "Hal apa yang paling kamu ingat dari hari ini?",
+  "Ada momen hari ini yang bikin kamu senyum?",
+  "Kalau hari ini punya warna, warnanya apa?"
 ];
 
-const startBtn=document.getElementById("start-btn");
-const cardScr=document.getElementById("card-screen");
 const cardQ=document.getElementById("card-question");
-const cardN=document.getElementById("card-note");
-const cardI=document.getElementById("card-insight");
 const nextBtn=document.getElementById("next-btn");
-const guideToggle=document.getElementById("guide-toggle");
-const guideContent=document.getElementById("guide-content");
-const themeBtn=document.getElementById("theme-toggle");
 
 let idx=0;
-let guideOpen=false;
-let firstEnter=true;
 
+/* ===== FIXED FADE-IN FUNCTION ===== */
 function showCard(){
-  const c=cards[idx];
-  const delay = firstEnter ? 600 : 0;
+  // 1. reset state
+  cardQ.style.transition = "none";
+  cardQ.style.opacity = 0;
+  cardQ.style.transform = "translateY(8px)";
 
+  // 2. force reflow (INI KUNCI)
+  void cardQ.offsetWidth;
+
+  // 3. apply transition + final state
   cardQ.style.transition = "opacity 1s ease, transform 1s ease";
-  cardQ.style.opacity=0;
-  cardQ.style.transform="translateY(-6px)";
-
-  setTimeout(()=>{
-    cardQ.textContent=c.q;
-    cardN.textContent=c.n;
-    cardI.textContent=c.i;
-    guideOpen=false;
-    guideContent.classList.remove("show");
-    guideToggle.textContent="▾ Panduan obrolan";
-    cardQ.style.opacity=1;
-    cardQ.style.transform="translateY(0)";
-    firstEnter=false;
-  },delay);
+  cardQ.textContent = cards[idx];
+  cardQ.style.opacity = 1;
+  cardQ.style.transform = "translateY(0)";
 }
 
-startBtn.onclick=()=>{
-  menu.classList.remove("active");
-  cardScr.classList.add("active");
-  cardScr.classList.add("enter");
-  showCard();
-};
+/* ===== INIT ===== */
+showCard();
 
 nextBtn.onclick=()=>{
   idx=(idx+1)%cards.length;
   showCard();
-};
-
-guideToggle.onclick=()=>{
-  guideOpen=!guideOpen;
-  guideContent.classList.toggle("show",guideOpen);
-  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
-};
-
-themeBtn.onclick=()=>{
-  document.body.classList.toggle("dark");
-  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
