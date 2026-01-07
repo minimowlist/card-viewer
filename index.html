@@ -221,7 +221,7 @@ setTimeout(()=>{
   setRandomPreview();
 },3200);
 
-/* ===== CARD LOGIC (KARTU PERTAMA SMOOTH 1s) ===== */
+/* ===== CARD LOGIC (SEMUA KARTU FADE 1s) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
@@ -245,11 +245,10 @@ let firstEnter=true;
 function showCard(){
   const c=cards[idx];
   const delay = firstEnter ? 600 : 0;
-  const duration = firstEnter ? 1000 : 180; // ⬅️ kunci perubahan
 
+  cardQ.style.transition = "opacity 1s ease, transform 1s ease";
   cardQ.style.opacity=0;
   cardQ.style.transform="translateY(-6px)";
-  cardQ.style.transition = `opacity ${duration}ms ease, transform ${duration}ms ease`;
 
   setTimeout(()=>{
     cardQ.textContent=c.q;
@@ -267,7 +266,7 @@ function showCard(){
 startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScr.classList.add("active");
-  cardScr.classList.add("enter"); // fade in screen 1.5s
+  cardScr.classList.add("enter");
   showCard();
 };
 
