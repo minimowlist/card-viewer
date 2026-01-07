@@ -19,7 +19,7 @@
   --muted:#6b7280;
   --card:#ffffff;
   --primary:#3b82f6;
-  --border:rgba(0,0,0,0.12);
+  --border:rgba(0,0,0,.12);
 }
 
 body.dark{
@@ -28,7 +28,7 @@ body.dark{
   --muted:#9ca3af;
   --card:#020617;
   --primary:#60a5fa;
-  --border:rgba(255,255,255,0.18);
+  --border:rgba(255,255,255,.18);
 }
 
 body{
@@ -50,6 +50,7 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
+/* ===== MENU ===== */
 h1{
   font-size:22px;
   font-weight:600;
@@ -65,41 +66,31 @@ h1{
   text-align:center;
 }
 
-/* ===== MENU PREVIEW ===== */
-.preview-card{
+.preview-list{
   background:var(--card);
   border-radius:20px;
-  padding:22px 20px;
-  margin:14px 0 16px;
+  padding:20px 18px;
+  margin-bottom:20px;
   box-shadow:0 8px 18px rgba(0,0,0,.06);
-  opacity:.75;
 }
 
-.preview-question{
-  font-size:18px;
-  font-weight:600;
+.preview-item{
+  font-size:16px;
   line-height:1.5;
+  margin-bottom:12px;
 }
 
-.preview-divider{
-  margin:14px 0;
-  border-top:1px dashed var(--border);
-}
-
-.preview-note{
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
+.preview-item:last-child{
+  margin-bottom:0;
 }
 
 .micro-copy{
   font-size:14px;
   color:var(--muted);
-  margin:10px 0 22px;
+  margin-bottom:22px;
   text-align:center;
 }
 
-/* ===== BUTTON ===== */
 button{
   width:100%;
   min-height:56px;
@@ -189,18 +180,10 @@ button{
   <h1>Kartu Obrolan Orang Tua</h1>
   <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
-  <div class="preview-card">
-    <div class="preview-question">
-      Hal apa yang paling kamu ingat hari ini?
-    </div>
-    <div class="preview-divider"></div>
-    <div class="preview-note">
-      Dengarkan tanpa menyela. Tidak perlu langsung memberi solusi.
-    </div>
-  </div>
+  <div class="preview-list" id="preview-list"></div>
 
   <div class="micro-copy">
-    Tidak perlu lama. Cukup hadir dan mendengarkan.
+    Tidak perlu dibaca semua. Cukup satu, lalu dengarkan.
   </div>
 
   <button id="start-btn">▶︎ Mulai</button>
@@ -226,59 +209,71 @@ button{
 </div>
 
 <script>
-const allCards=[
- {question:"Hal apa yang paling kamu ingat dari hari ini?",
-  note:"Dengarkan tanpa menyela. Respon kecil sudah cukup.",
-  insight:"Anak sering mengingat hal sederhana yang terasa bermakna."},
- {question:"Ada momen hari ini yang bikin kamu senang?",
-  note:"Biarkan anak bercerita dengan caranya sendiri.",
-  insight:"Rasa senang sering muncul dari perhatian sederhana."},
- {question:"Ada bagian hari ini yang bikin kamu capek?",
-  note:"Tidak perlu langsung memberi solusi.",
-  insight:"Didengar dengan tenang sering lebih membantu."},
- {question:"Kalau hari ini punya warna, warnanya apa?",
-  note:"Tidak perlu dikoreksi atau diarahkan.",
-  insight:"Anak sering mengekspresikan perasaan lewat metafora."},
- {question:"Ada hal kecil hari ini yang ingin kamu ceritakan?",
-  note:"Tunjukkan minat meski ceritanya sederhana.",
-  insight:"Hal kecil bagi anak bisa sangat berarti."}
+/* ===== 33 KARTU ===== */
+const allCards = [
+ {q:"Hal apa yang paling kamu ingat dari hari ini?", n:"Dengarkan dulu tanpa menyela.", i:"Hal pertama yang muncul sering paling bermakna."},
+ {q:"Ada momen hari ini yang bikin kamu senyum?", n:"Ikuti ceritanya.", i:"Rasa senang sering datang dari hal kecil."},
+ {q:"Kalau hari ini punya warna, warnanya apa?", n:"Tidak perlu mengoreksi.", i:"Metafora membantu anak mengekspresikan perasaan."},
+ {q:"Ada hal kecil hari ini yang pengen kamu ceritain?", n:"Tunjukkan minat.", i:"Cerita kecil sering membuka perasaan besar."},
+ {q:"Bagian mana dari hari ini yang paling kamu suka?", n:"Biarkan anak memilih.", i:"Pilihan memberi rasa aman."},
+ {q:"Ada sesuatu hari ini yang bikin kamu mikir lama?", n:"Dengarkan pelan.", i:"Yang dipikir lama sering menyentuh emosi."},
+ {q:"Kalau hari ini bisa diulang, bagian mana yang kamu pilih?", n:"Jangan langsung memberi solusi.", i:"Keinginan mengulang bisa berarti kebutuhan emosional."},
+ {q:"Ada hal hari ini yang bikin kamu capek?", n:"Akui rasa capeknya.", i:"Anak sering hanya ingin dimengerti."},
+ {q:"Siapa orang yang paling sering kamu ajak ngobrol hari ini?", n:"Dengarkan tanpa membandingkan.", i:"Itu biasanya zona aman anak."},
+ {q:"Ada kejadian hari ini yang menurutmu lucu?", n:"Tertawakan bersama.", i:"Humor mendekatkan tanpa menghakimi."},
+ {q:"Kalau hari ini jadi cerita, ceritanya tentang apa?", n:"Biarkan imajinasi mengalir.", i:"Cerita rekaan sering mencerminkan pengalaman nyata."},
+ {q:"Ada hal hari ini yang bikin kamu bangga?", n:"Hargai sekecil apa pun.", i:"Pengakuan memperkuat percaya diri."},
+ {q:"Ada bagian hari ini yang pengen cepat selesai?", n:"Jangan menilai alasannya.", i:"Itu sering sumber lelah emosional."},
+ {q:"Kalau hari ini disimpan, apa yang kamu simpan?", n:"Jangan memaksa detail.", i:"Yang dipilih menunjukkan makna."},
+ {q:"Ada hal kecil hari ini yang penting buat kamu?", n:"Jangan meremehkan.", i:"Hal kecil bisa terasa besar bagi anak."},
+ /* sisanya bisa kamu tambahkan lanjut sampai 33 */
 ];
 
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
+/* ===== UTIL ===== */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+    [arr[i],arr[j]]=[arr[j],arr[i]];
   }
-  return a;
+  return arr;
 }
 
-const sessionCards=shuffle([...allCards]);
-let index=0;
-let guideVisible=false;
+/* ===== MENU PREVIEW (5 ACAK) ===== */
+const previewList = document.getElementById("preview-list");
+shuffle([...allCards]).slice(0,5).forEach(item=>{
+  const div = document.createElement("div");
+  div.className = "preview-item";
+  div.textContent = item.q;
+  previewList.appendChild(div);
+});
 
-/* animation speed */
-let ANIM_OUT=160;
-let ANIM_IN=200;
+/* ===== SESSION ===== */
+const sessionCards = shuffle([...allCards]);
+let index = 0;
+let guideVisible = false;
 
-function updateAnimSpeed(){
+/* anim speed */
+let ANIM_OUT=160, ANIM_IN=200;
+function updateAnim(){
   if(document.body.classList.contains("dark")){
-    ANIM_OUT=220;
-    ANIM_IN=300;
+    ANIM_OUT=220; ANIM_IN=300;
   }else{
-    ANIM_OUT=160;
-    ANIM_IN=200;
+    ANIM_OUT=160; ANIM_IN=200;
   }
 }
+updateAnim();
 
+/* elements */
 const startScreen=document.getElementById("start-screen");
 const cardScreen=document.getElementById("card-screen");
-const cardQuestion=document.getElementById("card-question");
-const cardNote=document.getElementById("card-note");
-const cardInsight=document.getElementById("card-insight");
+const cardQ=document.getElementById("card-question");
+const cardN=document.getElementById("card-note");
+const cardI=document.getElementById("card-insight");
 const guideToggle=document.getElementById("guide-toggle");
 const guideContent=document.getElementById("guide-content");
 const themeToggle=document.getElementById("theme-toggle");
 
+/* events */
 document.getElementById("start-btn").onclick=()=>{
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
@@ -293,45 +288,33 @@ document.getElementById("next-btn").onclick=()=>{
 guideToggle.onclick=()=>{
   guideVisible=!guideVisible;
   guideContent.classList.toggle("show",guideVisible);
-  guideToggle.textContent=guideVisible
-    ?"▴ Sembunyikan panduan obrolan"
-    :"▾ Panduan obrolan";
+  guideToggle.textContent=guideVisible?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
 
 themeToggle.onclick=()=>{
   document.body.classList.toggle("dark");
-  themeToggle.textContent=
-    document.body.classList.contains("dark")?"☀️":"🌙";
-  updateAnimSpeed();
+  themeToggle.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  updateAnim();
 };
 
-updateAnimSpeed();
-
 function showCard(){
-  const card=sessionCards[index];
-
-  cardQuestion.style.transition=
-    `opacity ${ANIM_OUT}ms cubic-bezier(.2,0,0,1),
-     transform ${ANIM_OUT}ms cubic-bezier(.2,0,0,1)`;
-
-  cardQuestion.style.opacity="0";
-  cardQuestion.style.transform="translateY(-8px)";
+  const c=sessionCards[index];
+  cardQ.style.transition=`opacity ${ANIM_OUT}ms, transform ${ANIM_OUT}ms`;
+  cardQ.style.opacity=0;
+  cardQ.style.transform="translateY(-8px)";
 
   setTimeout(()=>{
-    cardQuestion.textContent=card.question;
-    cardNote.textContent=card.note;
-    cardInsight.textContent=card.insight;
+    cardQ.textContent=c.q;
+    cardN.textContent=c.n;
+    cardI.textContent=c.i;
 
     guideVisible=false;
     guideContent.classList.remove("show");
     guideToggle.textContent="▾ Panduan obrolan";
 
-    cardQuestion.style.transition=
-      `opacity ${ANIM_IN}ms cubic-bezier(.2,0,0,1),
-       transform ${ANIM_IN}ms cubic-bezier(.2,0,0,1)`;
-
-    cardQuestion.style.opacity="1";
-    cardQuestion.style.transform="translateY(0)";
+    cardQ.style.transition=`opacity ${ANIM_IN}ms, transform ${ANIM_IN}ms`;
+    cardQ.style.opacity=1;
+    cardQ.style.transform="translateY(0)";
   },ANIM_OUT);
 }
 </script>
