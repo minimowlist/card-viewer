@@ -6,225 +6,80 @@
 <title>Kartu Obrolan Orang Tua</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-}
-
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
 :root{
-  --bg:#f6f7f4;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --card:#ffffff;
-  --primary:#3b82f6;
-  --border:rgba(0,0,0,.12);
+  --bg:#f6f7f4;--text:#1f2937;--muted:#6b7280;--card:#ffffff;
+  --primary:#3b82f6;--border:rgba(0,0,0,.12)
 }
-
 body.dark{
-  --bg:#0f172a;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --card:#020617;
-  --primary:#60a5fa;
-  --border:rgba(255,255,255,.18);
+  --bg:#0f172a;--text:#e5e7eb;--muted:#9ca3af;--card:#020617;
+  --primary:#60a5fa;--border:rgba(255,255,255,.18)
 }
-
 body{
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  transition:background .3s ease,color .3s ease;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  display:flex;justify-content:center;align-items:center;transition:.3s
 }
+#app{width:100%;max-width:420px;padding:26px 18px 30px}
+.screen{display:none}.screen.active{display:block}
 
-#app{
-  width:100%;
-  max-width:420px;
-  padding:26px 18px 30px;
-}
-
-.screen{display:none}
-.screen.active{display:block}
-
-/* ===== MENU ===== */
-h1{
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:8px;
-  text-align:center;
-}
-
-.subtitle{
-  font-size:15px;
-  line-height:1.6;
-  color:var(--muted);
-  margin-bottom:18px;
-  text-align:center;
-}
-
+/* MENU */
+h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:8px}
+.subtitle{text-align:center;font-size:15px;line-height:1.6;color:var(--muted);margin-bottom:18px}
 .preview-card{
-  background:var(--card);
-  border-radius:20px;
-  padding:22px 20px;
-  margin:14px 0 16px;
-  box-shadow:0 8px 18px rgba(0,0,0,.06);
-  opacity:.75;
+  background:var(--card);border-radius:20px;padding:22px 20px;
+  margin:14px 0 18px;box-shadow:0 8px 18px rgba(0,0,0,.06)
 }
-
-.preview-question{
-  font-size:18px;
-  font-weight:600;
-  line-height:1.5;
-}
-
-.preview-divider{
-  margin:14px 0;
-  border-top:1px dashed var(--border);
-}
-
-.preview-note{
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
-}
-
-.micro-copy{
-  font-size:14px;
-  color:var(--muted);
-  margin:10px 0 22px;
-  text-align:center;
-}
+.preview-question{font-size:18px;font-weight:600;line-height:1.5}
+.preview-divider{margin:14px 0;border-top:1px dashed var(--border)}
+.preview-insight{font-size:14px;color:var(--muted);font-style:italic}
+.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:22px}
 
 button{
-  width:100%;
-  min-height:56px;
-  font-size:17px;
-  font-weight:600;
-  border-radius:18px;
-  background:var(--primary);
-  color:#fff;
-  border:none;
-  cursor:pointer;
+  width:100%;min-height:56px;font-size:17px;font-weight:600;
+  border-radius:18px;background:var(--primary);color:#fff;border:none;cursor:pointer
 }
+#start-btn{box-shadow:0 8px 20px rgba(59,130,246,.35)}
 
-#start-btn{
-  box-shadow:0 8px 20px rgba(59,130,246,.35);
-}
-
-/* ===== CARD ===== */
-#theme-toggle{
-  background:none;
-  border:none;
-  font-size:18px;
-  cursor:pointer;
-  color:var(--muted);
-  margin-bottom:6px;
-}
-
+/* CARD */
+#theme-toggle{background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);margin-bottom:6px}
 #card{
-  background:var(--card);
-  border-radius:22px;
-  padding:28px 22px;
-  margin:16px 0 20px;
-  min-height:260px;
-  box-shadow:0 10px 24px rgba(0,0,0,.08);
+  background:var(--card);border-radius:22px;padding:28px 22px;
+  margin:16px 0 20px;min-height:260px;box-shadow:0 10px 24px rgba(0,0,0,.08)
 }
+#card-question{font-size:22px;line-height:1.5;font-weight:600}
 
-#card-question{
-  font-size:22px;
-  line-height:1.5;
-  font-weight:600;
-}
-
-/* ===== GUIDE ===== */
+/* GUIDE */
 #guide-content{
-  margin-top:18px;
-  border-top:1px dashed var(--border);
-  padding-top:14px;
-  opacity:0;
-  transform:translateY(-6px);
-  transition:
-    opacity 220ms cubic-bezier(.2,0,0,1),
-    transform 220ms cubic-bezier(.2,0,0,1);
+  margin-top:18px;border-top:1px dashed var(--border);padding-top:14px;
+  opacity:0;transform:translateY(-6px);
+  transition:opacity 220ms cubic-bezier(.2,0,0,1),transform 220ms cubic-bezier(.2,0,0,1)
 }
+#guide-content.show{opacity:1;transform:translateY(0)}
+#card-note{font-size:14.5px;line-height:1.6;margin-bottom:10px}
+#card-insight{font-size:14px;color:var(--muted);font-style:italic}
+#guide-toggle{text-align:center;font-size:14px;color:var(--muted);cursor:pointer;padding:10px 0}
 
-#guide-content.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-#card-note{
-  font-size:14.5px;
-  line-height:1.6;
-  margin-bottom:10px;
-}
-
-#card-insight{
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
-}
-
-#guide-toggle{
-  font-size:14px;
-  color:var(--muted);
-  cursor:pointer;
-  padding:10px 0;
-  text-align:center;
-}
-
-/* ===== SCROLL DIAL ===== */
-#dial-wrapper{
-  margin-top:18px;
-  text-align:center;
-  opacity:.85;
-}
-
+/* DIAL */
+#dial-wrapper{margin-top:18px;text-align:center;opacity:.85}
 #dial-track{
-  position:relative;
-  height:28px;
-  border-radius:999px;
-  background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.02));
-  overflow:hidden;
+  position:relative;height:28px;border-radius:999px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.02))
 }
-
 body.dark #dial-track{
-  background:linear-gradient(to bottom,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  background:linear-gradient(to bottom,rgba(255,255,255,.12),rgba(255,255,255,.04))
 }
-
 #dial-thumb{
-  position:absolute;
-  top:4px;
-  left:50%;
-  width:44px;
-  height:20px;
-  transform:translateX(-50%);
-  border-radius:999px;
-  background:var(--card);
-  box-shadow:
-    inset 0 1px 2px rgba(0,0,0,.25),
-    0 2px 6px rgba(0,0,0,.15);
-  transition:transform 80ms ease,box-shadow 80ms ease;
+  position:absolute;top:4px;left:50%;width:44px;height:20px;
+  transform:translateX(-50%);border-radius:999px;background:var(--card);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 2px 6px rgba(0,0,0,.15);
+  transition:transform 80ms ease
 }
-
-#dial-thumb.active{
-  transform:translateX(-50%) scale(.95);
-}
-
-.dial-hint{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:6px;
-}
+#dial-thumb.active{transform:translateX(-50%) scale(.95)}
+.dial-hint{font-size:12px;color:var(--muted);margin-top:6px}
 </style>
 </head>
 
 <body>
-
 <div id="app">
 
 <!-- START -->
@@ -233,19 +88,12 @@ body.dark #dial-track{
   <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
   <div class="preview-card">
-    <div class="preview-question">
-      Hal apa yang paling kamu ingat hari ini?
-    </div>
+    <div class="preview-question" id="preview-question"></div>
     <div class="preview-divider"></div>
-    <div class="preview-note">
-      Dengarkan tanpa menyela. Tidak perlu langsung memberi solusi.
-    </div>
+    <div class="preview-insight" id="preview-insight"></div>
   </div>
 
-  <div class="micro-copy">
-    Tidak perlu lama. Cukup hadir dan mendengarkan.
-  </div>
-
+  <div class="micro-copy">Tidak perlu lama. Cukup hadir dan mendengarkan.</div>
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
@@ -255,7 +103,6 @@ body.dark #dial-track{
 
   <div id="card">
     <div id="card-question"></div>
-
     <div id="guide-content">
       <div id="card-note"></div>
       <div id="card-insight"></div>
@@ -265,11 +112,8 @@ body.dark #dial-track{
   <button id="next-btn">▶︎ Berikutnya</button>
   <div id="guide-toggle">▾ Panduan obrolan</div>
 
-  <!-- DIAL -->
   <div id="dial-wrapper">
-    <div id="dial-track">
-      <div id="dial-thumb"></div>
-    </div>
+    <div id="dial-track"><div id="dial-thumb"></div></div>
     <div class="dial-hint">Geser untuk ganti kartu</div>
   </div>
 </div>
@@ -277,128 +121,105 @@ body.dark #dial-track{
 </div>
 
 <script>
-const allCards=[
- {q:"Hal apa yang paling kamu ingat dari hari ini?",
-  n:"Dengarkan dulu tanpa menyela.",
-  i:"Hal pertama yang muncul sering menunjukkan apa yang paling melekat."},
- {q:"Ada momen hari ini yang bikin kamu senyum?",
-  n:"Ikuti ceritanya meski sederhana.",
-  i:"Rasa senang anak sering datang dari hal kecil."},
- {q:"Kalau hari ini punya warna, warnanya apa?",
-  n:"Tidak perlu mengoreksi jawabannya.",
-  i:"Metafora membantu anak mengekspresikan perasaan."},
- {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",
-  n:"Tunjukkan minat, bukan evaluasi.",
-  i:"Cerita kecil sering jadi pintu ke perasaan besar."},
- {q:"Bagian mana dari hari ini yang paling kamu suka?",
-  n:"Biarkan anak memilih sendiri.",
-  i:"Pilihan memberi rasa aman."}
+/* PREVIEW (5 KURASI) */
+const previewPool=[
+ {q:"Hal apa yang paling kamu ingat dari hari ini?",i:"Hal pertama yang muncul sering menunjukkan apa yang paling melekat di pikiran anak."},
+ {q:"Kalau hari ini punya warna, warnanya apa?",i:"Metafora membantu anak menyampaikan perasaan tanpa harus menjelaskannya."},
+ {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",i:"Cerita kecil sering menjadi pintu menuju perasaan yang lebih besar."},
+ {q:"Kapan hari ini kamu paling merasa tenang?",i:"Rasa tenang biasanya muncul saat anak merasa aman."},
+ {q:"Ada momen hari ini yang bikin kamu pengen didengerin?",i:"Keinginan didengar sering muncul sebelum anak siap menjelaskan semuanya."}
+];
+const pv=previewPool[Math.floor(Math.random()*previewPool.length)];
+document.getElementById("preview-question").textContent=pv.q;
+document.getElementById("preview-insight").textContent=pv.i;
+
+/* 33 KARTU */
+const allCards = [
+  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Hal pertama yang muncul sering menunjukkan apa yang paling melekat di pikiran anak."},
+  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang anak sering datang dari hal kecil yang terasa personal."},
+  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Tidak perlu mengoreksi jawabannya.",i:"Metafora membantu anak mengekspresikan perasaan tanpa harus menjelaskannya."},
+  {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Tunjukkan minat, bukan evaluasi.",i:"Cerita kecil sering menjadi pintu menuju perasaan yang lebih besar."},
+  {q:"Bagian mana dari hari ini yang paling kamu suka?",n:"Biarkan anak memilih bagiannya sendiri.",i:"Pilihan memberi rasa kendali dan aman."},
+  {q:"Ada sesuatu hari ini yang bikin kamu mikir lama?",n:"Dengarkan tanpa buru-buru menanggapi.",i:"Hal yang dipikir lama biasanya menyentuh emosi, bukan logika."},
+  {q:"Kalau hari ini bisa diulang sebentar, bagian mana yang pengen kamu ulang?",n:"Jangan langsung memberi solusi.",i:"Keinginan mengulang sering menandakan kebutuhan emosional."},
+  {q:"Ada hal hari ini yang bikin kamu capek?",n:"Akui rasa capeknya dulu.",i:"Anak sering hanya ingin dimengerti, bukan diperbaiki."},
+  {q:"Siapa orang yang paling sering kamu ajak ngobrol hari ini?",n:"Dengarkan tanpa membandingkan.",i:"Orang yang sering diajak ngobrol menunjukkan zona aman anak."},
+  {q:"Ada kejadian hari ini yang menurutmu lucu atau aneh?",n:"Tertawakan bersama jika anak mau.",i:"Humor membantu anak merasa dekat dan tidak dihakimi."},
+  {q:"Kalau hari ini kamu jadi tokoh cerita, ceritanya tentang apa?",n:"Biarkan imajinasinya mengalir.",i:"Cerita rekaan sering mencerminkan pengalaman nyata."},
+  {q:"Ada hal hari ini yang bikin kamu bangga sama diri sendiri?",n:"Hargai rasa bangganya, sekecil apa pun.",i:"Pengakuan memperkuat kepercayaan diri tanpa tekanan."},
+  {q:"Ada bagian hari ini yang bikin kamu pengen cepat selesai?",n:"Dengarkan tanpa menilai alasannya.",i:"Bagian yang ingin dihindari sering jadi sumber lelah emosional."},
+  {q:"Kalau hari ini kamu simpan di kotak kenangan, apa isinya?",n:"Jangan memaksa detail.",i:"Kenangan yang dipilih menunjukkan apa yang bermakna bagi anak."},
+  {q:"Ada hal kecil hari ini yang sebenarnya penting buat kamu?",n:"Tahan diri untuk tidak meremehkan.",i:"Hal kecil bagi anak bisa terasa sangat besar."},
+  {q:"Kapan hari ini kamu paling merasa tenang?",n:"Perhatikan nada saat anak menjawab.",i:"Rasa tenang sering muncul saat anak merasa aman."},
+  {q:"Ada hal hari ini yang bikin kamu bingung?",n:"Validasi kebingungannya.",i:"Bingung adalah bagian dari proses memahami dunia."},
+  {q:"Kalau hari ini kamu ceritakan ke satu orang, siapa orangnya?",n:"Jangan tersinggung dengan pilihannya.",i:"Pilihan mencerminkan kebutuhan emosional saat itu."},
+  {q:"Ada momen hari ini yang pengen kamu ceritain lagi besok?",n:"Simpan ceritanya sebagai pengingat.",i:"Cerita yang ingin diulang biasanya meninggalkan kesan kuat."},
+  {q:"Kalau hari ini punya suara, suaranya seperti apa?",n:"Biarkan jawabannya bebas dan kreatif.",i:"Suara membantu anak menggambarkan suasana hati."},
+  {q:"Ada hal hari ini yang bikin kamu pengen didengerin?",n:"Dengarkan tanpa memotong.",i:"Keinginan didengar sering muncul saat anak merasa terabaikan."},
+  {q:"Kalau hari ini kamu kasih judul, judulnya apa?",n:"Terima judul apa adanya.",i:"Judul membantu anak merangkum perasaan dengan caranya."},
+  {q:"Ada sesuatu hari ini yang kamu harap orang lain tahu tentang kamu?",n:"Jaga reaksi tetap netral.",i:"Harapan dipahami menunjukkan kebutuhan akan penerimaan."},
+  {q:"Kalau hari ini kamu tulis satu kalimat, kalimatnya apa?",n:"Tidak perlu memperbaiki kalimatnya.",i:"Satu kalimat sering cukup mewakili perasaan hari itu."},
+  {q:"Ada momen hari ini yang bikin kamu merasa ditemani?",n:"Tunjukkan bahwa kehadiran itu nyata.",i:"Rasa ditemani lebih penting daripada nasihat."},
+  {q:"Ada hal hari ini yang bikin kamu pengen diam sebentar?",n:"Beri jeda dan ruang.",i:"Diam kadang adalah cara anak memproses emosi."},
+  {q:"Kalau hari ini kamu gambar, gambar apa yang muncul di kepalamu?",n:"Dengarkan gambarnya, bukan hasilnya.",i:"Visual membantu anak mengekspresikan hal yang sulit diucapkan."},
+  {q:"Ada hal sepele hari ini tapi kamu inget terus?",n:"Jangan mengecilkan ceritanya.",i:"Hal sepele sering terkait emosi yang kuat."},
+  {q:"Kalau hari ini kamu ceritain pakai satu kata, katanya apa?",n:"Terima satu kata itu sepenuhnya.",i:"Ringkas bukan berarti dangkal."},
+  {q:"Ada bagian hari ini yang pengen kamu ceritain pelan-pelan?",n:"Ikuti ritme anak.",i:"Cerita pelan menandakan kepercayaan."},
+  {q:"Kalau hari ini kamu simpan buat diingat nanti, bagian mana yang kamu pilih?",n:"Hargai pilihannya.",i:"Memori yang disimpan membentuk cara anak melihat dirinya."},
+  {q:"Ada hal hari ini yang bikin kamu merasa jadi diri sendiri?",n:"Dengarkan tanpa membandingkan.",i:"Menjadi diri sendiri adalah kebutuhan dasar anak."},
+  {q:"Sebelum hari ini selesai, ada hal kecil yang pengen kamu ceritain?",n:"Akhiri dengan sikap terbuka.",i:"Pertanyaan penutup sering membuat anak lebih jujur."}
 ];
 
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
+/* LOGIC */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const sessionCards=shuffle([...allCards]);
-let index=0;
-let guideVisible=false;
-
-/* anim speed */
+let index=0,guideVisible=false;
 let ANIM_OUT=160,ANIM_IN=200;
-function updateAnim(){
-  if(document.body.classList.contains("dark")){
-    ANIM_OUT=220;ANIM_IN=300;
-  }else{
-    ANIM_OUT=160;ANIM_IN=200;
-  }
-}
+function updateAnim(){if(document.body.classList.contains("dark")){ANIM_OUT=220;ANIM_IN=300}else{ANIM_OUT=160;ANIM_IN=200}}
 updateAnim();
 
-const startScreen=document.getElementById("start-screen");
-const cardScreen=document.getElementById("card-screen");
-const cardQ=document.getElementById("card-question");
-const cardN=document.getElementById("card-note");
-const cardI=document.getElementById("card-insight");
-const guideToggle=document.getElementById("guide-toggle");
-const guideContent=document.getElementById("guide-content");
-const themeToggle=document.getElementById("theme-toggle");
-
-document.getElementById("start-btn").onclick=()=>{
-  startScreen.classList.remove("active");
-  cardScreen.classList.add("active");
-  showCard();
-};
-
-document.getElementById("next-btn").onclick=()=>{
-  index=(index+1)%sessionCards.length;
-  showCard();
-};
-
-guideToggle.onclick=()=>{
+const qs=id=>document.getElementById(id);
+qs("start-btn").onclick=()=>{qs("start-screen").classList.remove("active");qs("card-screen").classList.add("active");showCard()};
+qs("next-btn").onclick=()=>{index=(index+1)%sessionCards.length;showCard()};
+qs("guide-toggle").onclick=()=>{
   guideVisible=!guideVisible;
-  guideContent.classList.toggle("show",guideVisible);
-  guideToggle.textContent=guideVisible?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
+  qs("guide-content").classList.toggle("show",guideVisible);
+  qs("guide-toggle").textContent=guideVisible?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
-
-themeToggle.onclick=()=>{
+qs("theme-toggle").onclick=()=>{
   document.body.classList.toggle("dark");
-  themeToggle.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  qs("theme-toggle").textContent=document.body.classList.contains("dark")?"☀️":"🌙";
   updateAnim();
 };
 
 function showCard(){
   const c=sessionCards[index];
-  cardQ.style.transition=`opacity ${ANIM_OUT}ms,transform ${ANIM_OUT}ms`;
-  cardQ.style.opacity=0;
-  cardQ.style.transform="translateY(-8px)";
-
+  const q=qs("card-question");
+  q.style.transition=`opacity ${ANIM_OUT}ms,transform ${ANIM_OUT}ms`;
+  q.style.opacity=0;q.style.transform="translateY(-8px)";
   setTimeout(()=>{
-    cardQ.textContent=c.q;
-    cardN.textContent=c.n;
-    cardI.textContent=c.i;
-
+    q.textContent=c.q;
+    qs("card-note").textContent=c.n;
+    qs("card-insight").textContent=c.i;
     guideVisible=false;
-    guideContent.classList.remove("show");
-    guideToggle.textContent="▾ Panduan obrolan";
-
-    cardQ.style.transition=`opacity ${ANIM_IN}ms,transform ${ANIM_IN}ms`;
-    cardQ.style.opacity=1;
-    cardQ.style.transform="translateY(0)";
+    qs("guide-content").classList.remove("show");
+    qs("guide-toggle").textContent="▾ Panduan obrolan";
+    q.style.transition=`opacity ${ANIM_IN}ms,transform ${ANIM_IN}ms`;
+    q.style.opacity=1;q.style.transform="translateY(0)";
   },ANIM_OUT);
 }
 
-/* DIAL LOGIC */
-const dial=document.getElementById("dial-track");
-const thumb=document.getElementById("dial-thumb");
-let dialActive=false,lastX=null;
-
-dial.addEventListener("pointerdown",e=>{
-  dialActive=true;
-  lastX=e.clientX;
-  thumb.classList.add("active");
-  dial.setPointerCapture(e.pointerId);
-});
-
-dial.addEventListener("pointermove",e=>{
-  if(!dialActive)return;
-  const dx=e.clientX-lastX;
-  if(Math.abs(dx)>18){
-    index=(index+(dx>0?1:-1)+sessionCards.length)%sessionCards.length;
-    showCard();
-    thumb.classList.add("active");
-    setTimeout(()=>thumb.classList.remove("active"),60);
-    lastX=e.clientX;
+/* DIAL */
+let lastX=null,active=false;
+qs("dial-track").onpointerdown=e=>{active=true;lastX=e.clientX;qs("dial-thumb").classList.add("active")};
+qs("dial-track").onpointermove=e=>{
+  if(!active)return;
+  if(Math.abs(e.clientX-lastX)>18){
+    index=(index+(e.clientX>lastX?1:-1)+sessionCards.length)%sessionCards.length;
+    showCard();lastX=e.clientX;
   }
-});
-
-dial.addEventListener("pointerup",()=>{
-  dialActive=false;
-  thumb.classList.remove("active");
-});
+};
+qs("dial-track").onpointerup=()=>{active=false;qs("dial-thumb").classList.remove("active")};
 </script>
 
 </body>
