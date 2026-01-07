@@ -30,8 +30,8 @@ body{
   align-items:center;
 }
 
-/* ===== SPLASH ===== */
-#splash-screen{
+/* ================= SPLASH ================= */
+#splash{
   position:fixed;
   inset:0;
   background:var(--bg);
@@ -40,11 +40,10 @@ body{
   align-items:center;
   z-index:9999;
   opacity:1;
-  transition:opacity .6s ease;
+  transition:opacity .7s ease;
 }
 
-/* fade out layer */
-#splash-screen.fade-layer{
+#splash.fade-out{
   opacity:0;
 }
 
@@ -55,7 +54,6 @@ body{
   animation: heartbeat 3.2s ease-in-out forwards;
 }
 
-/* 5 detak = 10 langkah */
 @keyframes heartbeat{
   0%   {opacity:0}
   5%   {opacity:.55}
@@ -76,7 +74,7 @@ body{
   100% {opacity:0}
 }
 
-/* ===== APP ===== */
+/* ================= APP ================= */
 #app{
   width:100%;
   max-width:420px;
@@ -86,9 +84,19 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* MENU */
-h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
-.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
+/* ================= MENU ================= */
+h1{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.subtitle{
+  text-align:center;
+  font-size:15px;
+  color:var(--muted);
+  margin-bottom:26px;
+}
 
 .preview-card{
   background:var(--card);
@@ -97,16 +105,54 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600;line-height:1.5}
-.preview-divider{margin:16px 0;border-top:1px dashed rgba(0,0,0,.12)}
-.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
+.preview-question{
+  font-size:20px;
+  font-weight:600;
+  line-height:1.5;
+}
+.preview-divider{
+  margin:16px 0;
+  border-top:1px dashed rgba(0,0,0,.12);
+}
+.preview-note{
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
 
-.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
+.micro-copy{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:32px;
+}
 
 button{
-  width:100%;min-height:56px;font-size:17px;font-weight:600;
-  border-radius:18px;border:none;cursor:pointer;
-  background:var(--primary);color:#fff
+  width:100%;
+  min-height:56px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:18px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+}
+
+/* ================= CARD ================= */
+#card{
+  background:var(--card);
+  border-radius:22px;
+  padding:28px 22px;
+  margin:16px 0 20px;
+  min-height:220px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
+}
+#card-question{
+  font-size:22px;
+  font-weight:600;
+  line-height:1.5;
+  transition:opacity .18s ease, transform .18s ease;
 }
 </style>
 </head>
@@ -114,53 +160,94 @@ button{
 <body>
 
 <!-- SPLASH -->
-<div id="splash-screen">
-  <div class="splash-text">
-    made with ❤️ by bekaldigital
-  </div>
+<div id="splash">
+  <div class="splash-text">made with ❤️ by bekaldigital</div>
 </div>
 
 <div id="app">
-  <div id="start-screen" class="screen">
-    <h1>Kartu Obrolan Orang Tua</h1>
-    <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
-    <div class="preview-card">
-      <div class="preview-question">
-        Ada hal kecil hari ini yang pengen kamu ceritain?
-      </div>
-      <div class="preview-divider"></div>
-      <div class="preview-note">
-        Cerita kecil sering menjadi pintu menuju perasaan.
-      </div>
+<!-- MENU -->
+<div id="menu" class="screen">
+  <h1>Kartu Obrolan Orang Tua</h1>
+  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+
+  <div class="preview-card">
+    <div class="preview-question">
+      Ada hal kecil hari ini yang pengen kamu ceritain?
     </div>
-
-    <div class="micro-copy">
-      Tidak perlu lama. Cukup hadir dan mendengarkan.
+    <div class="preview-divider"></div>
+    <div class="preview-note">
+      Cerita kecil sering menjadi pintu menuju perasaan.
     </div>
-
-    <button>▶︎ Mulai</button>
   </div>
+
+  <div class="micro-copy">
+    Tidak perlu lama. Cukup hadir dan mendengarkan.
+  </div>
+
+  <button id="start-btn">▶︎ Mulai</button>
+</div>
+
+<!-- CARD -->
+<div id="card-screen" class="screen">
+  <div id="card">
+    <div id="card-question"></div>
+  </div>
+  <button id="next-btn">▶︎ Berikutnya</button>
+</div>
+
 </div>
 
 <script>
-const splash = document.getElementById("splash-screen");
-const start  = document.getElementById("start-screen");
+/* ========= SPLASH FLOW ========= */
+const splash = document.getElementById("splash");
+const menu   = document.getElementById("menu");
 
-/*
-  Timeline visual:
-  0–3200ms : detak teks
-  3200–3400ms : teks sudah 0 (hening)
-  3400–4000ms : splash layer fade out
-*/
 setTimeout(()=>{
-  splash.classList.add("fade-layer");
+  splash.classList.add("fade-out"); // fade out layer
 },3400);
 
 setTimeout(()=>{
-  splash.remove(); // baru benar-benar hilang
-  start.classList.add("active");
-},4000);
+  splash.remove();       // remove AFTER fade
+  menu.classList.add("active");
+},4200);
+
+/* ========= CARD LOGIC ========= */
+const startBtn = document.getElementById("start-btn");
+const cardScr  = document.getElementById("card-screen");
+const cardQ    = document.getElementById("card-question");
+const nextBtn  = document.getElementById("next-btn");
+
+const cards = [
+  "Hal apa yang paling kamu ingat dari hari ini?",
+  "Ada momen hari ini yang bikin kamu senyum?",
+  "Kalau hari ini punya warna, warnanya apa?",
+  "Ada hal kecil hari ini yang pengen kamu ceritain?",
+  "Bagian mana dari hari ini yang paling kamu suka?"
+];
+
+let idx = 0;
+
+function showCard(){
+  cardQ.style.opacity = 0;
+  cardQ.style.transform = "translateY(-6px)";
+  setTimeout(()=>{
+    cardQ.textContent = cards[idx];
+    cardQ.style.opacity = 1;
+    cardQ.style.transform = "translateY(0)";
+  },180);
+}
+
+startBtn.onclick = ()=>{
+  menu.classList.remove("active");
+  cardScr.classList.add("active");
+  showCard();
+};
+
+nextBtn.onclick = ()=>{
+  idx = (idx + 1) % cards.length;
+  showCard();
+};
 </script>
 
 </body>
