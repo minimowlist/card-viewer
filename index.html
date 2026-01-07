@@ -115,12 +115,12 @@ button{
   color:#fff;
 }
 
-/* ===== CARD FIRST ENTER FADE (INI SAJA YANG BARU) ===== */
+/* ===== CARD FIRST ENTER FADE (DURASI DIUBAH KE 1.5s) ===== */
 #card-screen{
   opacity:0;
 }
 #card-screen.enter{
-  animation:cardEnterFade 1s ease forwards;
+  animation:cardEnterFade 1.5s ease forwards; /* ⬅️ 1.5 detik */
 }
 @keyframes cardEnterFade{
   to{opacity:1}
@@ -212,7 +212,7 @@ setTimeout(()=>{
   setRandomPreview();
 },3200);
 
-/* ===== CARD LOGIC (FREEZE + ENTRY FADE) ===== */
+/* ===== CARD LOGIC (FREEZE + ENTRY FADE 1.5s) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
@@ -250,7 +250,7 @@ function showCard(){
 startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScr.classList.add("active");
-  cardScr.classList.add("enter"); // fade in 1 detik (sekali)
+  cardScr.classList.add("enter"); // fade in 1.5 detik (sekali)
   showCard();
 };
 
