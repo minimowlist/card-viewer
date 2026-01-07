@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quality Time Bersama Anak</title>
+<title>Parent Quality Time</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
@@ -68,40 +68,55 @@ body{
 #menu{opacity:0;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
 
-.title-wrap{text-align:center;margin-bottom:26px}
-.title-wrap h1{font-size:28px;font-weight:700;margin-bottom:8px}
+.title-wrap{text-align:center;margin-bottom:22px}
+.title-wrap h1{
+  font-size:26px;           /* ⬅️ dirapikan */
+  font-weight:700;
+  margin-bottom:6px;
+}
 .title-wrap .subtitle{
-  font-size:16px;
+  font-size:14.5px;         /* ⬅️ lebih ringan */
   color:var(--muted);
-  white-space:nowrap;
+  line-height:1.4;
 }
 
 /* ===== PREVIEW CARD ===== */
 .preview-card{
   background:var(--card);
   border-radius:22px;
-  padding:26px 22px;
-  margin-bottom:30px;
+  padding:22px 20px;        /* ⬅️ lebih rapat */
+  margin:24px 0 26px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600}
+.preview-question{
+  font-size:16.5px;         /* ⬅️ turun */
+  font-weight:500;
+  line-height:1.45;
+}
 .preview-divider{
-  margin:14px 0;
+  margin:12px 0;
   border-top:1px dashed var(--border);
 }
-.preview-note{font-size:14.5px;color:var(--muted)}
-
-.micro-copy{
-  text-align:center;
-  font-size:14px;
+.preview-note{
+  font-size:13.5px;
   color:var(--muted);
-  margin-bottom:32px;
+  font-style:italic;
 }
 
+/* ===== MICRO COPY ===== */
+.micro-copy{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.5;
+  margin-bottom:28px;
+}
+
+/* ===== BUTTON ===== */
 button{
   width:100%;
   min-height:56px;
-  font-size:17px;
+  font-size:16.5px;
   font-weight:600;
   border-radius:18px;
   border:none;
@@ -110,7 +125,7 @@ button{
   color:#fff;
 }
 
-/* ===== CARD ===== */
+/* ===== CARD SCREEN ===== */
 #top-bar{
   display:flex;
   justify-content:flex-end;
@@ -155,18 +170,18 @@ input:checked + .slider::before{
   content:"☀️";
 }
 
-/* ===== CARD BODY ===== */
+/* ===== CARD ===== */
 #card{
   background:var(--card);
   border-radius:22px;
-  padding:28px 22px;
+  padding:26px 22px;
   min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
 
 /* ===== QUESTION (ONLY ANIMATION) ===== */
 .question{
-  font-size:22px;
+  font-size:21px;
   font-weight:600;
   line-height:1.5;
   animation:fadeInQuestion 1s ease;
@@ -198,9 +213,8 @@ input:checked + .slider::before{
   transform:translateY(0);
   pointer-events:auto;
 }
-
-#note{font-size:14.5px;margin-bottom:8px}
-#insight{font-size:14px;color:var(--muted);font-style:italic}
+#note{font-size:14px;margin-bottom:8px}
+#insight{font-size:13.5px;color:var(--muted);font-style:italic}
 </style>
 </head>
 
@@ -216,8 +230,10 @@ input:checked + .slider::before{
 <!-- MENU -->
 <div id="menu" class="screen">
   <div class="title-wrap">
-    <h1>Quality Time Bersama Anak</h1>
-    <div class="subtitle">Obrolan sederhana untuk membangun kedekatan.</div>
+    <h1>Parent Quality Time</h1>
+    <div class="subtitle">
+      Obrolan sederhana untuk membangun kedekatan orang tua dan anak
+    </div>
   </div>
 
   <div class="preview-card">
@@ -227,10 +243,11 @@ input:checked + .slider::before{
   </div>
 
   <div class="micro-copy">
-    Tidak perlu waktu lama. Yang penting hadir sepenuhnya.
+    Tidak perlu waktu lama.<br>
+    Yang penting hadir sepenuhnya.
   </div>
 
-  <button id="start">▶︎ Mulai</button>
+  <button id="start">Mulai</button>
 </div>
 
 <!-- CARD SCREEN -->
@@ -251,7 +268,7 @@ input:checked + .slider::before{
     </div>
   </div>
 
-  <button id="next" style="margin-top:16px">▶︎ Berikutnya</button>
+  <button id="next" style="margin-top:16px">Berikutnya</button>
   <div id="guide-toggle">▾ Panduan obrolan</div>
 </div>
 
@@ -267,34 +284,17 @@ setTimeout(()=>{
   menu.classList.add("active");
 },3000);
 
-/* ===== PREVIEW DATA (5 KARTU) ===== */
+/* ===== PREVIEW (5 KARTU ACAK) ===== */
 const previewCards=[
-  {
-    q:"Hal apa yang paling kamu nikmati hari ini?",
-    n:"Pertanyaan ringan untuk membuka percakapan."
-  },
-  {
-    q:"Ada momen kecil hari ini yang bikin kamu senyum?",
-    n:"Membantu anak mengingat hal positif."
-  },
-  {
-    q:"Kalau hari ini diceritakan, bagian mana yang paling seru?",
-    n:"Biarkan anak memilih ceritanya sendiri."
-  },
-  {
-    q:"Ada hal yang pengen kamu ceritain tapi belum sempat?",
-    n:"Memberi ruang tanpa memaksa."
-  },
-  {
-    q:"Bagian mana dari hari ini yang paling kamu ingat?",
-    n:"Memancing refleksi sederhana."
-  }
+  {q:"Ada momen kecil hari ini yang bikin kamu senyum?",n:"Pertanyaan ringan untuk membuka percakapan."},
+  {q:"Hal apa hari ini yang paling kamu ingat?",n:"Membantu anak mulai bercerita."},
+  {q:"Kalau hari ini diceritakan, bagian mana yang paling seru?",n:"Biarkan anak memilih ceritanya."},
+  {q:"Ada hal yang pengen kamu ceritain tapi belum sempat?",n:"Memberi ruang tanpa memaksa."},
+  {q:"Bagian mana dari hari ini yang terasa menyenangkan?",n:"Mengarahkan ke pengalaman positif."}
 ];
-
-// random preview saat refresh
-const randomPreview=previewCards[Math.floor(Math.random()*previewCards.length)];
-document.getElementById("previewQ").textContent=randomPreview.q;
-document.getElementById("previewN").textContent=randomPreview.n;
+const p=previewCards[Math.floor(Math.random()*previewCards.length)];
+document.getElementById("previewQ").textContent=p.q;
+document.getElementById("previewN").textContent=p.n;
 
 /* ===== CARD DATA ===== */
 const cards=[
