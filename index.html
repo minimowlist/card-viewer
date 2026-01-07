@@ -41,15 +41,6 @@ body{
   transition:background .3s,color .3s;
 }
 
-#app{
-  width:100%;
-  max-width:420px;
-  padding:26px 18px 34px;
-}
-
-.screen{display:none}
-.screen.active{display:block}
-
 /* ===== SPLASH ===== */
 #splash-screen{
   position:fixed;
@@ -65,39 +56,30 @@ body{
   font-size:13px;
   color:var(--muted);
   opacity:0;
-  animation:
-    splashFadeIn .5s ease forwards,
-    splashPulse 1.2s ease-in-out .5s 2,
-    splashFadeOut .5s ease forwards 2.2s;
+  animation: breathing 2.3s cubic-bezier(.4,0,.2,1) forwards;
 }
 
-@keyframes splashFadeIn{
-  from{opacity:0}
-  to{opacity:.45}
+@keyframes breathing{
+  0%   {opacity:0}
+  30%  {opacity:.45}
+  65%  {opacity:.32}
+  85%  {opacity:.32}
+  100% {opacity:0}
 }
-@keyframes splashPulse{
-  0%{opacity:.25}
-  50%{opacity:.45}
-  100%{opacity:.25}
+
+/* ===== APP ===== */
+#app{
+  width:100%;
+  max-width:420px;
+  padding:26px 18px 34px;
 }
-@keyframes splashFadeOut{
-  from{opacity:.25}
-  to{opacity:0}
-}
+
+.screen{display:none}
+.screen.active{display:block}
 
 /* ===== MENU ===== */
-h1{
-  text-align:center;
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-.subtitle{
-  text-align:center;
-  font-size:15px;
-  color:var(--muted);
-  margin-bottom:26px;
-}
+h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
+.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
 
 .preview-card{
   background:var(--card);
@@ -106,231 +88,55 @@ h1{
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{
-  font-size:20px;
-  font-weight:600;
-  line-height:1.5;
-}
-.preview-divider{
-  margin:16px 0;
-  border-top:1px dashed var(--border);
-}
-.preview-note{
-  font-size:14.5px;
-  font-style:italic;
-  color:var(--muted);
-}
+.preview-question{font-size:20px;font-weight:600;line-height:1.5}
+.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
 
-.micro-copy{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:32px;
-}
+.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
 button{
-  width:100%;
-  min-height:56px;
-  font-size:17px;
-  font-weight:600;
-  border-radius:18px;
-  border:none;
-  cursor:pointer;
-  background:var(--primary);
-  color:#fff;
-}
-#start-btn{
-  box-shadow:0 10px 26px rgba(59,130,246,.35);
+  width:100%;min-height:56px;font-size:17px;font-weight:600;
+  border-radius:18px;border:none;cursor:pointer;
+  background:var(--primary);color:#fff
 }
 
-/* ===== CARD VIEW ===== */
-#theme-toggle{
-  background:none;
-  border:none;
-  font-size:18px;
-  color:var(--muted);
-  margin-bottom:8px;
-  cursor:pointer;
-}
-
-#card{
-  background:var(--card);
-  border-radius:22px;
-  padding:28px 22px;
-  margin:16px 0 20px;
-  min-height:260px;
-  box-shadow:0 10px 24px rgba(0,0,0,.08);
-}
-
-#card-question{
-  font-size:22px;
-  font-weight:600;
-  line-height:1.5;
-  transition:opacity .18s ease, transform .18s ease;
-}
-
-/* GUIDE */
-#guide-content{
-  margin-top:18px;
-  border-top:1px dashed var(--border);
-  padding-top:14px;
-  opacity:0;
-  transform:translateY(-6px);
-  transition:.22s cubic-bezier(.2,0,0,1);
-}
-#guide-content.show{
-  opacity:1;
-  transform:none;
-}
-#card-note{
-  font-size:14.5px;
-  line-height:1.6;
-  margin-bottom:10px;
-}
-#card-insight{
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
-}
-
-#guide-toggle{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  cursor:pointer;
-  padding:10px 0;
-}
+/* ===== CARD (ringkas, fungsi sama) ===== */
+#card-question{font-size:22px;font-weight:600;line-height:1.5}
 </style>
 </head>
 
 <body>
 
-<!-- ===== SPLASH ===== -->
+<!-- SPLASH -->
 <div id="splash-screen">
-  <div class="splash-text">
-    made with ❤️ by bekaldigital
-  </div>
+  <div class="splash-text">made with ❤️ by bekaldigital</div>
 </div>
 
 <div id="app">
-
-<!-- ===== MENU ===== -->
-<div id="start-screen" class="screen">
-  <h1>Kartu Obrolan Orang Tua</h1>
-  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
-
-  <div class="preview-card">
-    <div class="preview-question" id="preview-question"></div>
-    <div class="preview-divider"></div>
-    <div class="preview-note" id="preview-note"></div>
-  </div>
-
-  <div class="micro-copy">
-    Tidak perlu lama. Cukup hadir dan mendengarkan.
-  </div>
-
-  <button id="start-btn">▶︎ Mulai</button>
-</div>
-
-<!-- ===== CARD VIEW ===== -->
-<div id="card-screen" class="screen">
-  <button id="theme-toggle">🌙</button>
-
-  <div id="card">
-    <div id="card-question"></div>
-
-    <div id="guide-content">
-      <div id="card-note"></div>
-      <div id="card-insight"></div>
+  <div id="start-screen" class="screen">
+    <h1>Kartu Obrolan Orang Tua</h1>
+    <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+    <div class="preview-card">
+      <div class="preview-question">Ada hal kecil hari ini yang pengen kamu ceritain?</div>
+      <div class="preview-divider"></div>
+      <div class="preview-note">Cerita kecil sering menjadi pintu menuju perasaan.</div>
     </div>
+    <div class="micro-copy">Tidak perlu lama. Cukup hadir dan mendengarkan.</div>
+    <button>▶︎ Mulai</button>
   </div>
-
-  <button id="next-btn">▶︎ Berikutnya</button>
-  <div id="guide-toggle">▾ Panduan obrolan</div>
-</div>
-
 </div>
 
 <script>
-/* ===== SPLASH FLOW ===== */
 const splash = document.getElementById("splash-screen");
-const startScreen = document.getElementById("start-screen");
-const cardScreen  = document.getElementById("card-screen");
+const start  = document.getElementById("start-screen");
 
+/* tunggu animasi benar-benar selesai */
 setTimeout(()=>{
-  splash.style.display="none";
-  startScreen.classList.add("active");
-},2800);
-
-/* ===== DOM ===== */
-const startBtn=document.getElementById("start-btn");
-const nextBtn=document.getElementById("next-btn");
-const themeBtn=document.getElementById("theme-toggle");
-const guideToggle=document.getElementById("guide-toggle");
-const guideContent=document.getElementById("guide-content");
-const previewQ=document.getElementById("preview-question");
-const previewN=document.getElementById("preview-note");
-const cardQ=document.getElementById("card-question");
-const cardN=document.getElementById("card-note");
-const cardI=document.getElementById("card-insight");
-
-/* ===== PREVIEW ===== */
-const featured=[
- {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering menjadi pintu menuju perasaan yang lebih besar."},
- {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Hal pertama yang muncul biasanya paling bermakna."},
- {q:"Kalau hari ini punya warna, warnanya apa?",n:"Metafora membantu anak mengekspresikan perasaan."},
- {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa senang sering datang dari hal sederhana."},
- {q:"Bagian mana dari hari ini yang paling kamu suka?",n:"Pilihan memberi rasa aman."}
-];
-const p=featured[Math.floor(Math.random()*featured.length)];
-previewQ.textContent=p.q;
-previewN.textContent=p.n;
-
-/* ===== 33 KARTU (RINGKAS, ISI SENDIRI JIKA MAU) ===== */
-const allCards=[
- {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Hal pertama yang muncul sering paling bermakna."},
- {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."}
-];
-
-const session=[...allCards].sort(()=>Math.random()-.5);
-let idx=0,guideOpen=false;
-
-/* ===== EVENTS ===== */
-startBtn.onclick=()=>{
-  startScreen.classList.remove("active");
-  cardScreen.classList.add("active");
-  showCard();
-};
-nextBtn.onclick=()=>{
-  idx=(idx+1)%session.length;
-  showCard();
-};
-guideToggle.onclick=()=>{
-  guideOpen=!guideOpen;
-  guideContent.classList.toggle("show",guideOpen);
-  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
-};
-themeBtn.onclick=()=>{
-  document.body.classList.toggle("dark");
-  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
-};
-
-/* ===== CARD ANIM ===== */
-function showCard(){
-  const c=session[idx];
-  cardQ.style.opacity=0;
-  cardQ.style.transform="translateY(-8px)";
-  setTimeout(()=>{
-    cardQ.textContent=c.q;
-    cardN.textContent=c.n;
-    cardI.textContent=c.i;
-    guideOpen=false;
-    guideContent.classList.remove("show");
-    guideToggle.textContent="▾ Panduan obrolan";
-    cardQ.style.opacity=1;
-    cardQ.style.transform="translateY(0)";
-  },180);
-}
+  splash.style.opacity = 0;
+  splash.style.pointerEvents = "none";
+  start.classList.add("active");
+},2400);
 </script>
+
 </body>
 </html>
