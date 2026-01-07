@@ -48,7 +48,7 @@ body{
 #menu{opacity:0;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
 
-/* ===== TITLE & SUBTITLE (FOCUS CHANGE) ===== */
+/* ===== TITLE & SUBTITLE (REVISED) ===== */
 .title-wrap{
   display:flex;
   flex-direction:column;
@@ -57,16 +57,16 @@ body{
 }
 .title-wrap h1{
   text-align:center;
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:6px;
+  font-size:28px;           /* ⬅️ lebih tegas seperti contoh */
+  font-weight:700;
+  margin-bottom:8px;
 }
 .title-wrap .subtitle{
-  max-width:22ch;           /* ⬅️ kunci: tidak lebih lebar dari judul */
+  max-width:26ch;           /* ⬅️ tetap < judul */
   text-align:center;
-  font-size:15px;
+  font-size:16px;
   color:var(--muted);
-  line-height:1.5;
+  line-height:1.4;
 }
 
 /* ===== PREVIEW CARD ===== */
@@ -162,10 +162,7 @@ button{
 <div id="menu" class="screen">
   <div class="title-wrap">
     <h1>Kartu Obrolan Orang Tua</h1>
-    <p class="subtitle">
-      Temani obrolan kecil
-      yang bermakna bersama anak
-    </p>
+    <p class="subtitle">Temani obrolan kecil yang bermakna.</p>
   </div>
 
   <div class="preview-card">
