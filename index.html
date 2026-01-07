@@ -108,13 +108,16 @@ button{
   box-shadow:0 10px 26px rgba(59,130,246,.35);
 }
 
-/* CREDIT (MENU ONLY) */
+/* ===== CREDIT (NON-DISTRACT) ===== */
 .footer-credit{
-  margin-top:36px;
-  text-align:center;
-  font-size:11.5px;
+  position:fixed;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
   color:var(--muted);
-  opacity:.6;
+  opacity:.45;
+  pointer-events:none;
 }
 
 /* ===== CARD VIEW ===== */
@@ -196,11 +199,6 @@ button{
   </div>
 
   <button id="start-btn">▶︎ Mulai</button>
-
-  <!-- CREDIT (MENU ONLY) -->
-  <div class="footer-credit">
-    made with ❤️ by bekaldigital
-  </div>
 </div>
 
 <!-- ===== CARD VIEW ===== -->
@@ -222,22 +220,27 @@ button{
 
 </div>
 
+<!-- CREDIT GLOBAL (FIXED & SUBTLE) -->
+<div class="footer-credit">
+  made with ❤️ by bekaldigital
+</div>
+
 <script>
 /* ===== DOM ===== */
-const startScreen = document.getElementById("start-screen");
-const cardScreen  = document.getElementById("card-screen");
-const startBtn    = document.getElementById("start-btn");
-const nextBtn     = document.getElementById("next-btn");
-const themeBtn    = document.getElementById("theme-toggle");
-const guideToggle = document.getElementById("guide-toggle");
-const guideContent= document.getElementById("guide-content");
-const previewQ    = document.getElementById("preview-question");
-const previewN    = document.getElementById("preview-note");
-const cardQ       = document.getElementById("card-question");
-const cardN       = document.getElementById("card-note");
-const cardI       = document.getElementById("card-insight");
+const startScreen=document.getElementById("start-screen");
+const cardScreen=document.getElementById("card-screen");
+const startBtn=document.getElementById("start-btn");
+const nextBtn=document.getElementById("next-btn");
+const themeBtn=document.getElementById("theme-toggle");
+const guideToggle=document.getElementById("guide-toggle");
+const guideContent=document.getElementById("guide-content");
+const previewQ=document.getElementById("preview-question");
+const previewN=document.getElementById("preview-note");
+const cardQ=document.getElementById("card-question");
+const cardN=document.getElementById("card-note");
+const cardI=document.getElementById("card-insight");
 
-/* ===== PREVIEW (MENU) ===== */
+/* ===== PREVIEW ===== */
 const featured=[
  {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering menjadi pintu menuju perasaan yang lebih besar."},
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Hal pertama yang muncul biasanya paling bermakna."},
@@ -245,9 +248,9 @@ const featured=[
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa senang sering datang dari hal sederhana."},
  {q:"Bagian mana dari hari ini yang paling kamu suka?",n:"Pilihan memberi rasa aman."}
 ];
-const p = featured[Math.floor(Math.random()*featured.length)];
-previewQ.textContent = p.q;
-previewN.textContent = p.n;
+const p=featured[Math.floor(Math.random()*featured.length)];
+previewQ.textContent=p.q;
+previewN.textContent=p.n;
 
 /* ===== 33 KARTU ===== */
 const allCards=[
@@ -261,7 +264,6 @@ const allCards=[
  {q:"Ada hal hari ini yang bikin kamu capek?",n:"Akui rasa capeknya.",i:"Anak sering ingin dimengerti."},
  {q:"Siapa orang yang paling sering kamu ajak ngobrol?",n:"Dengarkan tanpa membandingkan.",i:"Itu zona aman anak."},
  {q:"Ada kejadian hari ini yang lucu?",n:"Tertawakan bersama.",i:"Humor mendekatkan."},
-
  {q:"Kalau hari ini jadi cerita, ceritanya apa?",n:"Biarkan imajinasi.",i:"Cerita rekaan mencerminkan pengalaman."},
  {q:"Ada hal hari ini yang bikin kamu bangga?",n:"Hargai sekecil apa pun.",i:"Pengakuan memperkuat diri."},
  {q:"Ada bagian hari ini yang pengen cepat selesai?",n:"Jangan menilai.",i:"Itu sumber lelah emosional."},
@@ -272,7 +274,6 @@ const allCards=[
  {q:"Kalau hari ini ke satu orang, siapa?",n:"Jangan tersinggung.",i:"Pilihan mencerminkan kebutuhan."},
  {q:"Ada cerita hari ini yang pengen diulang?",n:"Simpan baik-baik.",i:"Yang diulang biasanya bermakna."},
  {q:"Kalau hari ini punya suara, suaranya apa?",n:"Biarkan kreatif.",i:"Suara mewakili suasana."},
-
  {q:"Ada hal hari ini yang pengen didengar?",n:"Dengarkan penuh.",i:"Didengar = aman."},
  {q:"Kalau hari ini diberi judul, apa?",n:"Terima apa adanya.",i:"Judul merangkum perasaan."},
  {q:"Ada hal hari ini yang kamu harap orang tahu?",n:"Jaga reaksi.",i:"Itu kebutuhan diterima."},
@@ -296,52 +297,44 @@ function shuffle(a){
   }
   return a;
 }
-const session = shuffle([...allCards]);
-let idx = 0;
-let guideOpen = false;
+const session=shuffle([...allCards]);
+let idx=0;
+let guideOpen=false;
 
 /* ===== EVENTS ===== */
-startBtn.onclick = ()=>{
+startBtn.onclick=()=>{
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
   showCard();
 };
-
-nextBtn.onclick = ()=>{
-  idx = (idx+1)%session.length;
+nextBtn.onclick=()=>{
+  idx=(idx+1)%session.length;
   showCard();
 };
-
-guideToggle.onclick = ()=>{
-  guideOpen = !guideOpen;
-  guideContent.classList.toggle("show", guideOpen);
-  guideToggle.textContent = guideOpen
-    ? "▴ Sembunyikan panduan obrolan"
-    : "▾ Panduan obrolan";
+guideToggle.onclick=()=>{
+  guideOpen=!guideOpen;
+  guideContent.classList.toggle("show",guideOpen);
+  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
-
-themeBtn.onclick = ()=>{
+themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
-  themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 
 /* ===== CARD ANIMATION ===== */
 function showCard(){
-  const c = session[idx];
-  cardQ.style.opacity = 0;
-  cardQ.style.transform = "translateY(-8px)";
-
+  const c=session[idx];
+  cardQ.style.opacity=0;
+  cardQ.style.transform="translateY(-8px)";
   setTimeout(()=>{
-    cardQ.textContent = c.q;
-    cardN.textContent = c.n;
-    cardI.textContent = c.i;
-
-    guideOpen = false;
+    cardQ.textContent=c.q;
+    cardN.textContent=c.n;
+    cardI.textContent=c.i;
+    guideOpen=false;
     guideContent.classList.remove("show");
-    guideToggle.textContent = "▾ Panduan obrolan";
-
-    cardQ.style.opacity = 1;
-    cardQ.style.transform = "translateY(0)";
+    guideToggle.textContent="▾ Panduan obrolan";
+    cardQ.style.opacity=1;
+    cardQ.style.transform="translateY(0)";
   },180);
 }
 </script>
