@@ -23,7 +23,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* ===== SPLASH (AS BEFORE) ===== */
+/* ===== SPLASH ===== */
 #splash{
   position:fixed; inset:0; background:var(--bg);
   display:flex; justify-content:center; align-items:center;
@@ -44,13 +44,32 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ===== MENU (BALIK KE VERSI SETUJU) ===== */
+/* ===== MENU ===== */
 #menu{opacity:0;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
 
-h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
-.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
+/* ===== TITLE & SUBTITLE (FOCUS CHANGE) ===== */
+.title-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:26px;
+}
+.title-wrap h1{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.title-wrap .subtitle{
+  max-width:22ch;           /* ⬅️ kunci: tidak lebih lebar dari judul */
+  text-align:center;
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.5;
+}
 
+/* ===== PREVIEW CARD ===== */
 .preview-card{
   background:var(--card);
   border-radius:22px;
@@ -62,12 +81,23 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
 .preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
 .preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
 
-.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
+.micro-copy{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:32px;
+}
 
 button{
-  width:100%;min-height:56px;font-size:17px;font-weight:600;
-  border-radius:18px;border:none;cursor:pointer;
-  background:var(--primary);color:#fff;
+  width:100%;
+  min-height:56px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:18px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
 }
 
 /* ===== CARD SCREEN ===== */
@@ -76,11 +106,12 @@ button{
 @keyframes fadeInCard{to{opacity:1}}
 
 #theme-toggle{
-  background:none;border:none;font-size:18px;
-  color:var(--muted);cursor:pointer;margin-bottom:8px;
+  background:none;border:none;
+  font-size:18px;color:var(--muted);
+  cursor:pointer;margin-bottom:8px;
 }
 
-/* ===== CARD (ONLY THIS PART CHANGED) ===== */
+/* ===== CARD ===== */
 #card{
   background:var(--card);
   border-radius:22px;
@@ -88,7 +119,7 @@ button{
   min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
   opacity:0;
-  transition:opacity 1s ease; /* ⬅️ whole card fade */
+  transition:opacity 1s ease;
 }
 #card.show{opacity:1}
 
@@ -100,8 +131,11 @@ button{
 
 /* ===== GUIDE ===== */
 #guide-toggle{
-  text-align:center;font-size:14px;
-  color:var(--muted);cursor:pointer;margin-top:14px;
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
+  margin-top:14px;
 }
 #guide-content{
   margin-top:14px;
@@ -126,8 +160,13 @@ button{
 
 <!-- MENU -->
 <div id="menu" class="screen">
-  <h1>Kartu Obrolan Orang Tua</h1>
-  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+  <div class="title-wrap">
+    <h1>Kartu Obrolan Orang Tua</h1>
+    <p class="subtitle">
+      Temani obrolan kecil
+      yang bermakna bersama anak
+    </p>
+  </div>
 
   <div class="preview-card">
     <div class="preview-question"></div>
@@ -161,7 +200,7 @@ button{
 </div>
 
 <script>
-/* ===== PREVIEW (AS BEFORE) ===== */
+/* ===== PREVIEW ===== */
 const previewCards=[
  {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering jadi pintu menuju perasaan."},
  {q:"Bagian mana dari hari ini yang paling kamu ingat?",n:"Yang diingat biasanya punya makna emosional."},
@@ -169,7 +208,6 @@ const previewCards=[
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa aman sering muncul dari kenangan kecil."},
  {q:"Hal apa hari ini yang terasa paling menyenangkan?",n:"Fokus ke hal baik melatih kesadaran emosi."}
 ];
-
 function setRandomPreview(){
   const p=previewCards[Math.floor(Math.random()*previewCards.length)];
   document.querySelector(".preview-question").textContent=p.q;
@@ -179,7 +217,6 @@ function setRandomPreview(){
 /* ===== SPLASH → MENU ===== */
 const splash=document.getElementById("splash");
 const menu=document.getElementById("menu");
-
 setTimeout(()=>splash.classList.add("fade-out"),2600);
 setTimeout(()=>{
   splash.remove();
