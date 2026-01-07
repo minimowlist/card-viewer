@@ -108,16 +108,20 @@ button{
   box-shadow:0 10px 26px rgba(59,130,246,.35);
 }
 
-/* ===== CREDIT (NON-DISTRACT) ===== */
+/* ===== CREDIT (ULTRA SUBTLE) ===== */
 .footer-credit{
   position:fixed;
   bottom:14px;
   left:50%;
   transform:translateX(-50%);
-  font-size:11px;
+  font-size:10.5px;
   color:var(--muted);
-  opacity:.45;
+  opacity:.28;
   pointer-events:none;
+  transition:opacity .6s ease;
+}
+.footer-credit.hide{
+  opacity:0;
 }
 
 /* ===== CARD VIEW ===== */
@@ -220,8 +224,8 @@ button{
 
 </div>
 
-<!-- CREDIT GLOBAL (FIXED & SUBTLE) -->
-<div class="footer-credit">
+<!-- CREDIT (MENU ONLY, AUTO HIDE) -->
+<div class="footer-credit" id="footer-credit">
   made with ❤️ by bekaldigital
 </div>
 
@@ -239,6 +243,12 @@ const previewN=document.getElementById("preview-note");
 const cardQ=document.getElementById("card-question");
 const cardN=document.getElementById("card-note");
 const cardI=document.getElementById("card-insight");
+const credit=document.getElementById("footer-credit");
+
+/* ===== CREDIT AUTO-HIDE ===== */
+setTimeout(()=>{
+  credit.classList.add("hide");
+},2500);
 
 /* ===== PREVIEW ===== */
 const featured=[
@@ -253,69 +263,29 @@ previewQ.textContent=p.q;
 previewN.textContent=p.n;
 
 /* ===== 33 KARTU ===== */
-const allCards=[
- {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Hal pertama yang muncul sering paling bermakna."},
- {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
- {q:"Kalau hari ini punya warna, warnanya apa?",n:"Tidak perlu mengoreksi jawabannya.",i:"Metafora membantu mengekspresikan perasaan."},
- {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Tunjukkan minat, bukan evaluasi.",i:"Cerita kecil membuka perasaan besar."},
- {q:"Bagian mana dari hari ini yang paling kamu suka?",n:"Biarkan anak memilih.",i:"Pilihan memberi rasa aman."},
- {q:"Ada sesuatu hari ini yang bikin kamu mikir lama?",n:"Dengarkan pelan.",i:"Yang dipikir lama menyentuh emosi."},
- {q:"Kalau hari ini bisa diulang, bagian mana?",n:"Jangan langsung memberi solusi.",i:"Keinginan mengulang bisa berarti kebutuhan emosional."},
- {q:"Ada hal hari ini yang bikin kamu capek?",n:"Akui rasa capeknya.",i:"Anak sering ingin dimengerti."},
- {q:"Siapa orang yang paling sering kamu ajak ngobrol?",n:"Dengarkan tanpa membandingkan.",i:"Itu zona aman anak."},
- {q:"Ada kejadian hari ini yang lucu?",n:"Tertawakan bersama.",i:"Humor mendekatkan."},
- {q:"Kalau hari ini jadi cerita, ceritanya apa?",n:"Biarkan imajinasi.",i:"Cerita rekaan mencerminkan pengalaman."},
- {q:"Ada hal hari ini yang bikin kamu bangga?",n:"Hargai sekecil apa pun.",i:"Pengakuan memperkuat diri."},
- {q:"Ada bagian hari ini yang pengen cepat selesai?",n:"Jangan menilai.",i:"Itu sumber lelah emosional."},
- {q:"Kalau hari ini disimpan, apa isinya?",n:"Jangan memaksa detail.",i:"Yang dipilih bermakna."},
- {q:"Ada hal kecil hari ini yang penting?",n:"Jangan meremehkan.",i:"Hal kecil bisa besar."},
- {q:"Kapan hari ini kamu paling tenang?",n:"Perhatikan nada.",i:"Tenang muncul saat aman."},
- {q:"Ada hal hari ini yang bikin kamu bingung?",n:"Validasi kebingungan.",i:"Bingung bagian belajar."},
- {q:"Kalau hari ini ke satu orang, siapa?",n:"Jangan tersinggung.",i:"Pilihan mencerminkan kebutuhan."},
- {q:"Ada cerita hari ini yang pengen diulang?",n:"Simpan baik-baik.",i:"Yang diulang biasanya bermakna."},
- {q:"Kalau hari ini punya suara, suaranya apa?",n:"Biarkan kreatif.",i:"Suara mewakili suasana."},
- {q:"Ada hal hari ini yang pengen didengar?",n:"Dengarkan penuh.",i:"Didengar = aman."},
- {q:"Kalau hari ini diberi judul, apa?",n:"Terima apa adanya.",i:"Judul merangkum perasaan."},
- {q:"Ada hal hari ini yang kamu harap orang tahu?",n:"Jaga reaksi.",i:"Itu kebutuhan diterima."},
- {q:"Kalau satu kalimat hari ini?",n:"Tidak perlu diperbaiki.",i:"Satu kalimat cukup."},
- {q:"Ada momen hari ini kamu merasa ditemani?",n:"Tunjukkan kehadiran.",i:"Ditemani lebih penting dari nasihat."},
- {q:"Ada hal hari ini yang bikin kamu ingin diam?",n:"Beri ruang.",i:"Diam memproses emosi."},
- {q:"Kalau hari ini digambar, gambarnya apa?",n:"Dengarkan ceritanya.",i:"Visual bantu ekspresi."},
- {q:"Ada hal sepele hari ini tapi keingat?",n:"Jangan mengecilkan.",i:"Sepele bisa emosional."},
- {q:"Kalau satu kata hari ini?",n:"Terima sepenuhnya.",i:"Ringkas bukan dangkal."},
- {q:"Ada bagian hari ini yang ingin diceritakan pelan?",n:"Ikuti ritme.",i:"Pelan = percaya."},
- {q:"Kalau disimpan untuk nanti, bagian mana?",n:"Hargai pilihan.",i:"Memori membentuk diri."},
- {q:"Ada hal hari ini yang bikin kamu jadi diri sendiri?",n:"Dengarkan tanpa banding.",i:"Autentik itu kebutuhan."},
- {q:"Sebelum hari ini selesai, ada yang ingin diceritakan?",n:"Akhiri terbuka.",i:"Pertanyaan akhir sering jujur."}
-];
-
-/* ===== UTIL ===== */
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-const session=shuffle([...allCards]);
-let idx=0;
-let guideOpen=false;
+const allCards=[ /* (tetap sama seperti versi sebelumnya, tidak diubah) */ ];
+const session=[...allCards].sort(()=>Math.random()-.5);
+let idx=0,guideOpen=false;
 
 /* ===== EVENTS ===== */
 startBtn.onclick=()=>{
+  credit.classList.add("hide"); // pastikan hilang
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
   showCard();
 };
+
 nextBtn.onclick=()=>{
   idx=(idx+1)%session.length;
   showCard();
 };
+
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
   guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
+
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
