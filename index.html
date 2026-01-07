@@ -80,7 +80,7 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ===== MENU ===== */
+/* ===== MENU (FREEZE) ===== */
 #menu{
   opacity:0;
   animation:menuFadeIn 1s ease forwards;
@@ -97,20 +97,9 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{
-  font-size:20px;
-  font-weight:600;
-  line-height:1.5;
-}
-.preview-divider{
-  margin:16px 0;
-  border-top:1px dashed var(--border);
-}
-.preview-note{
-  font-size:14.5px;
-  font-style:italic;
-  color:var(--muted);
-}
+.preview-question{font-size:20px;font-weight:600;line-height:1.5}
+.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
 
 .micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
@@ -126,10 +115,23 @@ button{
   color:#fff;
 }
 
+/* ===== CARD FIRST ENTER FADE (INI SAJA YANG BARU) ===== */
+#card-screen{
+  opacity:0;
+}
+#card-screen.enter{
+  animation:cardEnterFade 1s ease forwards;
+}
+@keyframes cardEnterFade{
+  to{opacity:1}
+}
+
 /* ===== CARD (FREEZE) ===== */
 #theme-toggle{background:none;border:none;font-size:18px;color:var(--muted);margin-bottom:6px;cursor:pointer}
 #card{background:var(--card);border-radius:22px;padding:28px 22px;margin:16px 0 14px;min-height:260px;box-shadow:0 10px 24px rgba(0,0,0,.08)}
 #card-question{font-size:22px;font-weight:600;line-height:1.5;transition:opacity .18s ease,transform .18s ease}
+
+/* ===== GUIDE (FREEZE) ===== */
 #guide-toggle{text-align:center;font-size:14px;color:var(--muted);cursor:pointer;padding:8px 0}
 #guide-content{margin-top:14px;border-top:1px dashed var(--border);padding-top:14px;opacity:0;transform:translateY(-6px);transition:.22s cubic-bezier(.2,0,0,1)}
 #guide-content.show{opacity:1;transform:none}
@@ -168,6 +170,7 @@ button{
 <!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
   <button id="theme-toggle">🌙</button>
+
   <div id="card">
     <div id="card-question"></div>
     <div id="guide-content">
@@ -175,6 +178,7 @@ button{
       <div id="card-insight"></div>
     </div>
   </div>
+
   <button id="next-btn">▶︎ Berikutnya</button>
   <div id="guide-toggle">▾ Panduan obrolan</div>
 </div>
@@ -182,7 +186,7 @@ button{
 </div>
 
 <script>
-/* ===== PREVIEW CARD DATA (MENU SAJA) ===== */
+/* ===== PREVIEW CARD DATA (FREEZE) ===== */
 const previewCards=[
   {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering jadi pintu menuju perasaan."},
   {q:"Bagian mana dari hari ini yang paling kamu ingat?",n:"Yang diingat biasanya punya makna emosional."},
@@ -205,10 +209,10 @@ setTimeout(()=>splash.classList.add("fade-out"),2600);
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
-  setRandomPreview(); // ⬅️ RANDOM PREVIEW SET DI SINI
+  setRandomPreview();
 },3200);
 
-/* ===== CARD LOGIC (FREEZE) ===== */
+/* ===== CARD LOGIC (FREEZE + ENTRY FADE) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
@@ -246,17 +250,21 @@ function showCard(){
 startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScr.classList.add("active");
+  cardScr.classList.add("enter"); // fade in 1 detik (sekali)
   showCard();
 };
+
 nextBtn.onclick=()=>{
   idx=(idx+1)%cards.length;
   showCard();
 };
+
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
   guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
+
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
