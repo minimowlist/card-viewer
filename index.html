@@ -41,7 +41,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* ===== SPLASH (REVISI DI SINI SAJA) ===== */
+/* ===== SPLASH (FREEZE) ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -51,11 +51,9 @@ body{
   align-items:center;
   z-index:9999;
   opacity:1;
-  transition:opacity .7s ease; /* fade out layer */
+  transition:opacity .7s ease;
 }
-#splash.fade-out{
-  opacity:0;
-}
+#splash.fade-out{opacity:0}
 
 .splash-text{
   font-size:13px;
@@ -63,24 +61,18 @@ body{
   opacity:0;
   animation:heartbeat 3s ease-in-out forwards;
 }
-
-/* === 3 DETAK, PELAN === */
 @keyframes heartbeat{
-  0%   {opacity:0}
-
-  10%  {opacity:.6}
-  25%  {opacity:.25}
-
-  40%  {opacity:.6}
-  55%  {opacity:.25}
-
-  70%  {opacity:.6}
-  85%  {opacity:.25}
-
-  100% {opacity:0}
+  0%{opacity:0}
+  10%{opacity:.6}
+  25%{opacity:.25}
+  40%{opacity:.6}
+  55%{opacity:.25}
+  70%{opacity:.6}
+  85%{opacity:.25}
+  100%{opacity:0}
 }
 
-/* ===== APP (TIDAK DIUBAH) ===== */
+/* ===== APP ===== */
 #app{
   width:100%;
   max-width:420px;
@@ -91,8 +83,18 @@ body{
 .screen.active{display:block}
 
 /* ===== MENU ===== */
-h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
-.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
+h1{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.subtitle{
+  text-align:center;
+  font-size:15px;
+  color:var(--muted);
+  margin-bottom:26px;
+}
 
 .preview-card{
   background:var(--card);
@@ -101,11 +103,27 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600;line-height:1.5}
-.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
-.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
+.preview-question{
+  font-size:20px;
+  font-weight:600;
+  line-height:1.5;
+}
+.preview-divider{
+  margin:16px 0;
+  border-top:1px dashed var(--border);
+}
+.preview-note{
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
 
-.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
+.micro-copy{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:32px;
+}
 
 button{
   width:100%;
@@ -119,7 +137,27 @@ button{
   color:#fff;
 }
 
-/* ===== CARD ===== */
+/* ===== MENU FADE-IN ANIMATION (INI SAJA YANG BARU) ===== */
+.menu-animate > *{
+  opacity:0;
+  transform:translateY(-8px);
+  animation:fadeDown .24s cubic-bezier(.2,0,.2,1) forwards;
+}
+
+.menu-animate > *:nth-child(1){animation-delay:0ms}
+.menu-animate > *:nth-child(2){animation-delay:120ms}
+.menu-animate > *:nth-child(3){animation-delay:260ms}
+.menu-animate > *:nth-child(4){animation-delay:420ms}
+.menu-animate > *:nth-child(5){animation-delay:560ms}
+
+@keyframes fadeDown{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ===== CARD (FREEZE) ===== */
 #theme-toggle{
   background:none;
   border:none;
@@ -145,7 +183,7 @@ button{
   transition:opacity .18s ease,transform .18s ease;
 }
 
-/* ===== GUIDE ===== */
+/* ===== GUIDE (FREEZE) ===== */
 #guide-toggle{
   text-align:center;
   font-size:14px;
@@ -180,7 +218,7 @@ button{
 <div id="app">
 
 <!-- MENU -->
-<div id="menu" class="screen">
+<div id="menu" class="screen menu-animate">
   <h1>Kartu Obrolan Orang Tua</h1>
   <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
@@ -201,7 +239,7 @@ button{
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
-<!-- CARD -->
+<!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
   <button id="theme-toggle">🌙</button>
 
@@ -220,23 +258,17 @@ button{
 </div>
 
 <script>
-/* ===== SPLASH FLOW (REVISI DI SINI SAJA) ===== */
-const splash = document.getElementById("splash");
-const menu   = document.getElementById("menu");
+/* ===== SPLASH FLOW (FREEZE) ===== */
+const splash=document.getElementById("splash");
+const menu=document.getElementById("menu");
 
-/*
-  0–3000ms : detak 3x
-  3000–3300ms : hening
-  3300–4000ms : fade out splash
-*/
-setTimeout(()=> splash.classList.add("fade-out"),3300);
-
+setTimeout(()=>splash.classList.add("fade-out"),3000);
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
 },4000);
 
-/* ===== CARD LOGIC (TIDAK DIUBAH) ===== */
+/* ===== CARD LOGIC (FREEZE) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
@@ -276,10 +308,12 @@ startBtn.onclick=()=>{
   cardScr.classList.add("active");
   showCard();
 };
+
 nextBtn.onclick=()=>{
   idx=(idx+1)%cards.length;
   showCard();
 };
+
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
@@ -287,6 +321,7 @@ guideToggle.onclick=()=>{
     ?"▴ Sembunyikan panduan obrolan"
     :"▾ Panduan obrolan";
 };
+
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
