@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kartu Obrolan Orang Tua</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+:root{
+  --bg:#f6f7f4;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --card:#ffffff;
+  --primary:#3b82f6;
+  --border:rgba(0,0,0,.12);
+}
+
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#020617;
+  --primary:#60a5fa;
+  --border:rgba(255,255,255,.18);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transition:background .3s ease,color .3s ease;
+}
+
+#app{
+  width:100%;
+  max-width:420px;
+  padding:26px 18px 30px;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+/* ===== MENU ===== */
+h1{
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+.subtitle{
+  font-size:15px;
+  line-height:1.6;
+  color:var(--muted);
+  margin-bottom:18px;
+  text-align:center;
+}
+
+.preview-card{
+  background:var(--card);
+  border-radius:20px;
+  padding:22px 20px;
+  margin:14px 0 16px;
+  box-shadow:0 8px 18px rgba(0,0,0,.06);
+  opacity:.75;
+}
+
+.preview-question{
+  font-size:18px;
+  font-weight:600;
+  line-height:1.5;
+}
+
+.preview-divider{
+  margin:14px 0;
+  border-top:1px dashed var(--border);
+}
+
+.preview-note{
+  font-size:14px;
+  color:var(--muted);
+  font-style:italic;
+}
+
+.micro-copy{
+  font-size:14px;
+  color:var(--muted);
+  margin:10px 0 22px;
+  text-align:center;
+}
+
+button{
+  width:100%;
+  min-height:56px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:18px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+
+#start-btn{
+  box-shadow:0 8px 20px rgba(59,130,246,.35);
+}
+
+/* ===== CARD ===== */
+#theme-toggle{
+  background:none;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+#card{
+  background:var(--card);
+  border-radius:22px;
+  padding:28px 22px;
+  margin:16px 0 20px;
+  min-height:260px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
+}
+
+#card-question{
+  font-size:22px;
+  line-height:1.5;
+  font-weight:600;
+}
+
+/* ===== GUIDE ===== */
+#guide-content{
+  margin-top:18px;
+  border-top:1px dashed var(--border);
+  padding-top:14px;
+  opacity:0;
+  transform:translateY(-6px);
+  transition:
+    opacity 220ms cubic-bezier(.2,0,0,1),
+    transform 220ms cubic-bezier(.2,0,0,1);
+}
+
+#guide-content.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+#card-note{
+  font-size:14.5px;
+  line-height:1.6;
+  margin-bottom:10px;
+}
+
+#card-insight{
+  font-size:14px;
+  color:var(--muted);
+  font-style:italic;
+}
+
+#guide-toggle{
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
+  padding:10px 0;
+  text-align:center;
+}
+
+/* ===== SCROLL DIAL ===== */
+#dial-wrapper{
+  margin-top:18px;
+  text-align:center;
+  opacity:.85;
+}
+
+#dial-track{
+  position:relative;
+  height:28px;
+  border-radius:999px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.02));
+  overflow:hidden;
+}
+
+body.dark #dial-track{
+  background:linear-gradient(to bottom,rgba(255,255,255,.12),rgba(255,255,255,.04));
+}
+
+#dial-thumb{
+  position:absolute;
+  top:4px;
+  left:50%;
+  width:44px;
+  height:20px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:var(--card);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.25),
+    0 2px 6px rgba(0,0,0,.15);
+  transition:transform 80ms ease,box-shadow 80ms ease;
+}
+
+#dial-thumb.active{
+  transform:translateX(-50%) scale(.95);
+}
+
+.dial-hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<!-- START -->
+<div id="start-screen" class="screen active">
+  <h1>Kartu Obrolan Orang Tua</h1>
+  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+
+  <div class="preview-card">
+    <div class="preview-question">
+      Hal apa yang paling kamu ingat hari ini?
+    </div>
+    <div class="preview-divider"></div>
+    <div class="preview-note">
+      Dengarkan tanpa menyela. Tidak perlu langsung memberi solusi.
+    </div>
+  </div>
+
+  <div class="micro-copy">
+    Tidak perlu lama. Cukup hadir dan mendengarkan.
+  </div>
+
+  <button id="start-btn">▶︎ Mulai</button>
+</div>
+
+<!-- CARD -->
+<div id="card-screen" class="screen">
+  <button id="theme-toggle">🌙</button>
+
+  <div id="card">
+    <div id="card-question"></div>
+
+    <div id="guide-content">
+      <div id="card-note"></div>
+      <div id="card-insight"></div>
+    </div>
+  </div>
+
+  <button id="next-btn">▶︎ Berikutnya</button>
+  <div id="guide-toggle">▾ Panduan obrolan</div>
+
+  <!-- DIAL -->
+  <div id="dial-wrapper">
+    <div id="dial-track">
+      <div id="dial-thumb"></div>
+    </div>
+    <div class="dial-hint">Geser untuk ganti kartu</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const allCards=[
+ {q:"Hal apa yang paling kamu ingat dari hari ini?",
+  n:"Dengarkan dulu tanpa menyela.",
+  i:"Hal pertama yang muncul sering menunjukkan apa yang paling melekat."},
+ {q:"Ada momen hari ini yang bikin kamu senyum?",
+  n:"Ikuti ceritanya meski sederhana.",
+  i:"Rasa senang anak sering datang dari hal kecil."},
+ {q:"Kalau hari ini punya warna, warnanya apa?",
+  n:"Tidak perlu mengoreksi jawabannya.",
+  i:"Metafora membantu anak mengekspresikan perasaan."},
+ {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",
+  n:"Tunjukkan minat, bukan evaluasi.",
+  i:"Cerita kecil sering jadi pintu ke perasaan besar."},
+ {q:"Bagian mana dari hari ini yang paling kamu suka?",
+  n:"Biarkan anak memilih sendiri.",
+  i:"Pilihan memberi rasa aman."}
+];
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+const sessionCards=shuffle([...allCards]);
+let index=0;
+let guideVisible=false;
+
+/* anim speed */
+let ANIM_OUT=160,ANIM_IN=200;
+function updateAnim(){
+  if(document.body.classList.contains("dark")){
+    ANIM_OUT=220;ANIM_IN=300;
+  }else{
+    ANIM_OUT=160;ANIM_IN=200;
+  }
+}
+updateAnim();
+
+const startScreen=document.getElementById("start-screen");
+const cardScreen=document.getElementById("card-screen");
+const cardQ=document.getElementById("card-question");
+const cardN=document.getElementById("card-note");
+const cardI=document.getElementById("card-insight");
+const guideToggle=document.getElementById("guide-toggle");
+const guideContent=document.getElementById("guide-content");
+const themeToggle=document.getElementById("theme-toggle");
+
+document.getElementById("start-btn").onclick=()=>{
+  startScreen.classList.remove("active");
+  cardScreen.classList.add("active");
+  showCard();
+};
+
+document.getElementById("next-btn").onclick=()=>{
+  index=(index+1)%sessionCards.length;
+  showCard();
+};
+
+guideToggle.onclick=()=>{
+  guideVisible=!guideVisible;
+  guideContent.classList.toggle("show",guideVisible);
+  guideToggle.textContent=guideVisible?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
+};
+
+themeToggle.onclick=()=>{
+  document.body.classList.toggle("dark");
+  themeToggle.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  updateAnim();
+};
+
+function showCard(){
+  const c=sessionCards[index];
+  cardQ.style.transition=`opacity ${ANIM_OUT}ms,transform ${ANIM_OUT}ms`;
+  cardQ.style.opacity=0;
+  cardQ.style.transform="translateY(-8px)";
+
+  setTimeout(()=>{
+    cardQ.textContent=c.q;
+    cardN.textContent=c.n;
+    cardI.textContent=c.i;
+
+    guideVisible=false;
+    guideContent.classList.remove("show");
+    guideToggle.textContent="▾ Panduan obrolan";
+
+    cardQ.style.transition=`opacity ${ANIM_IN}ms,transform ${ANIM_IN}ms`;
+    cardQ.style.opacity=1;
+    cardQ.style.transform="translateY(0)";
+  },ANIM_OUT);
+}
+
+/* DIAL LOGIC */
+const dial=document.getElementById("dial-track");
+const thumb=document.getElementById("dial-thumb");
+let dialActive=false,lastX=null;
+
+dial.addEventListener("pointerdown",e=>{
+  dialActive=true;
+  lastX=e.clientX;
+  thumb.classList.add("active");
+  dial.setPointerCapture(e.pointerId);
+});
+
+dial.addEventListener("pointermove",e=>{
+  if(!dialActive)return;
+  const dx=e.clientX-lastX;
+  if(Math.abs(dx)>18){
+    index=(index+(dx>0?1:-1)+sessionCards.length)%sessionCards.length;
+    showCard();
+    thumb.classList.add("active");
+    setTimeout(()=>thumb.classList.remove("active"),60);
+    lastX=e.clientX;
+  }
+});
+
+dial.addEventListener("pointerup",()=>{
+  dialActive=false;
+  thumb.classList.remove("active");
+});
+</script>
+
+</body>
+</html>
