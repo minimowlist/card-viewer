@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quiet Prompt</title>
+
+<style>
+:root{
+  --bg:#f5f5f3;
+  --card:#F4C400;
+  --text:#0f0f0f;
+  --text-on-card:#0f0f0f;
+  --muted:rgba(0,0,0,.7);
+  --line:rgba(0,0,0,.25);
+}
+
+/* DARK MODE */
+body.dark{
+  --bg:#0f0f0f;
+  --card:#1c1c1c;
+  --text:#f2f2f2;
+  --text-on-card:#f2f2f2;
+  --muted:#aaa;
+  --line:rgba(255,255,255,.25);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  transition:background .4s ease;
+}
+
+.screen{
+  width:100%;
+  max-width:420px;
+  min-height:100vh;
+  padding:24px 18px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:24px;
+  padding:28px 24px 32px;
+  min-height:calc(100vh - 48px);
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 30px 70px rgba(0,0,0,.25);
+  animation:enter .8s cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes enter{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:none}
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+/* ABSTRACT ICON */
+.mark{
+  font-size:16px;
+  opacity:.5;
+  user-select:none;
+}
+
+/* DARK MODE TOGGLE */
+.mode-toggle{
+  display:flex;
+  gap:10px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,.15);
+  cursor:pointer;
+}
+
+body.dark .mode-toggle{
+  background:rgba(255,255,255,.15);
+}
+
+.mode{
+  font-size:14px;
+  opacity:.35;
+  transition:opacity .25s ease, transform .25s ease;
+}
+
+.mode.active{
+  opacity:1;
+  transform:scale(1.15);
+}
+
+.question{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:32px;
+  line-height:1.25;
+  font-weight:600;
+  letter-spacing:-.3px;
+  color:var(--text-on-card);
+}
+
+.divider{
+  margin:24px 0 20px;
+  border-top:1px dashed var(--line);
+}
+
+/* GUIDE */
+.guide{
+  font-size:15px;
+  line-height:1.7;
+  color:var(--muted);
+  max-width:92%;
+  overflow:hidden;
+  transition:
+    opacity .4s ease,
+    transform .4s ease,
+    max-height .5s ease;
+}
+
+.guide p{margin:0 0 10px}
+.guide p:last-child{margin:0;font-style:italic}
+
+.guide.show{
+  opacity:1;
+  transform:translateY(0);
+  max-height:200px;
+}
+
+.guide.hide{
+  opacity:0;
+  transform:translateY(-6px);
+  max-height:0;
+}
+
+.spacer{flex:1}
+
+.action{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  margin-top:24px;
+}
+
+button{
+  width:100%;
+  padding:16px 0;
+  border:none;
+  border-radius:999px;
+  background:var(--text-on-card);
+  color:var(--bg);
+  font-size:15px;
+  letter-spacing:.4px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+  <div class="card" id="card">
+
+    <div class="top">
+      <span class="mark">◯</span>
+
+      <div class="mode-toggle" onclick="toggleDark()" id="modeToggle">
+        <span class="mode light">☀</span>
+        <span class="mode dark">◐</span>
+      </div>
+    </div>
+
+    <div class="question" id="question"></div>
+
+    <div class="divider"></div>
+
+    <div class="guide hide" id="guide"></div>
+
+    <div class="spacer"></div>
+
+    <div class="action">
+      <button onclick="nextCard()">Lanjutkan →</button>
+      <div class="toggle" onclick="toggleGuide()" id="toggleText">
+        tampilkan panduan
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const cards = [
+  {
+    q:`Hal apa<br>yang paling<br>kamu ingat<br>dari hari ini?`,
+    g:["Dengarkan dulu tanpa menyela.","Yang pertama muncul biasanya paling bermakna."]
+  },
+  {
+    q:`Ada momen<br>hari ini<br>yang bikin<br>kamu senyum?`,
+    g:["Tak harus besar.","Hal kecil sering lebih jujur."]
+  },
+  {
+    q:`Kapan hari ini<br>kamu merasa<br>paling tenang?`,
+    g:["Perhatikan jedanya.","Tenang sering datang diam-diam."]
+  },
+  {
+    q:`Apa satu hal<br>yang ingin<br>kamu ulangi<br>besok?`,
+    g:["Keinginan kecil cukup.","Tak perlu rencana besar."]
+  },
+  {
+    q:`Apa yang hari ini<br>paling ingin<br>kamu lepaskan?`,
+    g:["Tak semuanya perlu dibawa pulang.","Beberapa cukup dilewati."]
+  }
+];
+
+let index = 0;
+let guideVisible = false;
+
+const qEl = document.getElementById("question");
+const gEl = document.getElementById("guide");
+const toggleText = document.getElementById("toggleText");
+const cardEl = document.getElementById("card");
+const modeToggle = document.getElementById("modeToggle");
+
+function render(){
+  cardEl.style.animation="none";
+  cardEl.offsetHeight;
+  cardEl.style.animation="enter .8s cubic-bezier(.22,.61,.36,1)";
+  qEl.innerHTML = cards[index].q;
+  gEl.innerHTML = cards[index].g.map(t=>`<p>${t}</p>`).join("");
+}
+
+function nextCard(){
+  index = (index + 1) % cards.length;
+  render();
+}
+
+function toggleGuide(){
+  guideVisible = !guideVisible;
+  gEl.className = "guide " + (guideVisible ? "show" : "hide");
+  toggleText.textContent = guideVisible
+    ? "sembunyikan panduan"
+    : "tampilkan panduan";
+}
+
+function updateModeUI(){
+  const isDark = document.body.classList.contains("dark");
+  const icons = modeToggle.querySelectorAll(".mode");
+  icons.forEach(i=>i.classList.remove("active"));
+  icons[isDark ? 1 : 0].classList.add("active");
+}
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+  updateModeUI();
+}
+
+updateModeUI();
+render();
+</script>
+
+</body>
+</html>
