@@ -41,7 +41,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* ===== SPLASH ===== */
+/* ===== SPLASH (REVISI DI SINI SAJA) ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -51,32 +51,36 @@ body{
   align-items:center;
   z-index:9999;
   opacity:1;
-  transition:opacity .7s ease;
+  transition:opacity .7s ease; /* fade out layer */
 }
-#splash.fade-out{opacity:0}
+#splash.fade-out{
+  opacity:0;
+}
 
 .splash-text{
   font-size:13px;
   color:var(--muted);
   opacity:0;
-  animation:heartbeat 3.2s ease-in-out forwards;
-}
-@keyframes heartbeat{
-  0%{opacity:0}
-  5%{opacity:.55}
-  15%{opacity:.22}
-  25%{opacity:.55}
-  35%{opacity:.22}
-  45%{opacity:.55}
-  55%{opacity:.22}
-  65%{opacity:.55}
-  75%{opacity:.22}
-  85%{opacity:.55}
-  95%{opacity:.22}
-  100%{opacity:0}
+  animation:heartbeat 3s ease-in-out forwards;
 }
 
-/* ===== APP ===== */
+/* === 3 DETAK, PELAN === */
+@keyframes heartbeat{
+  0%   {opacity:0}
+
+  10%  {opacity:.6}
+  25%  {opacity:.25}
+
+  40%  {opacity:.6}
+  55%  {opacity:.25}
+
+  70%  {opacity:.6}
+  85%  {opacity:.25}
+
+  100% {opacity:0}
+}
+
+/* ===== APP (TIDAK DIUBAH) ===== */
 #app{
   width:100%;
   max-width:420px;
@@ -149,7 +153,6 @@ button{
   cursor:pointer;
   padding:8px 0;
 }
-
 #guide-content{
   margin-top:14px;
   border-top:1px dashed var(--border);
@@ -162,17 +165,8 @@ button{
   opacity:1;
   transform:none;
 }
-
-#card-note{
-  font-size:14.5px;
-  line-height:1.6;
-  margin-bottom:10px;
-}
-#card-insight{
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
-}
+#card-note{font-size:14.5px;line-height:1.6;margin-bottom:10px}
+#card-insight{font-size:14px;color:var(--muted);font-style:italic}
 </style>
 </head>
 
@@ -207,14 +201,12 @@ button{
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
-<!-- CARD SCREEN -->
+<!-- CARD -->
 <div id="card-screen" class="screen">
-
   <button id="theme-toggle">🌙</button>
 
   <div id="card">
     <div id="card-question"></div>
-
     <div id="guide-content">
       <div id="card-note"></div>
       <div id="card-insight"></div>
@@ -223,30 +215,34 @@ button{
 
   <button id="next-btn">▶︎ Berikutnya</button>
   <div id="guide-toggle">▾ Panduan obrolan</div>
-
 </div>
 
 </div>
 
 <script>
-/* ===== SPLASH FLOW ===== */
-const splash=document.getElementById("splash");
-const menu=document.getElementById("menu");
+/* ===== SPLASH FLOW (REVISI DI SINI SAJA) ===== */
+const splash = document.getElementById("splash");
+const menu   = document.getElementById("menu");
 
-setTimeout(()=>splash.classList.add("fade-out"),3400);
+/*
+  0–3000ms : detak 3x
+  3000–3300ms : hening
+  3300–4000ms : fade out splash
+*/
+setTimeout(()=> splash.classList.add("fade-out"),3300);
+
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
-},4200);
+},4000);
 
-/* ===== DATA ===== */
+/* ===== CARD LOGIC (TIDAK DIUBAH) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Biarkan anak bebas menjawab.",i:"Metafora bantu ekspresi emosi."}
 ];
 
-/* ===== CARD LOGIC ===== */
 const startBtn=document.getElementById("start-btn");
 const cardScr=document.getElementById("card-screen");
 const cardQ=document.getElementById("card-question");
@@ -280,12 +276,10 @@ startBtn.onclick=()=>{
   cardScr.classList.add("active");
   showCard();
 };
-
 nextBtn.onclick=()=>{
   idx=(idx+1)%cards.length;
   showCard();
 };
-
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
@@ -293,7 +287,6 @@ guideToggle.onclick=()=>{
     ?"▴ Sembunyikan panduan obrolan"
     :"▾ Panduan obrolan";
 };
-
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
