@@ -6,12 +6,7 @@
 <title>Kartu Obrolan Orang Tua</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
 
 /* ===== THEME ===== */
 :root{
@@ -20,14 +15,14 @@
   --muted:#6b7280;
   --card:#ffffff;
   --primary:#3b82f6;
-  --border:rgba(0,0,0,.12);
+  --border:rgba(0,0,0,.18);
 }
 body.dark{
   --bg:#0f172a;
   --text:#e5e7eb;
   --muted:#9ca3af;
   --card:#020617;
-  --border:rgba(255,255,255,.18);
+  --border:rgba(255,255,255,.25);
 }
 body{
   background:var(--bg);
@@ -41,8 +36,7 @@ body{
 
 /* ===== SPLASH ===== */
 #splash{
-  position:fixed;
-  inset:0;
+  position:fixed; inset:0;
   background:var(--bg);
   display:flex;
   justify-content:center;
@@ -66,19 +60,12 @@ body{
 }
 
 /* ===== APP ===== */
-#app{
-  width:100%;
-  max-width:420px;
-  padding:26px 18px 34px;
-}
+#app{width:100%;max-width:420px;padding:26px 18px 34px}
 .screen{display:none}
 .screen.active{display:block}
 
 /* ===== MENU ===== */
-#menu{
-  opacity:0;
-  animation:fadeIn 1s ease forwards;
-}
+#menu{opacity:0;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
 
 .title-wrap{text-align:center;margin-bottom:26px}
@@ -89,6 +76,7 @@ body{
   white-space:nowrap;
 }
 
+/* ===== PREVIEW CARD ===== */
 .preview-card{
   background:var(--card);
   border-radius:22px;
@@ -97,7 +85,11 @@ body{
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
 .preview-question{font-size:20px;font-weight:600}
-.preview-note{font-size:14.5px;color:var(--muted);margin-top:12px}
+.preview-divider{
+  margin:14px 0;
+  border-top:1px dashed var(--border); /* ⬅️ GARIS PUTUS */
+}
+.preview-note{font-size:14.5px;color:var(--muted)}
 
 .micro-copy{
   text-align:center;
@@ -122,15 +114,48 @@ button{
 #top-bar{
   display:flex;
   justify-content:flex-end;
-  margin-bottom:8px;
-}
-#theme-toggle{
-  background:none;
-  border:none;
-  font-size:20px;
-  cursor:pointer;
+  margin-bottom:10px;
 }
 
+/* ===== DARK MODE SWITCH ===== */
+.switch{
+  position:relative;
+  width:52px;
+  height:28px;
+}
+.switch input{display:none}
+.slider{
+  position:absolute;
+  inset:0;
+  background:#d1d5db;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.3s;
+}
+.slider::before{
+  content:"🌙";
+  position:absolute;
+  left:4px;
+  top:3px;
+  width:22px;
+  height:22px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  transition:.3s;
+}
+input:checked + .slider{
+  background:#60a5fa;
+}
+input:checked + .slider::before{
+  transform:translateX(24px);
+  content:"☀️";
+}
+
+/* ===== CARD BODY ===== */
 #card{
   background:var(--card);
   border-radius:22px;
@@ -163,11 +188,10 @@ button{
   margin-top:14px;
   border-top:1px dashed var(--border);
   padding-top:14px;
-
   opacity:0;
   transform:translateY(-6px);
   pointer-events:none;
-  transition:opacity .35s ease, transform .35s ease;
+  transition:.35s;
 }
 #guide.show{
   opacity:1;
@@ -200,6 +224,7 @@ button{
     <div class="preview-question">
       Ada hal kecil hari ini yang pengen kamu ceritain?
     </div>
+    <div class="preview-divider"></div>
     <div class="preview-note">
       Cerita kecil sering jadi pintu menuju perasaan.
     </div>
@@ -215,7 +240,10 @@ button{
 <!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
   <div id="top-bar">
-    <button id="theme-toggle">🌙</button>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div id="card">
@@ -234,7 +262,7 @@ button{
 </div>
 
 <script>
-/* ===== SPLASH LOGIC ===== */
+/* ===== SPLASH ===== */
 const splash=document.getElementById("splash");
 const menu=document.getElementById("menu");
 setTimeout(()=>splash.classList.add("fade-out"),2400);
@@ -245,21 +273,9 @@ setTimeout(()=>{
 
 /* ===== DATA ===== */
 const cards=[
-  {
-    q:"Hal apa yang paling kamu ingat dari hari ini?",
-    n:"Dengarkan tanpa menyela.",
-    i:"Yang pertama muncul sering paling jujur."
-  },
-  {
-    q:"Ada momen hari ini yang bikin kamu senyum?",
-    n:"Ikuti ceritanya, jangan buru-buru.",
-    i:"Kebahagiaan sering datang dari hal kecil."
-  },
-  {
-    q:"Kalau hari ini punya warna, warnanya apa?",
-    n:"Tidak perlu jawaban benar.",
-    i:"Metafora bantu anak menamai perasaan."
-  }
+  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan tanpa menyela.",i:"Yang pertama muncul sering paling jujur."},
+  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya.",i:"Kebahagiaan sering datang dari hal kecil."},
+  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Tidak perlu jawaban benar.",i:"Metafora bantu anak menamai perasaan."}
 ];
 
 let idx=0;
@@ -270,16 +286,14 @@ const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const guide=document.getElementById("guide");
 const guideToggle=document.getElementById("guide-toggle");
-const themeToggle=document.getElementById("theme-toggle");
+const themeToggle=document.getElementById("themeToggle");
 
-/* ===== RENDER QUESTION (RECREATE NODE) ===== */
+/* ===== RENDER QUESTION ===== */
 function renderQuestion(){
   const c=cards[idx];
-
   const q=document.createElement("div");
   q.className="question";
   q.textContent=c.q;
-
   qWrap.innerHTML="";
   qWrap.appendChild(q);
 
@@ -296,12 +310,10 @@ startBtn.onclick=()=>{
   cardScreen.classList.add("active");
   renderQuestion();
 };
-
 document.getElementById("next").onclick=()=>{
   idx=(idx+1)%cards.length;
   renderQuestion();
 };
-
 guideToggle.onclick=()=>{
   guide.classList.toggle("show");
   guideToggle.textContent=
@@ -309,11 +321,8 @@ guideToggle.onclick=()=>{
       ?"▴ Sembunyikan panduan obrolan"
       :"▾ Panduan obrolan";
 };
-
-themeToggle.onclick=()=>{
-  document.body.classList.toggle("dark");
-  themeToggle.textContent=
-    document.body.classList.contains("dark") ? "☀️" : "🌙";
+themeToggle.onchange=()=>{
+  document.body.classList.toggle("dark",themeToggle.checked);
 };
 </script>
 
