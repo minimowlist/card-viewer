@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Kartu Obrolan Orang Tua</title>
 
 <style>
@@ -17,24 +17,17 @@ body.dark{
   --bg:#0f172a; --text:#e5e7eb; --muted:#9ca3af;
   --card:#020617; --primary:#60a5fa; --border:rgba(255,255,255,.18);
 }
-
 body{
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  background:var(--bg); color:var(--text);
+  min-height:100vh; display:flex; justify-content:center; align-items:center;
   transition:background .3s,color .3s;
 }
 
-/* ===== SPLASH ===== */
+/* ===== SPLASH (AS BEFORE) ===== */
 #splash{
-  position:fixed; inset:0;
-  background:var(--bg);
+  position:fixed; inset:0; background:var(--bg);
   display:flex; justify-content:center; align-items:center;
-  z-index:9999;
-  transition:opacity .6s ease;
+  z-index:9999; transition:opacity .6s ease;
 }
 #splash.fade-out{opacity:0}
 .splash-text{
@@ -42,12 +35,8 @@ body{
   animation:heartbeat 2.4s ease-in-out forwards;
 }
 @keyframes heartbeat{
-  0%{opacity:0}
-  20%{opacity:.6}
-  40%{opacity:.25}
-  60%{opacity:.6}
-  80%{opacity:.25}
-  100%{opacity:0}
+  0%{opacity:0}20%{opacity:.6}40%{opacity:.25}
+  60%{opacity:.6}80%{opacity:.25}100%{opacity:0}
 }
 
 /* ===== APP ===== */
@@ -55,7 +44,7 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ===== MENU ===== */
+/* ===== MENU (BALIK KE VERSI SETUJU) ===== */
 #menu{opacity:0;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{to{opacity:1}}
 
@@ -63,11 +52,17 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
 .subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
 
 .preview-card{
-  background:var(--card);border-radius:22px;padding:26px 22px;
-  margin-bottom:30px;box-shadow:0 10px 24px rgba(0,0,0,.08);
+  background:var(--card);
+  border-radius:22px;
+  padding:26px 22px;
+  margin-bottom:30px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600}
-.preview-note{margin-top:12px;font-size:14px;color:var(--muted);font-style:italic}
+.preview-question{font-size:20px;font-weight:600;line-height:1.5}
+.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
+
+.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
 button{
   width:100%;min-height:56px;font-size:17px;font-weight:600;
@@ -77,14 +72,15 @@ button{
 
 /* ===== CARD SCREEN ===== */
 #card-screen{opacity:0}
-#card-screen.enter{animation:fadeIn 1.5s ease forwards}
+#card-screen.enter{animation:fadeInCard 1.5s ease forwards}
+@keyframes fadeInCard{to{opacity:1}}
 
-/* ===== CARD ===== */
 #theme-toggle{
   background:none;border:none;font-size:18px;
   color:var(--muted);cursor:pointer;margin-bottom:8px;
 }
 
+/* ===== CARD (ONLY THIS PART CHANGED) ===== */
 #card{
   background:var(--card);
   border-radius:22px;
@@ -92,7 +88,7 @@ button{
   min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
   opacity:0;
-  transition:opacity 1s ease;
+  transition:opacity 1s ease; /* ⬅️ whole card fade */
 }
 #card.show{opacity:1}
 
@@ -131,11 +127,18 @@ button{
 <!-- MENU -->
 <div id="menu" class="screen">
   <h1>Kartu Obrolan Orang Tua</h1>
-  <p class="subtitle">Temani obrolan kecil yang bermakna.</p>
+  <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+
   <div class="preview-card">
-    <div class="preview-question">Ada hal kecil hari ini yang pengen kamu ceritain?</div>
-    <div class="preview-note">Cerita kecil sering jadi pintu ke perasaan.</div>
+    <div class="preview-question"></div>
+    <div class="preview-divider"></div>
+    <div class="preview-note"></div>
   </div>
+
+  <div class="micro-copy">
+    Tidak perlu lama. Cukup hadir dan mendengarkan.
+  </div>
+
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
@@ -158,7 +161,22 @@ button{
 </div>
 
 <script>
-/* ===== SPLASH FLOW ===== */
+/* ===== PREVIEW (AS BEFORE) ===== */
+const previewCards=[
+ {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering jadi pintu menuju perasaan."},
+ {q:"Bagian mana dari hari ini yang paling kamu ingat?",n:"Yang diingat biasanya punya makna emosional."},
+ {q:"Kalau hari ini punya warna, warnanya apa?",n:"Pertanyaan abstrak membantu anak mengekspresikan emosi."},
+ {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa aman sering muncul dari kenangan kecil."},
+ {q:"Hal apa hari ini yang terasa paling menyenangkan?",n:"Fokus ke hal baik melatih kesadaran emosi."}
+];
+
+function setRandomPreview(){
+  const p=previewCards[Math.floor(Math.random()*previewCards.length)];
+  document.querySelector(".preview-question").textContent=p.q;
+  document.querySelector(".preview-note").textContent=p.n;
+}
+
+/* ===== SPLASH → MENU ===== */
 const splash=document.getElementById("splash");
 const menu=document.getElementById("menu");
 
@@ -166,9 +184,10 @@ setTimeout(()=>splash.classList.add("fade-out"),2600);
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
+  setRandomPreview();
 },3200);
 
-/* ===== CARD DATA ===== */
+/* ===== CARD LOGIC ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan tanpa menyela.",i:"Yang pertama muncul sering paling jujur."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya.",i:"Kebahagiaan sering datang dari hal kecil."},
@@ -182,12 +201,11 @@ const q=document.getElementById("card-question");
 const n=document.getElementById("card-note");
 const i=document.getElementById("card-insight");
 const nextBtn=document.getElementById("next-btn");
-
 const guideToggle=document.getElementById("guide-toggle");
 const guideContent=document.getElementById("guide-content");
 const themeBtn=document.getElementById("theme-toggle");
 
-let idx=0,guideOpen=false;
+let idx=0, guideOpen=false;
 
 function showCard(){
   const c=cards[idx];
@@ -195,7 +213,7 @@ function showCard(){
   q.textContent=c.q;
   n.textContent=c.n;
   i.textContent=c.i;
-  setTimeout(()=>card.classList.add("show"),20);
+  requestAnimationFrame(()=>card.classList.add("show"));
 }
 
 startBtn.onclick=()=>{
@@ -212,7 +230,9 @@ nextBtn.onclick=()=>{
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
-  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
+  guideToggle.textContent=guideOpen
+    ?"▴ Sembunyikan panduan obrolan"
+    :"▾ Panduan obrolan";
 };
 
 themeBtn.onclick=()=>{
