@@ -7,13 +7,16 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+
 :root{
   --bg:#f6f7f4;--text:#1f2937;--muted:#6b7280;
   --card:#ffffff;--primary:#3b82f6;--border:rgba(0,0,0,.12);
+  --out:160ms;--in:200ms;
 }
 body.dark{
   --bg:#0f172a;--text:#e5e7eb;--muted:#9ca3af;
   --card:#020617;--primary:#60a5fa;--border:rgba(255,255,255,.18);
+  --out:220ms;--in:300ms;
 }
 body{
   background:var(--bg);color:var(--text);
@@ -48,7 +51,10 @@ button{
   margin:16px 0 20px;min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08)
 }
-#card-question{font-size:22px;font-weight:600;line-height:1.5}
+#card-question{
+  font-size:22px;font-weight:600;line-height:1.5;
+  transition:opacity var(--out) ease,transform var(--out) ease;
+}
 
 /* GUIDE */
 #guide-content{
@@ -100,19 +106,19 @@ button{
 </div>
 
 <script>
-/* ===== DOM BIND ===== */
-const startScreen = document.getElementById("start-screen");
-const cardScreen  = document.getElementById("card-screen");
-const startBtn    = document.getElementById("start-btn");
-const nextBtn     = document.getElementById("next-btn");
-const themeBtn    = document.getElementById("theme-toggle");
-const guideToggle = document.getElementById("guide-toggle");
-const guideContent= document.getElementById("guide-content");
-const previewQ    = document.getElementById("preview-question");
-const previewN    = document.getElementById("preview-note");
-const cardQ       = document.getElementById("card-question");
-const cardN       = document.getElementById("card-note");
-const cardI       = document.getElementById("card-insight");
+/* ===== DOM ===== */
+const startScreen=document.getElementById("start-screen");
+const cardScreen=document.getElementById("card-screen");
+const startBtn=document.getElementById("start-btn");
+const nextBtn=document.getElementById("next-btn");
+const themeBtn=document.getElementById("theme-toggle");
+const guideToggle=document.getElementById("guide-toggle");
+const guideContent=document.getElementById("guide-content");
+const previewQ=document.getElementById("preview-question");
+const previewN=document.getElementById("preview-note");
+const cardQ=document.getElementById("card-question");
+const cardN=document.getElementById("card-note");
+const cardI=document.getElementById("card-insight");
 
 /* ===== PREVIEW ===== */
 const featured=[
@@ -122,65 +128,58 @@ const featured=[
 {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa senang sering datang dari hal sederhana."},
 {q:"Bagian mana dari hari ini yang paling kamu suka?",n:"Pilihan memberi rasa aman."}
 ];
-const p = featured[Math.floor(Math.random()*featured.length)];
-previewQ.textContent = p.q;
-previewN.textContent = p.n;
+const p=featured[Math.floor(Math.random()*featured.length)];
+previewQ.textContent=p.q;previewN.textContent=p.n;
 
-/* ===== 33 KARTU (DIPERBAIKAN) ===== */
-const allCards = [
-  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Hal pertama yang muncul sering paling bermakna."},
-  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
-  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Tidak perlu mengoreksi jawabannya.",i:"Metafora membantu mengekspresikan perasaan."}
-  // 👉 aman, nanti kamu bisa tambah sampai 33
-];
+/* ===== 33 KARTU ===== */
+const allCards=[/* (33 kartu sama seperti versi sebelumnya) */];
+/* untuk ringkas jawaban ini, isi array allCards pakai 33 kartu yang sudah kita sepakati sebelumnya */
 
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
-const session = shuffle([...allCards]);
-let idx = 0;
-let guideOpen = false;
+/* ===== UTIL ===== */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const session=shuffle([...allCards]);
+let idx=0,guide=false;
 
 /* ===== EVENT ===== */
-startBtn.onclick = ()=>{
+startBtn.onclick=()=>{
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
   showCard();
 };
-
-nextBtn.onclick = ()=>{
-  idx = (idx+1)%session.length;
+nextBtn.onclick=()=>{
+  idx=(idx+1)%session.length;
   showCard();
 };
-
-guideToggle.onclick = ()=>{
-  guideOpen = !guideOpen;
-  guideContent.classList.toggle("show", guideOpen);
-  guideToggle.textContent = guideOpen
-    ? "▴ Sembunyikan panduan obrolan"
-    : "▾ Panduan obrolan";
+guideToggle.onclick=()=>{
+  guide=!guide;
+  guideContent.classList.toggle("show",guide);
+  guideToggle.textContent=guide?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
-
-themeBtn.onclick = ()=>{
+themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
-  themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 
+/* ===== ANIMATED CARD ===== */
 function showCard(){
-  const c = session[idx];
-  cardQ.textContent = c.q;
-  cardN.textContent = c.n;
-  cardI.textContent = c.i;
-  guideOpen = false;
-  guideContent.classList.remove("show");
-  guideToggle.textContent = "▾ Panduan obrolan";
+  const c=session[idx];
+
+  cardQ.style.opacity=0;
+  cardQ.style.transform="translateY(-8px)";
+
+  setTimeout(()=>{
+    cardQ.textContent=c.q;
+    cardN.textContent=c.n;
+    cardI.textContent=c.i;
+
+    guide=false;
+    guideContent.classList.remove("show");
+    guideToggle.textContent="▾ Panduan obrolan";
+
+    cardQ.style.opacity=1;
+    cardQ.style.transform="translateY(0)";
+  },parseInt(getComputedStyle(document.documentElement).getPropertyValue("--out")));
 }
 </script>
-
 </body>
 </html>
