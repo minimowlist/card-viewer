@@ -20,17 +20,7 @@
   --muted:#6b7280;
   --card:#ffffff;
   --primary:#3b82f6;
-  --border:rgba(0,0,0,.12);
 }
-body.dark{
-  --bg:#0f172a;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --card:#020617;
-  --primary:#60a5fa;
-  --border:rgba(255,255,255,.18);
-}
-
 body{
   background:var(--bg);
   color:var(--text);
@@ -38,7 +28,6 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  transition:background .3s,color .3s;
 }
 
 /* ===== SPLASH ===== */
@@ -56,15 +45,16 @@ body{
   font-size:13px;
   color:var(--muted);
   opacity:0;
-  animation: breathing 2.3s cubic-bezier(.4,0,.2,1) forwards;
+  animation: breathing 3.2s cubic-bezier(.4,0,.2,1) forwards;
 }
 
+/* breathing = tarik → tahan → hembus */
 @keyframes breathing{
   0%   {opacity:0}
-  30%  {opacity:.45}
-  65%  {opacity:.32}
-  85%  {opacity:.32}
-  100% {opacity:0}
+  25%  {opacity:.6}   /* tarik napas */
+  55%  {opacity:.6}   /* tahan */
+  80%  {opacity:.25}  /* hembus */
+  100% {opacity:0}    /* selesai */
 }
 
 /* ===== APP ===== */
@@ -77,9 +67,19 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ===== MENU ===== */
-h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
-.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
+/* MENU */
+h1{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.subtitle{
+  text-align:center;
+  font-size:15px;
+  color:var(--muted);
+  margin-bottom:26px;
+}
 
 .preview-card{
   background:var(--card);
@@ -88,20 +88,39 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600;line-height:1.5}
-.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
-.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
-
-.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
-
-button{
-  width:100%;min-height:56px;font-size:17px;font-weight:600;
-  border-radius:18px;border:none;cursor:pointer;
-  background:var(--primary);color:#fff
+.preview-question{
+  font-size:20px;
+  font-weight:600;
+  line-height:1.5;
+}
+.preview-divider{
+  margin:16px 0;
+  border-top:1px dashed rgba(0,0,0,.12);
+}
+.preview-note{
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
 }
 
-/* ===== CARD (ringkas, fungsi sama) ===== */
-#card-question{font-size:22px;font-weight:600;line-height:1.5}
+.micro-copy{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:32px;
+}
+
+button{
+  width:100%;
+  min-height:56px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:18px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+}
 </style>
 </head>
 
@@ -109,19 +128,30 @@ button{
 
 <!-- SPLASH -->
 <div id="splash-screen">
-  <div class="splash-text">made with ❤️ by bekaldigital</div>
+  <div class="splash-text">
+    made with ❤️ by bekaldigital
+  </div>
 </div>
 
 <div id="app">
   <div id="start-screen" class="screen">
     <h1>Kartu Obrolan Orang Tua</h1>
     <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
+
     <div class="preview-card">
-      <div class="preview-question">Ada hal kecil hari ini yang pengen kamu ceritain?</div>
+      <div class="preview-question">
+        Ada hal kecil hari ini yang pengen kamu ceritain?
+      </div>
       <div class="preview-divider"></div>
-      <div class="preview-note">Cerita kecil sering menjadi pintu menuju perasaan.</div>
+      <div class="preview-note">
+        Cerita kecil sering menjadi pintu menuju perasaan.
+      </div>
     </div>
-    <div class="micro-copy">Tidak perlu lama. Cukup hadir dan mendengarkan.</div>
+
+    <div class="micro-copy">
+      Tidak perlu lama. Cukup hadir dan mendengarkan.
+    </div>
+
     <button>▶︎ Mulai</button>
   </div>
 </div>
@@ -130,12 +160,16 @@ button{
 const splash = document.getElementById("splash-screen");
 const start  = document.getElementById("start-screen");
 
-/* tunggu animasi benar-benar selesai */
+/*
+  Timeline:
+  - 0–3200ms : breathing animation
+  - 3200–3800ms : blank white (hening)
+  - 3800ms+ : show menu
+*/
 setTimeout(()=>{
-  splash.style.opacity = 0;
-  splash.style.pointerEvents = "none";
+  splash.style.display = "none";
   start.classList.add("active");
-},2400);
+},3800);
 </script>
 
 </body>
