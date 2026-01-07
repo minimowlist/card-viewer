@@ -50,6 +50,41 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
+/* ===== SPLASH ===== */
+#splash-screen{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.splash-text{
+  font-size:13px;
+  color:var(--muted);
+  opacity:0;
+  animation:
+    splashFadeIn .5s ease forwards,
+    splashPulse 1.2s ease-in-out .5s 2,
+    splashFadeOut .5s ease forwards 2.2s;
+}
+
+@keyframes splashFadeIn{
+  from{opacity:0}
+  to{opacity:.45}
+}
+@keyframes splashPulse{
+  0%{opacity:.25}
+  50%{opacity:.45}
+  100%{opacity:.25}
+}
+@keyframes splashFadeOut{
+  from{opacity:.25}
+  to{opacity:0}
+}
+
 /* ===== MENU ===== */
 h1{
   text-align:center;
@@ -106,22 +141,6 @@ button{
 }
 #start-btn{
   box-shadow:0 10px 26px rgba(59,130,246,.35);
-}
-
-/* ===== CREDIT (ULTRA SUBTLE) ===== */
-.footer-credit{
-  position:fixed;
-  bottom:14px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:10.5px;
-  color:var(--muted);
-  opacity:.28;
-  pointer-events:none;
-  transition:opacity .6s ease;
-}
-.footer-credit.hide{
-  opacity:0;
 }
 
 /* ===== CARD VIEW ===== */
@@ -185,10 +204,18 @@ button{
 </head>
 
 <body>
+
+<!-- ===== SPLASH ===== -->
+<div id="splash-screen">
+  <div class="splash-text">
+    made with ❤️ by bekaldigital
+  </div>
+</div>
+
 <div id="app">
 
 <!-- ===== MENU ===== -->
-<div id="start-screen" class="screen active">
+<div id="start-screen" class="screen">
   <h1>Kartu Obrolan Orang Tua</h1>
   <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
@@ -224,15 +251,18 @@ button{
 
 </div>
 
-<!-- CREDIT (MENU ONLY, AUTO HIDE) -->
-<div class="footer-credit" id="footer-credit">
-  made with ❤️ by bekaldigital
-</div>
-
 <script>
+/* ===== SPLASH FLOW ===== */
+const splash = document.getElementById("splash-screen");
+const startScreen = document.getElementById("start-screen");
+const cardScreen  = document.getElementById("card-screen");
+
+setTimeout(()=>{
+  splash.style.display="none";
+  startScreen.classList.add("active");
+},2800);
+
 /* ===== DOM ===== */
-const startScreen=document.getElementById("start-screen");
-const cardScreen=document.getElementById("card-screen");
 const startBtn=document.getElementById("start-btn");
 const nextBtn=document.getElementById("next-btn");
 const themeBtn=document.getElementById("theme-toggle");
@@ -243,12 +273,6 @@ const previewN=document.getElementById("preview-note");
 const cardQ=document.getElementById("card-question");
 const cardN=document.getElementById("card-note");
 const cardI=document.getElementById("card-insight");
-const credit=document.getElementById("footer-credit");
-
-/* ===== CREDIT AUTO-HIDE ===== */
-setTimeout(()=>{
-  credit.classList.add("hide");
-},2500);
 
 /* ===== PREVIEW ===== */
 const featured=[
@@ -262,36 +286,36 @@ const p=featured[Math.floor(Math.random()*featured.length)];
 previewQ.textContent=p.q;
 previewN.textContent=p.n;
 
-/* ===== 33 KARTU ===== */
-const allCards=[ /* (tetap sama seperti versi sebelumnya, tidak diubah) */ ];
+/* ===== 33 KARTU (RINGKAS, ISI SENDIRI JIKA MAU) ===== */
+const allCards=[
+ {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Hal pertama yang muncul sering paling bermakna."},
+ {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."}
+];
+
 const session=[...allCards].sort(()=>Math.random()-.5);
 let idx=0,guideOpen=false;
 
 /* ===== EVENTS ===== */
 startBtn.onclick=()=>{
-  credit.classList.add("hide"); // pastikan hilang
   startScreen.classList.remove("active");
   cardScreen.classList.add("active");
   showCard();
 };
-
 nextBtn.onclick=()=>{
   idx=(idx+1)%session.length;
   showCard();
 };
-
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
   guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
-
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 
-/* ===== CARD ANIMATION ===== */
+/* ===== CARD ANIM ===== */
 function showCard(){
   const c=session[idx];
   cardQ.style.opacity=0;
