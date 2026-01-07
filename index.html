@@ -40,10 +40,11 @@ body{
   align-items:center;
   z-index:9999;
   opacity:1;
-  transition:opacity .5s ease;
+  transition:opacity .6s ease;
 }
 
-#splash-screen.fade-out{
+/* fade out layer */
+#splash-screen.fade-layer{
   opacity:0;
 }
 
@@ -54,10 +55,7 @@ body{
   animation: heartbeat 3.2s ease-in-out forwards;
 }
 
-/*
-  5 detak (10 langkah):
-  muncul (.55) → tipis (.22)
-*/
+/* 5 detak = 10 langkah */
 @keyframes heartbeat{
   0%   {opacity:0}
   5%   {opacity:.55}
@@ -89,18 +87,8 @@ body{
 .screen.active{display:block}
 
 /* MENU */
-h1{
-  text-align:center;
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-.subtitle{
-  text-align:center;
-  font-size:15px;
-  color:var(--muted);
-  margin-bottom:26px;
-}
+h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
+.subtitle{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
 
 .preview-card{
   background:var(--card);
@@ -109,38 +97,16 @@ h1{
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{
-  font-size:20px;
-  font-weight:600;
-  line-height:1.5;
-}
-.preview-divider{
-  margin:16px 0;
-  border-top:1px dashed rgba(0,0,0,.12);
-}
-.preview-note{
-  font-size:14.5px;
-  font-style:italic;
-  color:var(--muted);
-}
+.preview-question{font-size:20px;font-weight:600;line-height:1.5}
+.preview-divider{margin:16px 0;border-top:1px dashed rgba(0,0,0,.12)}
+.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
 
-.micro-copy{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:32px;
-}
+.micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
 button{
-  width:100%;
-  min-height:56px;
-  font-size:17px;
-  font-weight:600;
-  border-radius:18px;
-  border:none;
-  cursor:pointer;
-  background:var(--primary);
-  color:#fff;
+  width:100%;min-height:56px;font-size:17px;font-weight:600;
+  border-radius:18px;border:none;cursor:pointer;
+  background:var(--primary);color:#fff
 }
 </style>
 </head>
@@ -182,17 +148,17 @@ const splash = document.getElementById("splash-screen");
 const start  = document.getElementById("start-screen");
 
 /*
-  Timeline:
-  0–3200ms : detak text
-  3200–3700ms : fade-out splash layer
-  3700–4000ms : blank
+  Timeline visual:
+  0–3200ms : detak teks
+  3200–3400ms : teks sudah 0 (hening)
+  3400–4000ms : splash layer fade out
 */
 setTimeout(()=>{
-  splash.classList.add("fade-out");
-},3200);
+  splash.classList.add("fade-layer");
+},3400);
 
 setTimeout(()=>{
-  splash.style.display = "none";
+  splash.remove(); // baru benar-benar hilang
   start.classList.add("active");
 },4000);
 </script>
