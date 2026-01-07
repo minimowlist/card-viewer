@@ -137,7 +137,6 @@ button{
   cursor:pointer;
   margin-top:14px;
 }
-
 #guide-content{
   margin-top:14px;
   border-top:1px dashed var(--border);
@@ -248,23 +247,26 @@ const themeBtn=document.getElementById("theme-toggle");
 let idx=0, guideOpen=false;
 
 function showCard(){
-  const c=cards[idx];
+  const c = cards[idx];
 
+  // reset states
   card.classList.remove("show");
   q.classList.remove("show");
 
-  q.textContent=c.q;
-  n.textContent=c.n;
-  i.textContent=c.i;
+  // set content
+  q.textContent = c.q;
+  n.textContent = c.n;
+  i.textContent = c.i;
 
   guideOpen=false;
   guideContent.classList.remove("show");
   guideToggle.textContent="▾ Panduan obrolan";
 
-  requestAnimationFrame(()=>{
+  // FORCE reflow so animation always triggers
+  setTimeout(()=>{
     card.classList.add("show");
     q.classList.add("show");
-  });
+  },20);
 }
 
 startBtn.onclick=()=>{
