@@ -22,6 +22,13 @@
   --primary:#3b82f6;
   --border:rgba(0,0,0,.12);
 }
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#020617;
+  --border:rgba(255,255,255,.18);
+}
 body{
   background:var(--bg);
   color:var(--text);
@@ -29,6 +36,33 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  transition:background .3s,color .3s;
+}
+
+/* ===== SPLASH ===== */
+#splash{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  transition:opacity .6s ease;
+}
+#splash.fade-out{opacity:0}
+.splash-text{
+  font-size:13px;
+  color:var(--muted);
+  animation:heartbeat 2.4s ease-in-out forwards;
+}
+@keyframes heartbeat{
+  0%{opacity:0}
+  20%{opacity:.6}
+  40%{opacity:.25}
+  60%{opacity:.6}
+  80%{opacity:.25}
+  100%{opacity:0}
 }
 
 /* ===== APP ===== */
@@ -41,6 +75,12 @@ body{
 .screen.active{display:block}
 
 /* ===== MENU ===== */
+#menu{
+  opacity:0;
+  animation:fadeIn 1s ease forwards;
+}
+@keyframes fadeIn{to{opacity:1}}
+
 .title-wrap{text-align:center;margin-bottom:26px}
 .title-wrap h1{font-size:28px;font-weight:700;margin-bottom:8px}
 .title-wrap .subtitle{
@@ -59,6 +99,13 @@ body{
 .preview-question{font-size:20px;font-weight:600}
 .preview-note{font-size:14.5px;color:var(--muted);margin-top:12px}
 
+.micro-copy{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:32px;
+}
+
 button{
   width:100%;
   min-height:56px;
@@ -72,6 +119,18 @@ button{
 }
 
 /* ===== CARD ===== */
+#top-bar{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:8px;
+}
+#theme-toggle{
+  background:none;
+  border:none;
+  font-size:20px;
+  cursor:pointer;
+}
+
 #card{
   background:var(--card);
   border-radius:22px;
@@ -87,7 +146,6 @@ button{
   line-height:1.5;
   animation:fadeInQuestion 1s ease;
 }
-
 @keyframes fadeInQuestion{
   from{opacity:0}
   to{opacity:1}
@@ -105,9 +163,17 @@ button{
   margin-top:14px;
   border-top:1px dashed var(--border);
   padding-top:14px;
-  display:none;
+
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity .35s ease, transform .35s ease;
 }
-#guide.show{display:block}
+#guide.show{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
 
 #note{font-size:14.5px;margin-bottom:8px}
 #insight{font-size:14px;color:var(--muted);font-style:italic}
@@ -116,10 +182,15 @@ button{
 
 <body>
 
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-text">made with ❤️ by bekaldigital</div>
+</div>
+
 <div id="app">
 
 <!-- MENU -->
-<div id="menu" class="screen active">
+<div id="menu" class="screen">
   <div class="title-wrap">
     <h1>Kartu Obrolan Orang Tua</h1>
     <div class="subtitle">Temani obrolan kecil yang bermakna.</div>
@@ -134,11 +205,19 @@ button{
     </div>
   </div>
 
+  <div class="micro-copy">
+    Tidak perlu lama. Cukup hadir dan mendengarkan.
+  </div>
+
   <button id="start">▶︎ Mulai</button>
 </div>
 
-<!-- CARD -->
+<!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
+  <div id="top-bar">
+    <button id="theme-toggle">🌙</button>
+  </div>
+
   <div id="card">
     <div id="question-wrapper"></div>
 
@@ -155,6 +234,15 @@ button{
 </div>
 
 <script>
+/* ===== SPLASH LOGIC ===== */
+const splash=document.getElementById("splash");
+const menu=document.getElementById("menu");
+setTimeout(()=>splash.classList.add("fade-out"),2400);
+setTimeout(()=>{
+  splash.remove();
+  menu.classList.add("active");
+},3000);
+
 /* ===== DATA ===== */
 const cards=[
   {
@@ -175,19 +263,19 @@ const cards=[
 ];
 
 let idx=0;
-const menu=document.getElementById("menu");
+const startBtn=document.getElementById("start");
 const cardScreen=document.getElementById("card-screen");
 const qWrap=document.getElementById("question-wrapper");
 const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const guide=document.getElementById("guide");
 const guideToggle=document.getElementById("guide-toggle");
+const themeToggle=document.getElementById("theme-toggle");
 
-/* ===== RENDER QUESTION (CLONE TRICK) ===== */
+/* ===== RENDER QUESTION (RECREATE NODE) ===== */
 function renderQuestion(){
   const c=cards[idx];
 
-  // create NEW element every time → animation ALWAYS runs
   const q=document.createElement("div");
   q.className="question";
   q.textContent=c.q;
@@ -203,7 +291,7 @@ function renderQuestion(){
 }
 
 /* ===== EVENTS ===== */
-document.getElementById("start").onclick=()=>{
+startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
   renderQuestion();
@@ -220,6 +308,12 @@ guideToggle.onclick=()=>{
     guide.classList.contains("show")
       ?"▴ Sembunyikan panduan obrolan"
       :"▾ Panduan obrolan";
+};
+
+themeToggle.onclick=()=>{
+  document.body.classList.toggle("dark");
+  themeToggle.textContent=
+    document.body.classList.contains("dark") ? "☀️" : "🌙";
 };
 </script>
 
