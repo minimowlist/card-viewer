@@ -1,4 +1,4 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
@@ -69,19 +69,30 @@ button{
 
 /* ===== CARD SCREEN ENTER ===== */
 #card-screen{opacity:0}
-#card-screen.enter{animation:cardEnterFade 1.5s ease forwards}
-@keyframes cardEnterFade{to{opacity:1}}
+#card-screen.enter{animation:cardScreenFade 1.5s ease forwards}
+@keyframes cardScreenFade{to{opacity:1}}
 
-/* ===== CARD ===== */
-#theme-toggle{background:none;border:none;font-size:18px;color:var(--muted);margin-bottom:6px;cursor:pointer}
+/* ===== CARD (WHOLE CARD ANIMATION) ===== */
 #card{
-  background:var(--card);border-radius:22px;padding:28px 22px;
-  margin:16px 0 14px;min-height:260px;
+  background:var(--card);
+  border-radius:22px;
+  padding:28px 22px;
+  margin:16px 0 14px;
+  min-height:260px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
+
+  opacity:0;
+  transition:opacity 1s ease; /* ⬅️ INI KUNCI */
 }
+
+#card.show{
+  opacity:1;
+}
+
 #card-question{
-  font-size:22px;font-weight:600;line-height:1.5;
-  opacity:0;transform:translateY(-6px);
+  font-size:22px;
+  font-weight:600;
+  line-height:1.5;
 }
 
 /* ===== GUIDE ===== */
@@ -121,9 +132,8 @@ button{
   <button id="start-btn">▶︎ Mulai</button>
 </div>
 
-<!-- CARD -->
+<!-- CARD SCREEN -->
 <div id="card-screen" class="screen">
-  <button id="theme-toggle">🌙</button>
   <div id="card">
     <div id="card-question"></div>
     <div id="guide-content">
@@ -131,6 +141,7 @@ button{
       <div id="card-insight"></div>
     </div>
   </div>
+
   <button id="next-btn">▶︎ Berikutnya</button>
   <div id="guide-toggle">▾ Panduan obrolan</div>
 </div>
@@ -159,11 +170,11 @@ const menu=document.getElementById("menu");
 setTimeout(()=>splash.classList.add("fade-out"),2600);
 setTimeout(()=>{
   splash.remove();
-  menu.classList.add("active");   // ⬅️ MENU PASTI MUNCUL
+  menu.classList.add("active");
   setRandomPreview();
 },3200);
 
-/* ===== CARD LOGIC ===== */
+/* ===== CARD LOGIC (WHOLE CARD FADE-IN) ===== */
 const cards=[
  {q:"Hal apa yang paling kamu ingat dari hari ini?",n:"Dengarkan dulu tanpa menyela.",i:"Yang pertama muncul biasanya paling bermakna."},
  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Ikuti ceritanya meski sederhana.",i:"Rasa senang sering datang dari hal kecil."},
@@ -172,34 +183,25 @@ const cards=[
 
 const startBtn=document.getElementById("start-btn");
 const cardScr=document.getElementById("card-screen");
+const cardEl=document.getElementById("card");
 const cardQ=document.getElementById("card-question");
 const cardN=document.getElementById("card-note");
 const cardI=document.getElementById("card-insight");
 const nextBtn=document.getElementById("next-btn");
-const guideToggle=document.getElementById("guide-toggle");
-const guideContent=document.getElementById("guide-content");
-const themeBtn=document.getElementById("theme-toggle");
 
-let idx=0, guideOpen=false, firstEnter=true;
+let idx=0;
 
 function showCard(){
   const c=cards[idx];
-  const delay = firstEnter ? 600 : 0;
 
-  cardQ.style.transition="opacity 1s ease, transform 1s ease";
-  cardQ.style.opacity=0;
-  cardQ.style.transform="translateY(-6px)";
+  cardEl.classList.remove("show"); // reset
+  cardQ.textContent=c.q;
+  cardN.textContent=c.n;
+  cardI.textContent=c.i;
 
-  setTimeout(()=>{
-    cardQ.textContent=c.q;
-    cardN.textContent=c.n;
-    cardI.textContent=c.i;
-    guideOpen=false;guideContent.classList.remove("show");
-    guideToggle.textContent="▾ Panduan obrolan";
-    cardQ.style.opacity=1;
-    cardQ.style.transform="translateY(0)";
-    firstEnter=false;
-  },delay);
+  requestAnimationFrame(()=>{
+    cardEl.classList.add("show"); // fade in 1s
+  });
 }
 
 startBtn.onclick=()=>{
@@ -207,18 +209,10 @@ startBtn.onclick=()=>{
   cardScr.classList.add("active","enter");
   showCard();
 };
+
 nextBtn.onclick=()=>{
   idx=(idx+1)%cards.length;
   showCard();
-};
-guideToggle.onclick=()=>{
-  guideOpen=!guideOpen;
-  guideContent.classList.toggle("show",guideOpen);
-  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
-};
-themeBtn.onclick=()=>{
-  document.body.classList.toggle("dark");
-  themeBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
