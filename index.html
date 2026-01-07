@@ -41,7 +41,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* ===== SPLASH (REVISI DI SINI SAJA) ===== */
+/* ===== SPLASH (FREEZE) ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -51,11 +51,9 @@ body{
   align-items:center;
   z-index:9999;
   opacity:1;
-  transition:opacity .6s ease; /* exit lebih cepat */
+  transition:opacity .6s ease;
 }
-#splash.fade-out{
-  opacity:0;
-}
+#splash.fade-out{opacity:0}
 
 .splash-text{
   font-size:13px;
@@ -63,21 +61,16 @@ body{
   opacity:0;
   animation:heartbeat 2.4s ease-in-out forwards;
 }
-
-/* === 2 DETAK, PELAN & DALAM === */
 @keyframes heartbeat{
-  0%   {opacity:0}
-
-  20%  {opacity:.6}
-  40%  {opacity:.25}
-
-  60%  {opacity:.6}
-  80%  {opacity:.25}
-
-  100% {opacity:0}
+  0%{opacity:0}
+  20%{opacity:.6}
+  40%{opacity:.25}
+  60%{opacity:.6}
+  80%{opacity:.25}
+  100%{opacity:0}
 }
 
-/* ===== APP (FREEZE) ===== */
+/* ===== APP ===== */
 #app{
   width:100%;
   max-width:420px;
@@ -87,7 +80,7 @@ body{
 .screen{display:none}
 .screen.active{display:block}
 
-/* ===== MENU (FREEZE) ===== */
+/* ===== MENU ===== */
 #menu{
   opacity:0;
   animation:menuFadeIn 1s ease forwards;
@@ -104,9 +97,20 @@ h1{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px}
   margin-bottom:30px;
   box-shadow:0 10px 24px rgba(0,0,0,.08);
 }
-.preview-question{font-size:20px;font-weight:600;line-height:1.5}
-.preview-divider{margin:16px 0;border-top:1px dashed var(--border)}
-.preview-note{font-size:14.5px;font-style:italic;color:var(--muted)}
+.preview-question{
+  font-size:20px;
+  font-weight:600;
+  line-height:1.5;
+}
+.preview-divider{
+  margin:16px 0;
+  border-top:1px dashed var(--border);
+}
+.preview-note{
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
 
 .micro-copy{text-align:center;font-size:14px;color:var(--muted);margin-bottom:32px}
 
@@ -122,7 +126,7 @@ button{
   color:#fff;
 }
 
-/* ===== CARD, GUIDE, DARK MODE (FREEZE TOTAL) ===== */
+/* ===== CARD (FREEZE) ===== */
 #theme-toggle{background:none;border:none;font-size:18px;color:var(--muted);margin-bottom:6px;cursor:pointer}
 #card{background:var(--card);border-radius:22px;padding:28px 22px;margin:16px 0 14px;min-height:260px;box-shadow:0 10px 24px rgba(0,0,0,.08)}
 #card-question{font-size:22px;font-weight:600;line-height:1.5;transition:opacity .18s ease,transform .18s ease}
@@ -149,13 +153,9 @@ button{
   <p class="subtitle">Temani obrolan kecil yang bermakna bersama anak.</p>
 
   <div class="preview-card">
-    <div class="preview-question">
-      Ada hal kecil hari ini yang pengen kamu ceritain?
-    </div>
+    <div class="preview-question"></div>
     <div class="preview-divider"></div>
-    <div class="preview-note">
-      Cerita kecil sering menjadi pintu menuju perasaan.
-    </div>
+    <div class="preview-note"></div>
   </div>
 
   <div class="micro-copy">
@@ -182,20 +182,30 @@ button{
 </div>
 
 <script>
-/* ===== SPLASH FLOW (REVISI DI SINI SAJA) ===== */
+/* ===== PREVIEW CARD DATA (MENU SAJA) ===== */
+const previewCards=[
+  {q:"Ada hal kecil hari ini yang pengen kamu ceritain?",n:"Cerita kecil sering jadi pintu menuju perasaan."},
+  {q:"Bagian mana dari hari ini yang paling kamu ingat?",n:"Yang diingat biasanya punya makna emosional."},
+  {q:"Kalau hari ini punya warna, warnanya apa?",n:"Pertanyaan abstrak membantu anak mengekspresikan emosi."},
+  {q:"Ada momen hari ini yang bikin kamu senyum?",n:"Rasa aman sering muncul dari kenangan kecil."},
+  {q:"Hal apa hari ini yang terasa paling menyenangkan?",n:"Fokus ke hal baik melatih kesadaran emosi."}
+];
+
+function setRandomPreview(){
+  const pick=previewCards[Math.floor(Math.random()*previewCards.length)];
+  document.querySelector(".preview-question").textContent=pick.q;
+  document.querySelector(".preview-note").textContent=pick.n;
+}
+
+/* ===== SPLASH FLOW (FREEZE) ===== */
 const splash=document.getElementById("splash");
 const menu=document.getElementById("menu");
 
-/*
-  0–2400ms : 2 detak
-  2400–2600ms : hening
-  2600–3200ms : fade out splash
-*/
-setTimeout(()=> splash.classList.add("fade-out"),2600);
-
+setTimeout(()=>splash.classList.add("fade-out"),2600);
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
+  setRandomPreview(); // ⬅️ RANDOM PREVIEW SET DI SINI
 },3200);
 
 /* ===== CARD LOGIC (FREEZE) ===== */
@@ -245,9 +255,7 @@ nextBtn.onclick=()=>{
 guideToggle.onclick=()=>{
   guideOpen=!guideOpen;
   guideContent.classList.toggle("show",guideOpen);
-  guideToggle.textContent=guideOpen
-    ?"▴ Sembunyikan panduan obrolan"
-    :"▾ Panduan obrolan";
+  guideToggle.textContent=guideOpen?"▴ Sembunyikan panduan obrolan":"▾ Panduan obrolan";
 };
 themeBtn.onclick=()=>{
   document.body.classList.toggle("dark");
