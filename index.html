@@ -13,6 +13,7 @@
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   transition:background-color .15s,color .15s,border-color .15s;
 }
+
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -37,6 +38,30 @@ body{
   align-items:center;
 }
 
+/* SPLASH */
+#splash{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#splash span{
+  font-size:13px;
+  color:var(--muted);
+  animation:splashPulse 3.6s ease-in-out forwards;
+}
+@keyframes splashPulse{
+  0%{opacity:0}
+  25%{opacity:.8}
+  40%{opacity:0}
+  60%{opacity:.8}
+  80%{opacity:0}
+  100%{opacity:0}
+}
+
 /* APP */
 #app{width:100%;max-width:420px;padding:24px}
 .screen{display:none;opacity:0}
@@ -55,11 +80,16 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
+
 button.main{
-  width:100%;height:54px;
-  border:none;border-radius:16px;
-  background:var(--primary);color:#fff;
-  font-size:16px;font-weight:600;
+  width:100%;
+  height:54px;
+  border:none;
+  border-radius:16px;
+  background:var(--primary);
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
   cursor:pointer;
 }
 
@@ -77,21 +107,23 @@ button.main{
   padding:2px 10px;
   border-radius:999px;
   font-size:12px;
+  cursor:pointer;
 }
 #dark-btn{
   border:1px solid var(--border);
   padding:6px 12px;
   border-radius:999px;
-  background:var(--card);
   cursor:pointer;
+  background:var(--card);
 }
 #card{
   background:var(--card);
   border-radius:22px;
-  padding:24px 20px 18px;
-  min-height:300px;
-  touch-action:none; /* 🔥 penting untuk swipe */
+  padding:24px 20px;
+  min-height:260px;
 }
+
+/* 🔥 SATU-SATUNYA ANIMASI */
 .question{
   font-size:21px;
   font-weight:600;
@@ -126,37 +158,58 @@ button.main{
   cursor:pointer;
 }
 
-/* DOT INDICATOR */
-.dots{
-  display:flex;
+/* CATEGORY SHEET */
+#sheet{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
   justify-content:center;
-  gap:10px;
-  margin-top:14px;
+  align-items:flex-end;
 }
-.dot{
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--muted);
-  opacity:.4;
+#sheet.show{display:flex}
+.sheet-box{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:18px 18px 0 0;
+  padding:20px;
 }
-.dot.active{opacity:1}
+.sheet-box div{
+  padding:12px 0;
+  cursor:pointer;
+}
+.sheet-box div:not(:last-child){
+  border-bottom:1px dashed var(--border);
+}
+.sheet-box small{
+  display:block;
+  margin-top:12px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+}
 </style>
 </head>
 
 <body>
 
+<div id="splash"><span>made with ❤️ by bekaldigital</span></div>
+
 <div id="app">
 
 <!-- MENU -->
-<div id="menu" class="screen active">
+<div id="menu" class="screen">
   <h1>Parent Quality Time</h1>
   <div class="subtitle">Obrolan sederhana untuk membangun kedekatan orang tua dan anak</div>
+
   <div class="preview-card">
     <div id="previewQ"></div>
     <div class="preview-divider"></div>
     <div class="preview-note" id="previewN"></div>
   </div>
-  <div class="micro">Tidak perlu lama. Yang penting hadir sepenuhnya.</div>
+
+  <div class="micro">Tidak perlu waktu lama.<br>Yang penting hadir sepenuhnya.</div>
   <button class="main" id="startBtn">Mulai obrolan</button>
 </div>
 
@@ -172,16 +225,9 @@ button.main{
 
   <div id="card">
     <div id="question" class="question"></div>
-
     <div id="guide">
       <div id="note"></div>
       <div id="insight"></div>
-    </div>
-
-    <div class="dots">
-      <div class="dot"></div>
-      <div class="dot active"></div>
-      <div class="dot"></div>
     </div>
   </div>
 
@@ -191,36 +237,55 @@ button.main{
 
 </div>
 
+<!-- CATEGORY -->
+<div id="sheet">
+  <div class="sheet-box">
+    <div data-i="0">💬 Pembuka</div>
+    <div data-i="1">📖 Cerita</div>
+    <div data-i="2">😊 Perasaan</div>
+    <div data-i="3">🌙 Penutup</div>
+    <small>Pilih sesi</small>
+  </div>
+</div>
+
 <script>
 /* DOM */
-const menu=document.getElementById("menu");
-const cardScreen=document.getElementById("card-screen");
-const startBtn=document.getElementById("startBtn");
-const nextBtn=document.getElementById("nextBtn");
-const question=document.getElementById("question");
-const note=document.getElementById("note");
-const insight=document.getElementById("insight");
-const progress=document.getElementById("progress");
-const categoryChip=document.getElementById("category-chip");
-const guide=document.getElementById("guide");
-const guideToggle=document.getElementById("guide-toggle");
-const darkBtn=document.getElementById("dark-btn");
-const card=document.getElementById("card");
-const previewQ=document.getElementById("previewQ");
-const previewN=document.getElementById("previewN");
+const splash = document.getElementById("splash");
+const menu = document.getElementById("menu");
+const cardScreen = document.getElementById("card-screen");
+const startBtn = document.getElementById("startBtn");
+const nextBtn = document.getElementById("nextBtn");
+const question = document.getElementById("question");
+const note = document.getElementById("note");
+const insight = document.getElementById("insight");
+const progress = document.getElementById("progress");
+const categoryChip = document.getElementById("category-chip");
+const guide = document.getElementById("guide");
+const guideToggle = document.getElementById("guide-toggle");
+const darkBtn = document.getElementById("dark-btn");
+const sheet = document.getElementById("sheet");
+const previewQ = document.getElementById("previewQ");
+const previewN = document.getElementById("previewN");
+
+/* SPLASH */
+setTimeout(()=>{
+  splash.remove();
+  menu.classList.add("active");
+},3600);
 
 /* PREVIEW */
 const previews=[
-["Ada momen kecil hari ini yang bikin kamu senyum?","Pembuka yang aman dan ringan."],
-["Bagian mana dari hari ini yang paling kamu ingat?","Mengajak anak bercerita."],
-["Kalau hari ini jadi cerita, judulnya apa?","Melatih refleksi sederhana."]
+ ["Ada momen kecil hari ini yang bikin kamu senyum?","Pertanyaan ringan untuk membuka obrolan."],
+ ["Bagian mana dari hari ini yang paling kamu ingat?","Membantu anak mulai bercerita."],
+ ["Kalau hari ini jadi cerita, judulnya apa?","Melatih ekspresi sederhana."]
 ];
-const pv=previews[Math.floor(Math.random()*previews.length)];
-previewQ.textContent=pv[0];
-previewN.textContent=pv[1];
+const p=previews[Math.floor(Math.random()*previews.length)];
+previewQ.textContent=p[0];
+previewN.textContent=p[1];
 
-/* 33 KARTU */
-const cards=[
+/* DATA (33) */
+const flow=[
+{icon:"💬",name:"Pembuka",cards:[
 "Hal kecil apa hari ini yang bikin kamu senyum?",
 "Ada kejadian sederhana yang masih kamu ingat?",
 "Siapa orang yang paling kamu ingat hari ini?",
@@ -228,8 +293,9 @@ const cards=[
 "Kalau hari ini pelan, rasanya seperti apa?",
 "Ada hal yang ingin kamu ceritakan tapi belum sempat?",
 "Kalau hari ini punya judul, apa judulnya?",
-"Ada satu momen yang ingin kamu ulangi?",
-
+"Ada satu momen yang ingin kamu ulangi?"
+]},
+{icon:"📖",name:"Cerita",cards:[
 "Bagian mana dari hari ini yang paling seru?",
 "Ada kejadian lucu yang ingin kamu ceritakan?",
 "Apa hal baru yang kamu alami hari ini?",
@@ -238,8 +304,9 @@ const cards=[
 "Ada kejadian yang bikin kamu berpikir?",
 "Bagian hari ini yang paling menantang apa?",
 "Kalau cerita hari ini diceritakan lagi, bagian mana yang penting?",
-"Apa cerita kecil yang hampir terlupa?",
-
+"Apa cerita kecil yang hampir terlupa?"
+]},
+{icon:"😊",name:"Perasaan",cards:[
 "Kalau perasaanmu hari ini jadi warna, warnanya apa?",
 "Ada perasaan yang paling sering muncul hari ini?",
 "Hari ini lebih banyak senang atau capek?",
@@ -247,70 +314,74 @@ const cards=[
 "Kalau perasaanmu punya suara, nadanya bagaimana?",
 "Ada hal yang bikin kamu kesal hari ini?",
 "Perasaan apa yang ingin kamu rasakan besok?",
-"Apa perasaan yang ingin kamu simpan?",
-
+"Apa perasaan yang ingin kamu simpan?"
+]},
+{icon:"🌙",name:"Penutup",cards:[
 "Ada hal yang ingin kamu syukuri hari ini?",
 "Kalau hari ini ditutup doa, mau doa apa?",
 "Apa satu kata untuk hari ini?",
 "Ada hal yang ingin kamu lepaskan sebelum tidur?",
 "Sebelum tidur, mau bilang apa ke diri sendiri?",
 "Apa hal kecil yang membuatmu tenang malam ini?",
-"Besok ada hal yang kamu tunggu?"
+"Besok ada hal yang kamu tunggu?",
+"Siapkah kita istirahat bersama?"
+]}
 ];
 
-let index=0;
+let catIndex=0, cardIndex=0;
 
-/* RENDER */
+/* RENDER — SATU ATURAN */
 function render(){
+  const c = flow[catIndex];
+  const q = c.cards[cardIndex];
+
   question.classList.remove("show");
-  question.textContent="";
-  void question.offsetWidth;
-  question.textContent=cards[index];
+  question.textContent = "";
+  void question.offsetWidth;   // pastikan opacity 0 terbaca
+  question.textContent = q;
   question.classList.add("show");
 
-  note.textContent="Dengarkan tanpa menyela.";
-  insight.textContent="Tidak perlu mengoreksi.";
+  note.textContent = "Dengarkan tanpa menyela.";
+  insight.textContent = "Biarkan obrolan mengalir.";
 
-  progress.textContent=`Obrolan ${index+1} / ${cards.length}`;
-  categoryChip.textContent=" Refleksi";
+  progress.textContent = `Obrolan ${cardIndex+1} / ${c.cards.length}`;
+  categoryChip.textContent = ` ${c.icon} ${c.name}`;
   guide.classList.remove("show");
 }
 
-/* FLOW */
-startBtn.onclick=()=>{
+/* EVENTS */
+startBtn.onclick = ()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
   render();
 };
-nextBtn.onclick=()=>goNext();
 
-function goNext(){
-  if(index<cards.length-1) index++;
-  render();
-}
-function goPrev(){
-  if(index>0) index--;
-  render();
-}
-
-/* SWIPE */
-let startX=0;
-card.addEventListener("touchstart",e=>{
-  startX=e.touches[0].clientX;
-},{passive:false});
-card.addEventListener("touchend",e=>{
-  const dx=e.changedTouches[0].clientX-startX;
-  if(Math.abs(dx)>40){
-    dx<0?goNext():goPrev();
+nextBtn.onclick = ()=>{
+  cardIndex++;
+  if(cardIndex >= flow[catIndex].cards.length){
+    catIndex = Math.min(catIndex+1, flow.length-1);
+    cardIndex = 0;
   }
-},{passive:false});
-
-/* OTHERS */
-guideToggle.onclick=()=>guide.classList.toggle("show");
-darkBtn.onclick=()=>{
-  document.body.classList.toggle("dark");
-  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  render();
 };
+
+guideToggle.onclick = ()=>guide.classList.toggle("show");
+
+darkBtn.onclick = ()=>{
+  document.body.classList.toggle("dark");
+  darkBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+};
+
+categoryChip.onclick = ()=>sheet.classList.add("show");
+sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("show"); };
+document.querySelectorAll("[data-i]").forEach(el=>{
+  el.onclick = ()=>{
+    catIndex = +el.dataset.i;
+    cardIndex = 0;
+    sheet.classList.remove("show");
+    render();
+  };
+});
 </script>
 
 </body>
