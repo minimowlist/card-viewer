@@ -6,8 +6,15 @@
 <title>Parent Quality Time</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  transition:background-color .3s,color .3s,border-color .3s;
+}
 
+/* ===== THEME ===== */
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -23,6 +30,7 @@ body.dark{
   --card:#020617;
   --border:rgba(255,255,255,.25);
 }
+
 body{
   background:var(--bg);
   color:var(--text);
@@ -30,40 +38,14 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  transition:.25s;
 }
 
-/* SPLASH */
-#splash{
-  position:fixed;
-  inset:0;
-  background:var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-#splash span{
-  font-size:13px;
-  color:var(--muted);
-  animation:splashPulse 3.6s ease-in-out forwards;
-}
-@keyframes splashPulse{
-  0%{opacity:0}
-  30%{opacity:.8}
-  45%{opacity:0}
-  65%{opacity:.8}
-  85%{opacity:0}
-  100%{opacity:0}
-}
-
-/* APP */
+/* ===== APP ===== */
 #app{width:100%;max-width:420px;padding:24px}
-.screen{display:none;opacity:0}
-.screen.active{display:block;animation:fadeIn .6s ease forwards}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.screen{display:none}
+.screen.active{display:block}
 
-/* MENU */
+/* ===== MENU ===== */
 h1{text-align:center;font-size:26px;margin-bottom:6px}
 .subtitle{text-align:center;font-size:14.5px;color:var(--muted)}
 .preview-card{
@@ -75,6 +57,7 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
+
 button.main{
   width:100%;
   height:54px;
@@ -87,7 +70,7 @@ button.main{
   cursor:pointer;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 #top{
   display:flex;
   justify-content:space-between;
@@ -107,14 +90,13 @@ button.main{
   border-radius:999px;
   font-size:12px;
   cursor:pointer;
-  background:transparent;
 }
 #dark-btn{
   border:1px solid var(--border);
+  padding:6px 12px;
   border-radius:999px;
-  padding:4px 10px;
   cursor:pointer;
-  background:transparent;
+  background:var(--card);
   font-size:14px;
 }
 
@@ -134,7 +116,7 @@ button.main{
 }
 .question.show{opacity:1}
 
-/* GUIDE */
+/* ===== GUIDE ===== */
 #guide{
   margin-top:14px;
   padding-top:14px;
@@ -188,12 +170,10 @@ button.main{
 
 <body>
 
-<div id="splash"><span>made with ❤️ by bekaldigital</span></div>
-
 <div id="app">
 
 <!-- MENU -->
-<div id="menu" class="screen">
+<div id="menu" class="screen active">
   <h1>Parent Quality Time</h1>
   <div class="subtitle">Obrolan sederhana untuk membangun kedekatan orang tua dan anak</div>
 
@@ -234,20 +214,14 @@ button.main{
 <!-- CATEGORY SHEET -->
 <div id="sheet">
   <div class="sheet-box">
-    <div data-i="0">Pembuka</div>
-    <div data-i="1">Cerita</div>
-    <div data-i="2">Perasaan</div>
-    <div data-i="3">Penutup</div>
+    <div data-cat="Pembuka">Pembuka</div>
+    <div data-cat="Cerita">Cerita</div>
+    <div data-cat="Perasaan">Perasaan</div>
+    <div data-cat="Penutup">Penutup</div>
   </div>
 </div>
 
 <script>
-/* SPLASH */
-setTimeout(()=>{
-  document.getElementById("splash").remove();
-  document.getElementById("menu").classList.add("active");
-},3600);
-
 /* PREVIEW */
 const previews=[
  ["Ada momen kecil hari ini yang bikin kamu senyum?","Pertanyaan ringan untuk membuka obrolan."],
@@ -258,33 +232,46 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* SESSION */
+/* DATA */
 const session=[
  {cat:"Pembuka",q:"Ada hal kecil hari ini yang bikin kamu senyum?",n:"Biarkan anak menjawab bebas.",i:"Hal kecil membuka obrolan."},
- {cat:"Cerita",q:"Tadi di sekolah, bagian mana yang paling kamu suka?",n:"Dengarkan tanpa menilai.",i:"Cerita tumbuh dari rasa aman."},
- {cat:"Perasaan",q:"Kalau perasaanmu hari ini jadi warna, warnanya apa?",n:"Tidak perlu alasan.",i:"Metafora memudahkan cerita."},
- {cat:"Penutup",q:"Sebelum istirahat, ada hal yang ingin kamu ceritakan?",n:"Biarkan anak menutup.",i:"Penutup yang hangat penting."}
+ {cat:"Pembuka",q:"Tadi sebelum tidur, hal apa yang paling kamu ingat hari ini?",n:"Jangan disela.",i:"Anak belajar merangkai cerita."},
+ {cat:"Pembuka",q:"Kalau hari ini ada satu hal yang ingin kamu ceritakan, apa itu?",n:"Ikuti arah anak.",i:"Rasa aman muncul saat didengar."},
+
+ {cat:"Cerita",q:"Bagian mana dari hari ini yang paling seru?",n:"Dengarkan tanpa menilai.",i:"Cerita tumbuh dari rasa aman."},
+ {cat:"Cerita",q:"Ada kejadian lucu hari ini?",n:"Tertawalah bersama.",i:"Humor memperkuat koneksi."},
+ {cat:"Cerita",q:"Kalau kejadian hari ini jadi cerita, judulnya apa?",n:"Tidak perlu sempurna.",i:"Imajinasi melatih ekspresi."},
+
+ {cat:"Perasaan",q:"Kalau perasaanmu hari ini jadi warna, warnanya apa?",n:"Terima jawabannya.",i:"Anak belajar mengenali emosi."},
+ {cat:"Perasaan",q:"Hari ini lebih banyak senang atau capek?",n:"Validasi perasaan.",i:"Perasaan yang diakui terasa aman."},
+ {cat:"Perasaan",q:"Ada hal yang bikin kamu kesal hari ini?",n:"Jangan buru-buru solusi.",i:"Didengar lebih penting dari nasihat."},
+
+ {cat:"Penutup",q:"Hari ini ada hal yang ingin kamu syukuri?",n:"Ikut menyebutkan.",i:"Syukur menutup hari dengan tenang."},
+ {cat:"Penutup",q:"Besok ada hal yang kamu tunggu?",n:"Bangun harapan.",i:"Antisipasi memberi energi."},
+ {cat:"Penutup",q:"Kalau hari ini ditutup dengan doa, mau doa apa?",n:"Hening sejenak.",i:"Penutup yang menenangkan."}
 ];
+
 let idx=0;
 
 /* ELEMENTS */
 const menu=document.getElementById("menu");
 const cardScreen=document.getElementById("card-screen");
-const questionEl=document.getElementById("question");
+const question=document.getElementById("question");
 const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
 const categoryBtn=document.getElementById("category-btn");
-const sheet=document.getElementById("sheet");
 const guide=document.getElementById("guide");
+const sheet=document.getElementById("sheet");
+const darkBtn=document.getElementById("dark-btn");
 
 /* RENDER */
 function render(){
   const c=session[idx];
-  questionEl.classList.remove("show");
+  question.classList.remove("show");
   setTimeout(()=>{
-    questionEl.textContent=c.q;
-    questionEl.classList.add("show");
+    question.textContent=c.q;
+    question.classList.add("show");
   },50);
 
   note.textContent=c.n;
@@ -311,9 +298,9 @@ nextBtn.onclick=()=>{
 categoryBtn.onclick=()=>sheet.classList.add("show");
 sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
 
-document.querySelectorAll("#sheet [data-i]").forEach(el=>{
+document.querySelectorAll("#sheet [data-cat]").forEach(el=>{
   el.onclick=()=>{
-    idx = +el.dataset.i;
+    idx=session.findIndex(s=>s.cat===el.dataset.cat);
     sheet.classList.remove("show");
     render();
   };
@@ -321,9 +308,9 @@ document.querySelectorAll("#sheet [data-i]").forEach(el=>{
 
 document.getElementById("guide-toggle").onclick=()=>guide.classList.toggle("show");
 
-dark-btn.onclick=()=>{
+darkBtn.onclick=()=>{
   document.body.classList.toggle("dark");
-  dark-btn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
