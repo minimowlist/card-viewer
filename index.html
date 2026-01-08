@@ -13,6 +13,7 @@
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   transition:background-color .15s,color .15s,border-color .15s;
 }
+
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -79,6 +80,7 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
+
 button.main{
   width:100%;
   height:54px;
@@ -120,6 +122,8 @@ button.main{
   padding:24px 20px;
   min-height:260px;
 }
+
+/* 🔥 SATU-SATUNYA ANIMASI */
 .question{
   font-size:21px;
   font-weight:600;
@@ -194,6 +198,7 @@ button.main{
 
 <div id="app">
 
+<!-- MENU -->
 <div id="menu" class="screen">
   <h1>Parent Quality Time</h1>
   <div class="subtitle">Obrolan sederhana untuk membangun kedekatan orang tua dan anak</div>
@@ -208,6 +213,7 @@ button.main{
   <button class="main" id="startBtn">Mulai obrolan</button>
 </div>
 
+<!-- CARD -->
 <div id="card-screen" class="screen">
   <div id="top">
     <div>
@@ -231,6 +237,7 @@ button.main{
 
 </div>
 
+<!-- CATEGORY -->
 <div id="sheet">
   <div class="sheet-box">
     <div data-i="0">💬 Pembuka</div>
@@ -276,7 +283,7 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA 33 KARTU */
+/* DATA (33) */
 const flow=[
 {icon:"💬",name:"Pembuka",cards:[
 "Hal kecil apa hari ini yang bikin kamu senyum?",
@@ -323,53 +330,54 @@ const flow=[
 
 let catIndex=0, cardIndex=0;
 
-/* RENDER */
+/* RENDER — SATU ATURAN */
 function render(){
-  const c=flow[catIndex];
-  const q=c.cards[cardIndex];
+  const c = flow[catIndex];
+  const q = c.cards[cardIndex];
 
   question.classList.remove("show");
-  question.textContent=q;
-  void question.offsetWidth;
+  question.textContent = "";
+  void question.offsetWidth;   // pastikan opacity 0 terbaca
+  question.textContent = q;
   question.classList.add("show");
 
-  note.textContent="Dengarkan tanpa menyela.";
-  insight.textContent="Biarkan obrolan mengalir.";
+  note.textContent = "Dengarkan tanpa menyela.";
+  insight.textContent = "Biarkan obrolan mengalir.";
 
-  progress.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
-  categoryChip.textContent=` ${c.icon} ${c.name}`;
+  progress.textContent = `Obrolan ${cardIndex+1} / ${c.cards.length}`;
+  categoryChip.textContent = ` ${c.icon} ${c.name}`;
   guide.classList.remove("show");
 }
 
-/* FLOW */
-startBtn.onclick=()=>{
+/* EVENTS */
+startBtn.onclick = ()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
-
-  // 🔑 tunggu satu frame agar screen benar-benar tampil
-  requestAnimationFrame(()=>{
-    render();
-  });
+  render();
 };
-nextBtn.onclick=()=>{
+
+nextBtn.onclick = ()=>{
   cardIndex++;
-  if(cardIndex>=flow[catIndex].cards.length){
-    catIndex=Math.min(catIndex+1,flow.length-1);
-    cardIndex=0;
+  if(cardIndex >= flow[catIndex].cards.length){
+    catIndex = Math.min(catIndex+1, flow.length-1);
+    cardIndex = 0;
   }
   render();
 };
-guideToggle.onclick=()=>guide.classList.toggle("show");
-darkBtn.onclick=()=>{
+
+guideToggle.onclick = ()=>guide.classList.toggle("show");
+
+darkBtn.onclick = ()=>{
   document.body.classList.toggle("dark");
-  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  darkBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 };
-categoryChip.onclick=()=>sheet.classList.add("show");
-sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
+
+categoryChip.onclick = ()=>sheet.classList.add("show");
+sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("show"); };
 document.querySelectorAll("[data-i]").forEach(el=>{
-  el.onclick=()=>{
-    catIndex=+el.dataset.i;
-    cardIndex=0;
+  el.onclick = ()=>{
+    catIndex = +el.dataset.i;
+    cardIndex = 0;
     sheet.classList.remove("show");
     render();
   };
