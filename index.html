@@ -98,7 +98,14 @@ button{
   color:var(--muted);
   margin-bottom:10px;
 }
-#category{cursor:pointer}
+
+/* 🔧 FIX UTAMA */
+#category{
+  cursor:pointer;
+  position:relative;
+  z-index:10;
+  pointer-events:auto;
+}
 
 #card{
   background:var(--card);
@@ -138,6 +145,40 @@ button{
   font-size:14px;
   color:var(--muted);
   cursor:pointer;
+}
+
+/* ===== CATEGORY SHEET ===== */
+#sheet{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  justify-content:center;
+  align-items:flex-end;
+  z-index:20;
+}
+#sheet.show{display:flex}
+.sheet-box{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:18px 18px 0 0;
+  padding:20px;
+}
+.sheet-box div{
+  padding:12px 0;
+  font-size:15px;
+  cursor:pointer;
+}
+.sheet-box div:not(:last-child){
+  border-bottom:1px dashed var(--border);
+}
+.sheet-box small{
+  display:block;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
 }
 </style>
 </head>
@@ -185,6 +226,17 @@ button{
 
 </div>
 
+<!-- CATEGORY SHEET -->
+<div id="sheet">
+  <div class="sheet-box">
+    <div data-cat="Pembuka">💬 Pembuka</div>
+    <div data-cat="Cerita">📖 Cerita</div>
+    <div data-cat="Perasaan">😊 Perasaan</div>
+    <div data-cat="Penutup">🌙 Penutup</div>
+    <small>Tidak perlu diselesaikan sekarang.</small>
+  </div>
+</div>
+
 <script>
 /* ===== SPLASH ===== */
 const splash=document.getElementById("splash");
@@ -202,8 +254,8 @@ const previews=[
  ["Kalau hari ini jadi cerita, judulnya apa?","Melatih ekspresi sederhana."]
 ];
 const p=previews[Math.floor(Math.random()*previews.length)];
-previewQ.textContent=p[0];
-previewN.textContent=p[1];
+document.getElementById("previewQ").textContent=p[0];
+document.getElementById("previewN").textContent=p[1];
 
 /* ===== SESSION ===== */
 const session=[
@@ -222,6 +274,8 @@ const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
 const guide=document.getElementById("guide");
+const category=document.getElementById("category");
+const sheet=document.getElementById("sheet");
 
 /* ===== RENDER ===== */
 function render(){
@@ -251,6 +305,21 @@ nextBtn.onclick=()=>{
 document.getElementById("guide-toggle").onclick=()=>{
   guide.classList.toggle("show");
 };
+
+category.onclick=()=>{
+  sheet.classList.add("show");
+};
+
+sheet.onclick=e=>{
+  if(e.target===sheet) sheet.classList.remove("show");
+};
+
+document.querySelectorAll("#sheet [data-cat]").forEach(el=>{
+  el.onclick=()=>{
+    category.textContent=`· ${el.textContent}`;
+    sheet.classList.remove("show");
+  };
+});
 </script>
 
 </body>
