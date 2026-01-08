@@ -30,7 +30,6 @@ body.dark{
   --card:#020617;
   --border:rgba(255,255,255,.25);
 }
-
 body{
   background:var(--bg);
   color:var(--text);
@@ -38,6 +37,30 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+}
+
+/* ===== SPLASH ===== */
+#splash{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#splash span{
+  font-size:13px;
+  color:var(--muted);
+  animation:splashPulse 3.6s ease-in-out forwards;
+}
+@keyframes splashPulse{
+  0%{opacity:0}
+  25%{opacity:.8}
+  40%{opacity:0}
+  60%{opacity:.8}
+  80%{opacity:0}
+  100%{opacity:0}
 }
 
 /* ===== APP ===== */
@@ -48,15 +71,29 @@ body{
 /* ===== MENU ===== */
 h1{text-align:center;font-size:26px;margin-bottom:6px}
 .subtitle{text-align:center;font-size:14.5px;color:var(--muted)}
+
 .preview-card{
   background:var(--card);
   border-radius:20px;
   padding:20px;
   margin:22px 0;
 }
-.preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
-.preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
-.micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
+.preview-divider{
+  margin:12px 0;
+  border-top:1px dashed var(--border)
+}
+.preview-note{
+  font-size:13.5px;
+  color:var(--muted);
+  font-style:italic
+}
+
+.micro{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:26px
+}
 
 button.main{
   width:100%;
@@ -77,19 +114,13 @@ button.main{
   align-items:center;
   font-size:13px;
   margin-bottom:10px;
-}
-#left-info{
-  display:flex;
-  gap:8px;
-  align-items:center;
   color:var(--muted);
 }
-#category-btn{
+#category-chip{
   border:1px solid var(--border);
   padding:2px 10px;
   border-radius:999px;
   font-size:12px;
-  cursor:pointer;
 }
 #dark-btn{
   border:1px solid var(--border);
@@ -97,7 +128,6 @@ button.main{
   border-radius:999px;
   cursor:pointer;
   background:var(--card);
-  font-size:14px;
 }
 
 #card{
@@ -140,40 +170,18 @@ button.main{
   color:var(--muted);
   cursor:pointer;
 }
-
-/* CATEGORY SHEET */
-#sheet{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.35);
-  display:none;
-  justify-content:center;
-  align-items:flex-end;
-}
-#sheet.show{display:flex}
-.sheet-box{
-  background:var(--card);
-  width:100%;
-  max-width:420px;
-  border-radius:18px 18px 0 0;
-  padding:20px;
-}
-.sheet-box div{
-  padding:12px 0;
-  cursor:pointer;
-}
-.sheet-box div:not(:last-child){
-  border-bottom:1px dashed var(--border);
-}
 </style>
 </head>
 
 <body>
 
+<!-- SPLASH -->
+<div id="splash"><span>made with ❤️ by bekaldigital</span></div>
+
 <div id="app">
 
 <!-- MENU -->
-<div id="menu" class="screen active">
+<div id="menu" class="screen">
   <h1>Parent Quality Time</h1>
   <div class="subtitle">Obrolan sederhana untuk membangun kedekatan orang tua dan anak</div>
 
@@ -183,22 +191,27 @@ button.main{
     <div class="preview-note" id="previewN"></div>
   </div>
 
-  <div class="micro">Tidak perlu waktu lama.<br>Yang penting hadir sepenuhnya.</div>
+  <div class="micro">
+    Tidak perlu waktu lama.<br>
+    Yang penting hadir sepenuhnya.
+  </div>
+
   <button class="main" id="startBtn">Mulai obrolan</button>
 </div>
 
 <!-- CARD -->
 <div id="card-screen" class="screen">
   <div id="top">
-    <div id="left-info">
+    <div>
       <span id="progress"></span>
-      <div id="category-btn"></div>
+      <span id="category-chip"></span>
     </div>
     <button id="dark-btn">🌙</button>
   </div>
 
   <div id="card">
     <div id="question" class="question"></div>
+
     <div id="guide">
       <div id="note"></div>
       <div id="insight"></div>
@@ -211,17 +224,13 @@ button.main{
 
 </div>
 
-<!-- CATEGORY SHEET -->
-<div id="sheet">
-  <div class="sheet-box">
-    <div data-cat="Pembuka">Pembuka</div>
-    <div data-cat="Cerita">Cerita</div>
-    <div data-cat="Perasaan">Perasaan</div>
-    <div data-cat="Penutup">Penutup</div>
-  </div>
-</div>
-
 <script>
+/* SPLASH */
+setTimeout(()=>{
+  document.getElementById("splash").remove();
+  document.getElementById("menu").classList.add("active");
+},3600);
+
 /* PREVIEW */
 const previews=[
  ["Ada momen kecil hari ini yang bikin kamu senyum?","Pertanyaan ringan untuk membuka obrolan."],
@@ -232,26 +241,36 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA */
-const session=[
- {cat:"Pembuka",q:"Ada hal kecil hari ini yang bikin kamu senyum?",n:"Biarkan anak menjawab bebas.",i:"Hal kecil membuka obrolan."},
- {cat:"Pembuka",q:"Tadi sebelum tidur, hal apa yang paling kamu ingat hari ini?",n:"Jangan disela.",i:"Anak belajar merangkai cerita."},
- {cat:"Pembuka",q:"Kalau hari ini ada satu hal yang ingin kamu ceritakan, apa itu?",n:"Ikuti arah anak.",i:"Rasa aman muncul saat didengar."},
-
- {cat:"Cerita",q:"Bagian mana dari hari ini yang paling seru?",n:"Dengarkan tanpa menilai.",i:"Cerita tumbuh dari rasa aman."},
- {cat:"Cerita",q:"Ada kejadian lucu hari ini?",n:"Tertawalah bersama.",i:"Humor memperkuat koneksi."},
- {cat:"Cerita",q:"Kalau kejadian hari ini jadi cerita, judulnya apa?",n:"Tidak perlu sempurna.",i:"Imajinasi melatih ekspresi."},
-
- {cat:"Perasaan",q:"Kalau perasaanmu hari ini jadi warna, warnanya apa?",n:"Terima jawabannya.",i:"Anak belajar mengenali emosi."},
- {cat:"Perasaan",q:"Hari ini lebih banyak senang atau capek?",n:"Validasi perasaan.",i:"Perasaan yang diakui terasa aman."},
- {cat:"Perasaan",q:"Ada hal yang bikin kamu kesal hari ini?",n:"Jangan buru-buru solusi.",i:"Didengar lebih penting dari nasihat."},
-
- {cat:"Penutup",q:"Hari ini ada hal yang ingin kamu syukuri?",n:"Ikut menyebutkan.",i:"Syukur menutup hari dengan tenang."},
- {cat:"Penutup",q:"Besok ada hal yang kamu tunggu?",n:"Bangun harapan.",i:"Antisipasi memberi energi."},
- {cat:"Penutup",q:"Kalau hari ini ditutup dengan doa, mau doa apa?",n:"Hening sejenak.",i:"Penutup yang menenangkan."}
+/* DATA PER KATEGORI (4 KARTU PER SESI) */
+const flow=[
+ {name:"Pembuka",cards:[
+  ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
+  ["Tadi sebelum tidur, hal apa yang paling kamu ingat?","Jangan disela.","Anak belajar merangkai cerita."],
+  ["Kalau hari ini ada satu hal yang ingin kamu ceritakan, apa itu?","Ikuti arah anak.","Rasa aman muncul saat didengar."],
+  ["Hari ini lebih banyak senang atau capek?","Validasi perasaan.","Perasaan yang diakui terasa aman."]
+ ]},
+ {name:"Cerita",cards:[
+  ["Bagian mana dari hari ini yang paling seru?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."],
+  ["Ada kejadian lucu hari ini?","Tertawalah bersama.","Humor memperkuat koneksi."],
+  ["Kalau kejadian hari ini jadi cerita, judulnya apa?","Tidak perlu sempurna.","Imajinasi melatih ekspresi."],
+  ["Ada bagian hari ini yang ingin kamu ulangi?","Biarkan anak memilih.","Refleksi ringan membantu makna."]
+ ]},
+ {name:"Perasaan",cards:[
+  ["Kalau perasaanmu jadi warna, warnanya apa?","Terima jawabannya.","Mengenali emosi itu penting."],
+  ["Ada hal yang bikin kamu kesal hari ini?","Jangan buru-buru solusi.","Didengar lebih penting."],
+  ["Hari ini lebih banyak bangga atau kecewa?","Jaga nada.","Emosi campur itu normal."],
+  ["Kalau perasaan itu suara, nadanya bagaimana?","Mainkan imajinasi.","Anak belajar ekspresi."]
+ ]},
+ {name:"Penutup",cards:[
+  ["Hari ini ada hal yang ingin kamu syukuri?","Ikut menyebutkan.","Syukur menenangkan."],
+  ["Besok ada hal yang kamu tunggu?","Bangun harapan.","Antisipasi memberi energi."],
+  ["Kalau hari ini ditutup dengan doa, mau doa apa?","Hening sejenak.","Penutup reflektif."],
+  ["Sebelum tidur, mau bilang apa ke diri sendiri?","Biarkan diam.","Menutup hari dengan lembut."]
+ ]}
 ];
 
-let idx=0;
+let catIndex=0;
+let cardIndex=0;
 
 /* ELEMENTS */
 const menu=document.getElementById("menu");
@@ -260,25 +279,42 @@ const question=document.getElementById("question");
 const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
-const categoryBtn=document.getElementById("category-btn");
+const categoryChip=document.getElementById("category-chip");
 const guide=document.getElementById("guide");
-const sheet=document.getElementById("sheet");
 const darkBtn=document.getElementById("dark-btn");
 
 /* RENDER */
 function render(){
-  const c=session[idx];
+  const current=flow[catIndex];
+  const card=current.cards[cardIndex];
+
   question.classList.remove("show");
   setTimeout(()=>{
-    question.textContent=c.q;
+    question.textContent=card[0];
     question.classList.add("show");
   },50);
 
-  note.textContent=c.n;
-  insight.textContent=c.i;
-  progress.textContent=`Obrolan ${idx+1} / ${session.length}`;
-  categoryBtn.textContent=c.cat;
+  note.textContent=card[1];
+  insight.textContent=card[2];
+
+  progress.textContent=`Obrolan ${cardIndex+1} / ${current.cards.length}`;
+  categoryChip.textContent=` · ${current.name}`;
   guide.classList.remove("show");
+}
+
+/* NEXT LOGIC */
+function next(){
+  cardIndex++;
+  if(cardIndex >= flow[catIndex].cards.length){
+    catIndex++;
+    cardIndex = 0;
+    if(catIndex >= flow.length){
+      catIndex = flow.length - 1;
+      cardIndex = flow[catIndex].cards.length - 1;
+      return;
+    }
+  }
+  render();
 }
 
 /* EVENTS */
@@ -287,24 +323,7 @@ startBtn.onclick=()=>{
   cardScreen.classList.add("active");
   render();
 };
-
-nextBtn.onclick=()=>{
-  if(idx < session.length-1){
-    idx++;
-    render();
-  }
-};
-
-categoryBtn.onclick=()=>sheet.classList.add("show");
-sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
-
-document.querySelectorAll("#sheet [data-cat]").forEach(el=>{
-  el.onclick=()=>{
-    idx=session.findIndex(s=>s.cat===el.dataset.cat);
-    sheet.classList.remove("show");
-    render();
-  };
-});
+nextBtn.onclick=next;
 
 document.getElementById("guide-toggle").onclick=()=>guide.classList.toggle("show");
 
