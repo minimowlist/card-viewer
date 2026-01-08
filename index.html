@@ -345,7 +345,11 @@ function render(){
 startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
-  render();
+
+  // 🔑 tunggu satu frame agar screen benar-benar tampil
+  requestAnimationFrame(()=>{
+    render();
+  });
 };
 nextBtn.onclick=()=>{
   cardIndex++;
