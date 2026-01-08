@@ -332,21 +332,27 @@ const sheet=document.getElementById("sheet");
 
 /* RENDER (FADE-IN SELALU AKTIF) */
 function render(){
-  const current=flow[catIndex];
-  const card=current.cards[cardIndex];
+  const current = flow[catIndex];
+  const card = current.cards[cardIndex];
 
+  // reset
   question.classList.remove("show");
-  question.textContent="";
-  setTimeout(()=>{
-    question.textContent=card[0];
+  question.style.opacity = "0";
+  question.textContent = card[0];
+
+  // 🔑 paksa browser reflow
+  void question.offsetWidth;
+
+  // trigger fade-in 1 detik
+  requestAnimationFrame(() => {
     question.classList.add("show");
-  },60);
+  });
 
-  note.textContent=card[1];
-  insight.textContent=card[2];
+  note.textContent = card[1];
+  insight.textContent = card[2];
 
-  progress.textContent=`Obrolan ${cardIndex+1} / ${current.cards.length}`;
-  categoryChip.textContent=` ${current.icon} ${current.name}`;
+  progress.textContent = `Obrolan ${cardIndex+1} / ${current.cards.length}`;
+  categoryChip.textContent = ` ${current.icon} ${current.name}`;
   guide.classList.remove("show");
 }
 
