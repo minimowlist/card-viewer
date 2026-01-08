@@ -17,6 +17,13 @@
   --primary:#3b82f6;
   --border:rgba(0,0,0,.18);
 }
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#020617;
+  --border:rgba(255,255,255,.25);
+}
 body{
   background:var(--bg);
   color:var(--text);
@@ -24,6 +31,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  transition:.3s;
 }
 
 /* ===== SPLASH ===== */
@@ -39,15 +47,12 @@ body{
 #splash span{
   font-size:13px;
   color:var(--muted);
-  animation:pulse 2.4s ease-in-out forwards;
+  animation:splashOnce 2.2s ease forwards;
 }
-@keyframes pulse{
+@keyframes splashOnce{
   0%{opacity:0}
-  15%{opacity:.7}
-  30%{opacity:.3}
-  45%{opacity:.7}
-  60%{opacity:.3}
-  75%{opacity:.7}
+  30%{opacity:.8}
+  70%{opacity:.8}
   100%{opacity:0}
 }
 #splash.fade-out{opacity:0;transition:.6s}
@@ -94,12 +99,13 @@ button{
 #top{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   font-size:13px;
   color:var(--muted);
   margin-bottom:10px;
 }
 
-/* 🔧 FIX UTAMA */
+/* CATEGORY */
 #category{
   cursor:pointer;
   position:relative;
@@ -107,6 +113,45 @@ button{
   pointer-events:auto;
 }
 
+/* DARK MODE SWITCH */
+.switch{
+  position:relative;
+  width:48px;
+  height:26px;
+}
+.switch input{display:none}
+.slider{
+  position:absolute;
+  inset:0;
+  background:#d1d5db;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.3s;
+}
+.slider::before{
+  content:"🌙";
+  position:absolute;
+  left:3px;
+  top:3px;
+  width:20px;
+  height:20px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  transition:.3s;
+}
+input:checked + .slider{
+  background:#60a5fa;
+}
+input:checked + .slider::before{
+  transform:translateX(22px);
+  content:"☀️";
+}
+
+/* CARD */
 #card{
   background:var(--card);
   border-radius:22px;
@@ -121,7 +166,7 @@ button{
   animation:fadeIn 1s ease;
 }
 
-/* ===== GUIDE ===== */
+/* GUIDE */
 #guide{
   margin-top:14px;
   padding-top:14px;
@@ -147,7 +192,7 @@ button{
   cursor:pointer;
 }
 
-/* ===== CATEGORY SHEET ===== */
+/* CATEGORY SHEET */
 #sheet{
   position:fixed;
   inset:0;
@@ -210,6 +255,10 @@ button{
   <div id="top">
     <div id="progress"></div>
     <div id="category">· 💬 Pembuka</div>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div id="card">
@@ -229,35 +278,35 @@ button{
 <!-- CATEGORY SHEET -->
 <div id="sheet">
   <div class="sheet-box">
-    <div data-cat="Pembuka">💬 Pembuka</div>
-    <div data-cat="Cerita">📖 Cerita</div>
-    <div data-cat="Perasaan">😊 Perasaan</div>
-    <div data-cat="Penutup">🌙 Penutup</div>
+    <div>💬 Pembuka</div>
+    <div>📖 Cerita</div>
+    <div>😊 Perasaan</div>
+    <div>🌙 Penutup</div>
     <small>Tidak perlu diselesaikan sekarang.</small>
   </div>
 </div>
 
 <script>
-/* ===== SPLASH ===== */
+/* SPLASH */
 const splash=document.getElementById("splash");
 const menu=document.getElementById("menu");
-setTimeout(()=>splash.classList.add("fade-out"),2400);
+setTimeout(()=>splash.classList.add("fade-out"),1800);
 setTimeout(()=>{
   splash.remove();
   menu.classList.add("active");
-},3000);
+},2400);
 
-/* ===== PREVIEW ===== */
+/* PREVIEW */
 const previews=[
  ["Ada momen kecil hari ini yang bikin kamu senyum?","Pertanyaan ringan untuk membuka obrolan."],
  ["Bagian mana dari hari ini yang paling kamu ingat?","Membantu anak mulai bercerita."],
  ["Kalau hari ini jadi cerita, judulnya apa?","Melatih ekspresi sederhana."]
 ];
 const p=previews[Math.floor(Math.random()*previews.length)];
-document.getElementById("previewQ").textContent=p[0];
-document.getElementById("previewN").textContent=p[1];
+previewQ.textContent=p[0];
+previewN.textContent=p[1];
 
-/* ===== SESSION ===== */
+/* SESSION */
 const session=[
  ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
  ["Tadi di sekolah, bagian mana yang paling kamu suka?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."],
@@ -267,7 +316,7 @@ const session=[
 
 let idx=0;
 
-/* ===== ELEMENTS ===== */
+/* ELEMENTS */
 const cardScreen=document.getElementById("card-screen");
 const qWrap=document.getElementById("question-wrap");
 const note=document.getElementById("note");
@@ -277,7 +326,7 @@ const guide=document.getElementById("guide");
 const category=document.getElementById("category");
 const sheet=document.getElementById("sheet");
 
-/* ===== RENDER ===== */
+/* RENDER */
 function render(){
   qWrap.innerHTML="";
   const q=document.createElement("div");
@@ -291,6 +340,7 @@ function render(){
   guide.classList.remove("show");
 }
 
+/* EVENTS */
 startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
@@ -314,12 +364,9 @@ sheet.onclick=e=>{
   if(e.target===sheet) sheet.classList.remove("show");
 };
 
-document.querySelectorAll("#sheet [data-cat]").forEach(el=>{
-  el.onclick=()=>{
-    category.textContent=`· ${el.textContent}`;
-    sheet.classList.remove("show");
-  };
-});
+document.getElementById("themeToggle").onchange=e=>{
+  document.body.classList.toggle("dark",e.target.checked);
+};
 </script>
 
 </body>
