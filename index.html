@@ -6,7 +6,6 @@
 <title>Parent Quality Time</title>
 
 <style>
-/* === SEMUA CSS TETAP SAMA === */
 *{
   box-sizing:border-box;
   margin:0;
@@ -165,7 +164,7 @@ button.main{
 }
 #nextBtn{border-color:var(--text)}
 
-/* === CATEGORY SHEET (DITAMBAHKAN) === */
+/* CATEGORY SHEET */
 #sheet{
   position:fixed;
   inset:0;
@@ -188,6 +187,15 @@ button.main{
 }
 .sheet-box div:not(:last-child){
   border-bottom:1px dashed var(--border);
+}
+.sheet-action{
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px dashed var(--border);
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
 }
 .sheet-box small{
   display:block;
@@ -253,18 +261,60 @@ button.main{
     <div data-i="1">📖 Cerita</div>
     <div data-i="2">😊 Perasaan</div>
     <div data-i="3">🌙 Penutup</div>
+
+    <div id="backToMenu" class="sheet-action">🏠 Menu utama</div>
     <small>Pilih sesi</small>
   </div>
 </div>
 
 <script>
-/* === DATA, SAVE, RENDER SEMUA TETAP === */
 const STORAGE_KEY="pqt_progress";
 
-/* DATA 33 */
-const flow=[ /* ISI PERSIS SEPERTI VERSI KAMU SEBELUMNYA */ ];
+/* DATA 33 KARTU */
+const flow=[
+{icon:"💬",name:"Pembuka",cards:[
+{q:"Hal kecil apa hari ini yang bikin kamu senyum?",n:"Biarkan anak memilih ceritanya.",i:"Hal kecil sering jadi pintu masuk emosi besar."},
+{q:"Ada kejadian sederhana yang masih kamu ingat?",n:"Jangan buru-buru menyimpulkan.",i:"Kenangan kecil membantu anak merasa dihargai."},
+{q:"Siapa orang yang paling kamu ingat hari ini?",n:"Tahan komentar tentang orang itu.",i:"Pilihan orang sering terkait rasa aman."},
+{q:"Apa bagian paling tenang dari harimu?",n:"Ikuti alurnya.",i:"Rasa tenang memberi petunjuk kebutuhan anak."},
+{q:"Kalau hari ini pelan, rasanya seperti apa?",n:"Terima jawabannya.",i:"Bahasa perasaan tidak selalu logis."},
+{q:"Ada hal yang ingin kamu ceritakan tapi belum sempat?",n:"Beri jeda.",i:"Keheningan sering membantu anak bicara."},
+{q:"Kalau hari ini punya judul, apa judulnya?",n:"Tidak perlu menafsirkan.",i:"Judul membantu anak merangkum pengalaman."},
+{q:"Ada satu momen yang ingin kamu ulangi?",n:"Dengarkan alasannya.",i:"Yang ingin diulang biasanya bermakna."},
+{q:"Apa hal paling ringan yang kamu rasakan hari ini?",n:"Jangan arahkan jawabannya.",i:"Ringan memberi sinyal rasa aman."}
+]},
+{icon:"📖",name:"Cerita",cards:[
+{q:"Bagian mana dari hari ini yang paling seru?",n:"Biarkan ceritanya mengalir.",i:"Detail cerita menunjukkan minat anak."},
+{q:"Ada kejadian lucu hari ini?",n:"Tertawalah bersama.",i:"Humor memperkuat kedekatan."},
+{q:"Apa hal baru yang kamu alami?",n:"Hargai usahanya.",i:"Pengalaman baru membangun percaya diri."},
+{q:"Ada cerita yang ingin kamu simpan?",n:"Jangan menilai.",i:"Cerita personal butuh ruang aman."},
+{q:"Kalau kamu jadi tokoh cerita hari ini, seperti apa?",n:"Dengarkan gambaran dirinya.",i:"Cara anak melihat diri mencerminkan rasa diri."},
+{q:"Ada kejadian yang bikin kamu berpikir?",n:"Tahan solusi.",i:"Didengar lebih penting dari dijawab."},
+{q:"Bagian hari ini yang paling menantang apa?",n:"Validasi perasaannya.",i:"Tantangan yang diakui terasa lebih ringan."},
+{q:"Apa cerita kecil yang hampir terlupa?",n:"Jangan menyela.",i:"Cerita kecil sering menyimpan emosi."}
+]},
+{icon:"😊",name:"Perasaan",cards:[
+{q:"Kalau perasaanmu hari ini jadi warna, apa warnanya?",n:"Terima tanpa penjelasan panjang.",i:"Metafora memudahkan ekspresi emosi."},
+{q:"Perasaan apa yang paling sering muncul hari ini?",n:"Dengarkan tanpa memperbaiki.",i:"Perasaan yang diakui lebih mudah dikelola."},
+{q:"Hari ini lebih banyak senang atau capek?",n:"Jangan membandingkan.",i:"Setiap hari punya bebannya sendiri."},
+{q:"Ada perasaan yang sulit kamu jelaskan?",n:"Biarkan tanpa dipaksa.",i:"Tidak semua perasaan siap diungkap."},
+{q:"Kalau perasaanmu punya suara, nadanya bagaimana?",n:"Terima metaforanya.",i:"Imajinasi membantu anak bicara jujur."},
+{q:"Ada hal yang bikin kamu kesal hari ini?",n:"Tahan nasihat cepat.",i:"Didengar membuat anak merasa aman."},
+{q:"Perasaan apa yang ingin kamu rasakan besok?",n:"Jangan menjanjikan.",i:"Harapan kecil memberi arah emosi."},
+{q:"Apa perasaan yang ingin kamu simpan?",n:"Hargai pilihannya.",i:"Menyimpan perasaan adalah kontrol diri."}
+]},
+{icon:"🌙",name:"Penutup",cards:[
+{q:"Ada hal yang ingin kamu syukuri hari ini?",n:"Ikuti ritmenya.",i:"Syukur menutup hari dengan tenang."},
+{q:"Kalau hari ini ditutup doa, mau doa apa?",n:"Biarkan sederhana.",i:"Doa mencerminkan kebutuhan batin."},
+{q:"Apa satu kata untuk hari ini?",n:"Terima apa pun katanya.",i:"Satu kata sering merangkum emosi."},
+{q:"Ada hal yang ingin kamu lepaskan sebelum tidur?",n:"Jangan mendalami.",i:"Melepaskan membantu tidur nyenyak."},
+{q:"Sebelum tidur, mau bilang apa ke diri sendiri?",n:"Biarkan hening.",i:"Dialog batin menumbuhkan refleksi."},
+{q:"Apa hal kecil yang membuatmu tenang malam ini?",n:"Ikuti jawabannya.",i:"Tenang memberi sinyal aman."},
+{q:"Besok ada hal yang kamu tunggu?",n:"Dengarkan antusiasmenya.",i:"Harapan kecil memberi semangat."},
+{q:"Siapkah kita istirahat bersama?",n:"Tutup dengan kehadiran.",i:"Kehadiran orang tua memberi rasa aman."}
+]}
+];
 
-/* INDEX */
 let catIndex=0,cardIndex=0;
 
 /* DOM */
@@ -334,8 +384,9 @@ backBtn.onclick=()=>{
   render();
 };
 gT.onclick=()=>gEl.classList.toggle("show");
-
-/* 👉 FIX UTAMA */
+document.getElementById("dark-btn").onclick=()=>{
+  document.body.classList.toggle("dark");
+};
 cEl.onclick=()=>sheet.classList.add("show");
 sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
 document.querySelectorAll("[data-i]").forEach(el=>{
@@ -346,6 +397,11 @@ document.querySelectorAll("[data-i]").forEach(el=>{
     render();
   };
 });
+document.getElementById("backToMenu").onclick=()=>{
+  sheet.classList.remove("show");
+  card.classList.remove("active");
+  menu.classList.add("active");
+};
 </script>
 
 </body>
