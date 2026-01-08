@@ -225,6 +225,20 @@ button.main{
   color:var(--muted);
   text-align:center;
 }
+
+button.start{
+  background:#111827;      /* hitam lembut (charcoal) */
+  border-color:#111827;
+  color:#ffffff;
+}
+
+button.start:hover{
+  background:#0b1220;
+}
+
+button.start:active{
+  transform:translateY(1px);
+}
 </style>
 </head>
 
@@ -244,7 +258,7 @@ button.main{
     <div class="preview-note">Pembuka yang ringan untuk mulai terhubung.</div>
   </div>
   <div class="micro">Tidak perlu lama. Yang penting hadir.</div>
-  <button class="main" id="startBtn">Mulai obrolan</button>
+  <button class="main start" id="startBtn">Mulai obrolan</button>
 </div>
 
 <!-- CARD -->
