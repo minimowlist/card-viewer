@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Parent Quality Time</title>
 
@@ -34,7 +34,7 @@ body{
   transition:.3s;
 }
 
-/* ===== SPLASH (2 slow beats) ===== */
+/* ===== SPLASH ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -51,10 +51,10 @@ body{
 }
 @keyframes splashPulse{
   0%{opacity:0}
-  20%{opacity:.8}
-  35%{opacity:0}
-  55%{opacity:.8}
-  75%{opacity:0}
+  25%{opacity:.8}
+  40%{opacity:0}
+  60%{opacity:.8}
+  80%{opacity:0}
   100%{opacity:0}
 }
 
@@ -95,14 +95,20 @@ button{
 
 /* ===== CARD ===== */
 #top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-size:13px;
   color:var(--muted);
   margin-bottom:10px;
 }
 #category{
   cursor:pointer;
-  position:relative;
-  z-index:5;
+}
+#darkBtn{
+  cursor:pointer;
+  font-size:18px;
+  opacity:.6;
 }
 
 #card{
@@ -144,52 +150,6 @@ button{
   color:var(--muted);
   cursor:pointer;
 }
-
-/* ===== DARK MODE (bottom right, subtle) ===== */
-#darkToggle{
-  margin-top:12px;
-  display:flex;
-  justify-content:flex-end;
-}
-#darkToggle span{
-  cursor:pointer;
-  opacity:.6;
-  font-size:18px;
-}
-
-/* ===== CATEGORY SHEET ===== */
-#sheet{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.35);
-  display:none;
-  justify-content:center;
-  align-items:flex-end;
-  z-index:20;
-}
-#sheet.show{display:flex}
-.sheet-box{
-  background:var(--card);
-  width:100%;
-  max-width:420px;
-  border-radius:18px 18px 0 0;
-  padding:20px;
-}
-.sheet-box div{
-  padding:12px 0;
-  font-size:15px;
-  cursor:pointer;
-}
-.sheet-box div:not(:last-child){
-  border-bottom:1px dashed var(--border);
-}
-.sheet-box small{
-  display:block;
-  margin-top:12px;
-  color:var(--muted);
-  font-size:12px;
-  text-align:center;
-}
 </style>
 </head>
 
@@ -218,8 +178,11 @@ button{
 <!-- CARD -->
 <div id="card-screen" class="screen">
   <div id="top">
-    <span id="progress"></span>
-    <span id="category"></span>
+    <div>
+      <span id="progress"></span>
+      <span id="category"></span>
+    </div>
+    <span id="darkBtn">🌙</span>
   </div>
 
   <div id="card">
@@ -229,25 +192,12 @@ button{
       <div id="note"></div>
       <div id="insight"></div>
     </div>
-
-    <div id="darkToggle"><span id="darkBtn">🌙</span></div>
   </div>
 
   <button style="margin-top:16px" id="nextBtn">Lanjut</button>
   <div id="guide-toggle">Panduan obrolan</div>
 </div>
 
-</div>
-
-<!-- CATEGORY SHEET -->
-<div id="sheet">
-  <div class="sheet-box">
-    <div data-i="0">💬 Pembuka</div>
-    <div data-i="1">📖 Cerita</div>
-    <div data-i="2">😊 Perasaan</div>
-    <div data-i="3">🌙 Penutup</div>
-    <small>Tidak perlu diselesaikan sekarang.</small>
-  </div>
 </div>
 
 <script>
@@ -267,24 +217,15 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* FLOW */
-const flow=[
- {name:"Pembuka",cards:[
-  ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."]
- ]},
- {name:"Cerita",cards:[
-  ["Tadi di sekolah, bagian mana yang paling kamu suka?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."]
- ]},
- {name:"Perasaan",cards:[
-  ["Kalau perasaanmu hari ini jadi warna, warnanya apa?","Tidak perlu alasan.","Metafora memudahkan cerita."]
- ]},
- {name:"Penutup",cards:[
-  ["Sebelum istirahat, ada hal yang ingin kamu ceritakan?","Biarkan anak menutup.","Penutup yang hangat penting."]
- ]}
+/* SESSION DEFAULT (4 KARTU) */
+const session=[
+ {cat:"Pembuka",q:"Ada hal kecil hari ini yang bikin kamu senyum?",n:"Biarkan anak menjawab bebas.",i:"Hal kecil membuka obrolan."},
+ {cat:"Cerita",q:"Tadi di sekolah, bagian mana yang paling kamu suka?",n:"Dengarkan tanpa menilai.",i:"Cerita tumbuh dari rasa aman."},
+ {cat:"Perasaan",q:"Kalau perasaanmu hari ini jadi warna, warnanya apa?",n:"Tidak perlu alasan.",i:"Metafora memudahkan cerita."},
+ {cat:"Penutup",q:"Sebelum istirahat, ada hal yang ingin kamu ceritakan?",n:"Biarkan anak menutup.",i:"Penutup yang hangat penting."}
 ];
 
-let catIndex=0;
-let cardIndex=0;
+let idx=0;
 
 /* ELEMENTS */
 const menu=document.getElementById("menu");
@@ -294,41 +235,22 @@ const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
 const category=document.getElementById("category");
-const guide=document.getElementById("guide");
-const sheet=document.getElementById("sheet");
 
 /* RENDER */
 function render(){
-  const c=flow[catIndex];
-  const card=c.cards[cardIndex];
-
+  const c=session[idx];
   qWrap.innerHTML="";
   const q=document.createElement("div");
   q.className="question";
-  q.textContent=card[0];
+  q.textContent=c.q;
   qWrap.appendChild(q);
 
-  note.textContent=card[1];
-  insight.textContent=card[2];
+  note.textContent=c.n;
+  insight.textContent=c.i;
 
-  progress.textContent=`Obrolan ${cardIndex+1} dari ${c.cards.length}`;
-  category.textContent=`· ${c.name}`;
+  progress.textContent=`Obrolan ${idx+1} dari ${session.length}`;
+  category.textContent=` · ${c.cat}`;
   guide.classList.remove("show");
-}
-
-/* NEXT (auto category) */
-function next(){
-  cardIndex++;
-  if(cardIndex>=flow[catIndex].cards.length){
-    catIndex++;
-    cardIndex=0;
-    if(catIndex>=flow.length){
-      catIndex=flow.length-1;
-      cardIndex=flow[catIndex].cards.length-1;
-      return;
-    }
-  }
-  render();
 }
 
 /* EVENTS */
@@ -337,21 +259,14 @@ startBtn.onclick=()=>{
   cardScreen.classList.add("active");
   render();
 };
-nextBtn.onclick=next;
-
-category.onclick=()=>sheet.classList.add("show");
-sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
-document.querySelectorAll("#sheet [data-i]").forEach(el=>{
-  el.onclick=()=>{
-    catIndex=+el.dataset.i;
-    cardIndex=0;
-    sheet.classList.remove("show");
-    render();
-  };
-});
-
-document.getElementById("guide-toggle").onclick=()=>guide.classList.toggle("show");
-document.getElementById("darkBtn").onclick=()=>{
+nextBtn.onclick=()=>{
+  idx=(idx+1)%session.length;
+  render();
+};
+document.getElementById("guide-toggle").onclick=()=>{
+  guide.classList.toggle("show");
+};
+darkBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
