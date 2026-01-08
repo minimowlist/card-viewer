@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Parent Quality Time</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
 
-/* ===== THEME ===== */
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -31,10 +30,10 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  transition:.3s;
+  transition:.25s;
 }
 
-/* ===== SPLASH ===== */
+/* SPLASH */
 #splash{
   position:fixed;
   inset:0;
@@ -51,20 +50,20 @@ body{
 }
 @keyframes splashPulse{
   0%{opacity:0}
-  25%{opacity:.8}
-  40%{opacity:0}
-  60%{opacity:.8}
-  80%{opacity:0}
+  30%{opacity:.8}
+  45%{opacity:0}
+  65%{opacity:.8}
+  85%{opacity:0}
   100%{opacity:0}
 }
 
-/* ===== APP ===== */
+/* APP */
 #app{width:100%;max-width:420px;padding:24px}
 .screen{display:none;opacity:0}
-.screen.active{display:block;animation:fadeIn 1s ease forwards}
+.screen.active{display:block;animation:fadeIn .6s ease forwards}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ===== MENU ===== */
+/* MENU */
 h1{text-align:center;font-size:26px;margin-bottom:6px}
 .subtitle{text-align:center;font-size:14.5px;color:var(--muted)}
 .preview-card{
@@ -76,7 +75,7 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
-button{
+button.main{
   width:100%;
   height:54px;
   border:none;
@@ -88,7 +87,7 @@ button{
   cursor:pointer;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 #top{
   display:flex;
   justify-content:space-between;
@@ -98,21 +97,25 @@ button{
 }
 #left-info{
   display:flex;
-  align-items:center;
   gap:8px;
+  align-items:center;
   color:var(--muted);
 }
-#category-chip{
+#category-btn{
+  border:1px solid var(--border);
   padding:2px 10px;
   border-radius:999px;
-  border:1px solid var(--border);
   font-size:12px;
   cursor:pointer;
   background:transparent;
 }
-#darkBtn{
-  font-size:18px;
+#dark-btn{
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px 10px;
   cursor:pointer;
+  background:transparent;
+  font-size:14px;
 }
 
 #card{
@@ -121,14 +124,17 @@ button{
   padding:24px 20px;
   min-height:260px;
 }
+
 .question{
   font-size:21px;
   font-weight:600;
   line-height:1.5;
-  animation:fadeIn 1s ease;
+  opacity:0;
+  transition:opacity .6s;
 }
+.question.show{opacity:1}
 
-/* ===== GUIDE ===== */
+/* GUIDE */
 #guide{
   margin-top:14px;
   padding-top:14px;
@@ -152,12 +158,36 @@ button{
   color:var(--muted);
   cursor:pointer;
 }
+
+/* CATEGORY SHEET */
+#sheet{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  justify-content:center;
+  align-items:flex-end;
+}
+#sheet.show{display:flex}
+.sheet-box{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:18px 18px 0 0;
+  padding:20px;
+}
+.sheet-box div{
+  padding:12px 0;
+  cursor:pointer;
+}
+.sheet-box div:not(:last-child){
+  border-bottom:1px dashed var(--border);
+}
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash"><span>made with ❤️ by bekaldigital</span></div>
 
 <div id="app">
@@ -174,7 +204,7 @@ button{
   </div>
 
   <div class="micro">Tidak perlu waktu lama.<br>Yang penting hadir sepenuhnya.</div>
-  <button id="startBtn">Mulai obrolan</button>
+  <button class="main" id="startBtn">Mulai obrolan</button>
 </div>
 
 <!-- CARD -->
@@ -182,23 +212,33 @@ button{
   <div id="top">
     <div id="left-info">
       <span id="progress"></span>
-      <span id="category-chip"></span>
+      <div id="category-btn"></div>
     </div>
-    <span id="darkBtn">🌙</span>
+    <button id="dark-btn">🌙</button>
   </div>
 
   <div id="card">
-    <div id="question-wrap"></div>
+    <div id="question" class="question"></div>
     <div id="guide">
       <div id="note"></div>
       <div id="insight"></div>
     </div>
   </div>
 
-  <button style="margin-top:16px" id="nextBtn">Lanjut</button>
+  <button class="main" style="margin-top:16px" id="nextBtn">Lanjut</button>
   <div id="guide-toggle">Panduan obrolan</div>
 </div>
 
+</div>
+
+<!-- CATEGORY SHEET -->
+<div id="sheet">
+  <div class="sheet-box">
+    <div data-i="0">Pembuka</div>
+    <div data-i="1">Cerita</div>
+    <div data-i="2">Perasaan</div>
+    <div data-i="3">Penutup</div>
+  </div>
 </div>
 
 <script>
@@ -218,7 +258,7 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* SESSION (FIXED ORDER, NO RANDOM) */
+/* SESSION */
 const session=[
  {cat:"Pembuka",q:"Ada hal kecil hari ini yang bikin kamu senyum?",n:"Biarkan anak menjawab bebas.",i:"Hal kecil membuka obrolan."},
  {cat:"Cerita",q:"Tadi di sekolah, bagian mana yang paling kamu suka?",n:"Dengarkan tanpa menilai.",i:"Cerita tumbuh dari rasa aman."},
@@ -230,26 +270,27 @@ let idx=0;
 /* ELEMENTS */
 const menu=document.getElementById("menu");
 const cardScreen=document.getElementById("card-screen");
-const qWrap=document.getElementById("question-wrap");
+const questionEl=document.getElementById("question");
 const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
-const categoryChip=document.getElementById("category-chip");
+const categoryBtn=document.getElementById("category-btn");
+const sheet=document.getElementById("sheet");
+const guide=document.getElementById("guide");
 
 /* RENDER */
 function render(){
   const c=session[idx];
-  qWrap.innerHTML="";
-  const q=document.createElement("div");
-  q.className="question";
-  q.textContent=c.q;
-  qWrap.appendChild(q);
+  questionEl.classList.remove("show");
+  setTimeout(()=>{
+    questionEl.textContent=c.q;
+    questionEl.classList.add("show");
+  },50);
 
   note.textContent=c.n;
   insight.textContent=c.i;
-
   progress.textContent=`Obrolan ${idx+1} / ${session.length}`;
-  categoryChip.textContent=c.cat;
+  categoryBtn.textContent=c.cat;
   guide.classList.remove("show");
 }
 
@@ -259,16 +300,30 @@ startBtn.onclick=()=>{
   cardScreen.classList.add("active");
   render();
 };
+
 nextBtn.onclick=()=>{
   if(idx < session.length-1){
     idx++;
     render();
   }
 };
+
+categoryBtn.onclick=()=>sheet.classList.add("show");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
+
+document.querySelectorAll("#sheet [data-i]").forEach(el=>{
+  el.onclick=()=>{
+    idx = +el.dataset.i;
+    sheet.classList.remove("show");
+    render();
+  };
+});
+
 document.getElementById("guide-toggle").onclick=()=>guide.classList.toggle("show");
-darkBtn.onclick=()=>{
+
+dark-btn.onclick=()=>{
   document.body.classList.toggle("dark");
-  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+  dark-btn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
