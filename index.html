@@ -158,6 +158,16 @@ button.main{
   cursor:pointer;
 }
 
+/* NAV BUTTONS */
+.nav{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+.nav button{
+  flex:1;
+}
+
 /* CATEGORY SHEET */
 #sheet{
   position:fixed;
@@ -231,7 +241,11 @@ button.main{
     </div>
   </div>
 
-  <button class="main" style="margin-top:16px" id="nextBtn">Lanjut</button>
+  <div class="nav">
+    <button class="main" id="backBtn">Kembali</button>
+    <button class="main" id="nextBtn">Lanjut</button>
+  </div>
+
   <div id="guide-toggle">Panduan obrolan</div>
 </div>
 
@@ -255,6 +269,7 @@ const menu = document.getElementById("menu");
 const cardScreen = document.getElementById("card-screen");
 const startBtn = document.getElementById("startBtn");
 const nextBtn = document.getElementById("nextBtn");
+const backBtn = document.getElementById("backBtn");
 const question = document.getElementById("question");
 const note = document.getElementById("note");
 const insight = document.getElementById("insight");
@@ -283,8 +298,8 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA (33) */
-const flow=[
+/* DATA */
+const flow=[ /* sama seperti punyamu */ 
 {icon:"💬",name:"Pembuka",cards:[
 "Hal kecil apa hari ini yang bikin kamu senyum?",
 "Ada kejadian sederhana yang masih kamu ingat?",
@@ -330,14 +345,13 @@ const flow=[
 
 let catIndex=0, cardIndex=0;
 
-/* RENDER — SATU ATURAN */
+/* RENDER */
 function render(){
   const c = flow[catIndex];
   const q = c.cards[cardIndex];
 
   question.classList.remove("show");
-  question.textContent = "";
-  void question.offsetWidth;   // pastikan opacity 0 terbaca
+  void question.offsetWidth;
   question.textContent = q;
   question.classList.add("show");
 
@@ -359,8 +373,22 @@ startBtn.onclick = ()=>{
 nextBtn.onclick = ()=>{
   cardIndex++;
   if(cardIndex >= flow[catIndex].cards.length){
-    catIndex = Math.min(catIndex+1, flow.length-1);
-    cardIndex = 0;
+    if(catIndex < flow.length-1){
+      catIndex++;
+      cardIndex = 0;
+    }else{
+      cardIndex = flow[catIndex].cards.length-1;
+    }
+  }
+  render();
+};
+
+backBtn.onclick = ()=>{
+  if(cardIndex > 0){
+    cardIndex--;
+  }else if(catIndex > 0){
+    catIndex--;
+    cardIndex = flow[catIndex].cards.length-1;
   }
   render();
 };
