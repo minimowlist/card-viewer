@@ -14,7 +14,6 @@
   transition:background-color .3s,color .3s,border-color .3s;
 }
 
-/* ===== THEME ===== */
 :root{
   --bg:#f6f7f4;
   --text:#1f2937;
@@ -65,35 +64,22 @@ body{
 
 /* ===== APP ===== */
 #app{width:100%;max-width:420px;padding:24px}
-.screen{display:none}
-.screen.active{display:block}
+.screen{display:none;opacity:0}
+.screen.active{display:block;animation:fadeIn 1s ease forwards}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 /* ===== MENU ===== */
 h1{text-align:center;font-size:26px;margin-bottom:6px}
 .subtitle{text-align:center;font-size:14.5px;color:var(--muted)}
-
 .preview-card{
   background:var(--card);
   border-radius:20px;
   padding:20px;
   margin:22px 0;
 }
-.preview-divider{
-  margin:12px 0;
-  border-top:1px dashed var(--border)
-}
-.preview-note{
-  font-size:13.5px;
-  color:var(--muted);
-  font-style:italic
-}
-
-.micro{
-  text-align:center;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:26px
-}
+.preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
+.micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
 
 button.main{
   width:100%;
@@ -225,11 +211,7 @@ button.main{
     <div class="preview-note" id="previewN"></div>
   </div>
 
-  <div class="micro">
-    Tidak perlu waktu lama.<br>
-    Yang penting hadir sepenuhnya.
-  </div>
-
+  <div class="micro">Tidak perlu waktu lama.<br>Yang penting hadir sepenuhnya.</div>
   <button class="main" id="startBtn">Mulai obrolan</button>
 </div>
 
@@ -261,10 +243,10 @@ button.main{
 <!-- CATEGORY PICKER -->
 <div id="sheet">
   <div class="sheet-box">
-    <div data-i="0">Pembuka</div>
-    <div data-i="1">Cerita</div>
-    <div data-i="2">Perasaan</div>
-    <div data-i="3">Penutup</div>
+    <div data-i="0">💬 Pembuka</div>
+    <div data-i="1">📖 Cerita</div>
+    <div data-i="2">😊 Perasaan</div>
+    <div data-i="3">🌙 Penutup</div>
     <small>Pilih sesi yang ingin dilanjutkan</small>
   </div>
 </div>
@@ -286,32 +268,49 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA */
+/* DATA — 33 KARTU */
 const flow=[
- {name:"Pembuka",cards:[
-  ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
-  ["Tadi sebelum tidur, hal apa yang paling kamu ingat?","Jangan disela.","Anak belajar merangkai cerita."],
-  ["Kalau hari ini ada satu hal yang ingin kamu ceritakan, apa itu?","Ikuti arah anak.","Rasa aman muncul saat didengar."],
-  ["Hari ini lebih banyak senang atau capek?","Validasi perasaan.","Perasaan yang diakui terasa aman."]
- ]},
- {name:"Cerita",cards:[
-  ["Bagian mana dari hari ini yang paling seru?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."],
-  ["Ada kejadian lucu hari ini?","Tertawalah bersama.","Humor memperkuat koneksi."],
-  ["Kalau kejadian hari ini jadi cerita, judulnya apa?","Tidak perlu sempurna.","Imajinasi melatih ekspresi."],
-  ["Ada bagian hari ini yang ingin kamu ulangi?","Biarkan anak memilih.","Refleksi ringan membantu makna."]
- ]},
- {name:"Perasaan",cards:[
-  ["Kalau perasaanmu jadi warna, warnanya apa?","Terima jawabannya.","Mengenali emosi itu penting."],
-  ["Ada hal yang bikin kamu kesal hari ini?","Jangan buru-buru solusi.","Didengar lebih penting."],
-  ["Hari ini lebih banyak bangga atau kecewa?","Jaga nada.","Emosi campur itu normal."],
-  ["Kalau perasaan itu suara, nadanya bagaimana?","Mainkan imajinasi.","Anak belajar ekspresi."]
- ]},
- {name:"Penutup",cards:[
-  ["Hari ini ada hal yang ingin kamu syukuri?","Ikut menyebutkan.","Syukur menenangkan."],
-  ["Besok ada hal yang kamu tunggu?","Bangun harapan.","Antisipasi memberi energi."],
-  ["Kalau hari ini ditutup dengan doa, mau doa apa?","Hening sejenak.","Penutup reflektif."],
-  ["Sebelum tidur, mau bilang apa ke diri sendiri?","Biarkan diam.","Menutup hari dengan lembut."]
- ]}
+{icon:"💬",name:"Pembuka",cards:[
+["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
+["Tadi sebelum tidur, hal apa yang paling kamu ingat?","Jangan disela.","Anak belajar merangkai cerita."],
+["Kalau hari ini ada satu hal yang ingin kamu ceritakan, apa itu?","Ikuti arah anak.","Rasa aman muncul saat didengar."],
+["Hari ini lebih banyak senang atau capek?","Validasi perasaan.","Perasaan yang diakui terasa aman."],
+["Ada hal kecil yang bikin kamu bangga hari ini?","Dengarkan.","Rasa bangga menumbuhkan percaya diri."],
+["Kalau hari ini punya judul singkat, judulnya apa?","Biarkan spontan.","Melatih refleksi ringan."],
+["Siapa orang yang paling kamu ingat hari ini?","Tanya alasannya.","Relasi penting bagi anak."],
+["Ada hal yang ingin kamu ceritakan tapi belum sempat?","Beri waktu.","Diam juga jawaban."]
+]},
+{icon:"📖",name:"Cerita",cards:[
+["Bagian mana dari hari ini yang paling seru?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."],
+["Ada kejadian lucu hari ini?","Tertawalah bersama.","Humor memperkuat koneksi."],
+["Kalau kejadian hari ini jadi cerita, judulnya apa?","Tidak perlu sempurna.","Imajinasi melatih ekspresi."],
+["Ada bagian hari ini yang ingin kamu ulangi?","Biarkan anak memilih.","Refleksi membantu makna."],
+["Ada cerita yang ingin kamu simpan lama-lama?","Tanya kenapa.","Momen berharga teridentifikasi."],
+["Kalau kamu yang jadi tokoh utama, kamu digambarkan seperti apa?","Biarkan bebas.","Mengenali diri."],
+["Ada kejadian yang bikin kamu belajar sesuatu?","Jangan buru-buru nilai.","Belajar alami."],
+["Cerita hari ini lebih banyak senang atau capek?","Validasi.","Cerita ≠ emosi tunggal."],
+["Kalau cerita ini mau diceritakan lagi besok, bagian mana yang penting?","Ringkas.","Melatih prioritas."]
+]},
+{icon:"😊",name:"Perasaan",cards:[
+["Kalau perasaanmu jadi warna, warnanya apa?","Terima jawabannya.","Mengenali emosi."],
+["Ada hal yang bikin kamu kesal hari ini?","Jangan buru-buru solusi.","Didengar lebih penting."],
+["Hari ini lebih banyak bangga atau kecewa?","Jaga nada.","Emosi campur itu normal."],
+["Kalau perasaan itu suara, nadanya bagaimana?","Mainkan imajinasi.","Ekspresi kreatif."],
+["Ada perasaan yang paling sering muncul hari ini?","Tanya pelan.","Kesadaran emosi."],
+["Perasaan apa yang ingin kamu rasakan besok?","Ajak membayangkan.","Harapan emosional."],
+["Ada perasaan yang sulit dijelaskan?","Tak perlu dipaksa.","Aman untuk bingung."],
+["Kalau perasaanmu duduk di kursi, dia terlihat bagaimana?","Metafora.","Bahasa emosi anak."]
+]},
+{icon:"🌙",name:"Penutup",cards:[
+["Hari ini ada hal yang ingin kamu syukuri?","Ikut menyebutkan.","Syukur menenangkan."],
+["Besok ada hal yang kamu tunggu?","Bangun harapan.","Antisipasi memberi energi."],
+["Kalau hari ini ditutup dengan doa, mau doa apa?","Hening sejenak.","Penutup reflektif."],
+["Sebelum tidur, mau bilang apa ke diri sendiri?","Biarkan diam.","Self-compassion."],
+["Ada hal yang ingin kamu lepaskan sebelum tidur?","Tanya lembut.","Melepas beban."],
+["Kalau hari ini kamu peluk, bagian mana yang kamu peluk dulu?","Metafora.","Rasa aman."],
+["Apa satu kata untuk hari ini?","Ringkas.","Menutup dengan makna."],
+["Siapkah kita istirahat bersama?","Nada tenang.","Transisi tidur."]
+]}
 ];
 
 let catIndex=0;
@@ -344,7 +343,7 @@ function render(){
   insight.textContent=card[2];
 
   progress.textContent=`Obrolan ${cardIndex+1} / ${current.cards.length}`;
-  categoryChip.textContent=` · ${current.name}`;
+  categoryChip.textContent=` ${current.icon} ${current.name}`;
   guide.classList.remove("show");
 }
 
@@ -378,7 +377,6 @@ darkBtn.onclick=()=>{
   darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 
-/* CATEGORY CLICK */
 categoryChip.onclick=()=>sheet.classList.add("show");
 sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
 document.querySelectorAll("#sheet [data-i]").forEach(el=>{
