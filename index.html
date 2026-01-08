@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Parent Quality Time</title>
 
 <style>
@@ -34,7 +34,7 @@ body{
   transition:.3s;
 }
 
-/* ===== SPLASH ===== */
+/* ===== SPLASH (2 slow beats) ===== */
 #splash{
   position:fixed;
   inset:0;
@@ -47,15 +47,16 @@ body{
 #splash span{
   font-size:13px;
   color:var(--muted);
-  animation:splashOnce 2.2s ease forwards;
+  animation:splashPulse 3.8s ease-in-out forwards;
 }
-@keyframes splashOnce{
+@keyframes splashPulse{
   0%{opacity:0}
-  30%{opacity:.8}
-  70%{opacity:.8}
+  20%{opacity:.8}
+  35%{opacity:0}
+  55%{opacity:.8}
+  75%{opacity:0}
   100%{opacity:0}
 }
-#splash.fade-out{opacity:0;transition:.6s}
 
 /* ===== APP ===== */
 #app{width:100%;max-width:420px;padding:24px}
@@ -64,10 +65,7 @@ body{
   display:block;
   animation:fadeIn 1s ease forwards;
 }
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 /* ===== MENU ===== */
 h1{text-align:center;font-size:26px;margin-bottom:6px}
@@ -97,61 +95,16 @@ button{
 
 /* ===== CARD ===== */
 #top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   font-size:13px;
   color:var(--muted);
   margin-bottom:10px;
 }
-
-/* CATEGORY */
 #category{
   cursor:pointer;
   position:relative;
-  z-index:10;
-  pointer-events:auto;
+  z-index:5;
 }
 
-/* DARK MODE SWITCH */
-.switch{
-  position:relative;
-  width:48px;
-  height:26px;
-}
-.switch input{display:none}
-.slider{
-  position:absolute;
-  inset:0;
-  background:#d1d5db;
-  border-radius:999px;
-  cursor:pointer;
-  transition:.3s;
-}
-.slider::before{
-  content:"🌙";
-  position:absolute;
-  left:3px;
-  top:3px;
-  width:20px;
-  height:20px;
-  background:#fff;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  transition:.3s;
-}
-input:checked + .slider{
-  background:#60a5fa;
-}
-input:checked + .slider::before{
-  transform:translateX(22px);
-  content:"☀️";
-}
-
-/* CARD */
 #card{
   background:var(--card);
   border-radius:22px;
@@ -166,7 +119,7 @@ input:checked + .slider::before{
   animation:fadeIn 1s ease;
 }
 
-/* GUIDE */
+/* ===== GUIDE ===== */
 #guide{
   margin-top:14px;
   padding-top:14px;
@@ -192,7 +145,19 @@ input:checked + .slider::before{
   cursor:pointer;
 }
 
-/* CATEGORY SHEET */
+/* ===== DARK MODE (bottom right, subtle) ===== */
+#darkToggle{
+  margin-top:12px;
+  display:flex;
+  justify-content:flex-end;
+}
+#darkToggle span{
+  cursor:pointer;
+  opacity:.6;
+  font-size:18px;
+}
+
+/* ===== CATEGORY SHEET ===== */
 #sheet{
   position:fixed;
   inset:0;
@@ -253,20 +218,19 @@ input:checked + .slider::before{
 <!-- CARD -->
 <div id="card-screen" class="screen">
   <div id="top">
-    <div id="progress"></div>
-    <div id="category">· 💬 Pembuka</div>
-    <label class="switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
+    <span id="progress"></span>
+    <span id="category"></span>
   </div>
 
   <div id="card">
     <div id="question-wrap"></div>
+
     <div id="guide">
       <div id="note"></div>
       <div id="insight"></div>
     </div>
+
+    <div id="darkToggle"><span id="darkBtn">🌙</span></div>
   </div>
 
   <button style="margin-top:16px" id="nextBtn">Lanjut</button>
@@ -278,23 +242,20 @@ input:checked + .slider::before{
 <!-- CATEGORY SHEET -->
 <div id="sheet">
   <div class="sheet-box">
-    <div>💬 Pembuka</div>
-    <div>📖 Cerita</div>
-    <div>😊 Perasaan</div>
-    <div>🌙 Penutup</div>
+    <div data-i="0">💬 Pembuka</div>
+    <div data-i="1">📖 Cerita</div>
+    <div data-i="2">😊 Perasaan</div>
+    <div data-i="3">🌙 Penutup</div>
     <small>Tidak perlu diselesaikan sekarang.</small>
   </div>
 </div>
 
 <script>
 /* SPLASH */
-const splash=document.getElementById("splash");
-const menu=document.getElementById("menu");
-setTimeout(()=>splash.classList.add("fade-out"),1800);
 setTimeout(()=>{
-  splash.remove();
-  menu.classList.add("active");
-},2400);
+  document.getElementById("splash").remove();
+  document.getElementById("menu").classList.add("active");
+},3800);
 
 /* PREVIEW */
 const previews=[
@@ -306,38 +267,68 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* SESSION */
-const session=[
- ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
- ["Tadi di sekolah, bagian mana yang paling kamu suka?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."],
- ["Kalau perasaanmu jadi warna, warnanya apa?","Tidak perlu alasan.","Metafora memudahkan cerita."],
- ["Sebelum istirahat, ada hal yang ingin kamu ceritakan?","Biarkan anak menutup.","Penutup yang hangat penting."]
+/* FLOW */
+const flow=[
+ {name:"Pembuka",cards:[
+  ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."]
+ ]},
+ {name:"Cerita",cards:[
+  ["Tadi di sekolah, bagian mana yang paling kamu suka?","Dengarkan tanpa menilai.","Cerita tumbuh dari rasa aman."]
+ ]},
+ {name:"Perasaan",cards:[
+  ["Kalau perasaanmu hari ini jadi warna, warnanya apa?","Tidak perlu alasan.","Metafora memudahkan cerita."]
+ ]},
+ {name:"Penutup",cards:[
+  ["Sebelum istirahat, ada hal yang ingin kamu ceritakan?","Biarkan anak menutup.","Penutup yang hangat penting."]
+ ]}
 ];
 
-let idx=0;
+let catIndex=0;
+let cardIndex=0;
 
 /* ELEMENTS */
+const menu=document.getElementById("menu");
 const cardScreen=document.getElementById("card-screen");
 const qWrap=document.getElementById("question-wrap");
 const note=document.getElementById("note");
 const insight=document.getElementById("insight");
 const progress=document.getElementById("progress");
-const guide=document.getElementById("guide");
 const category=document.getElementById("category");
+const guide=document.getElementById("guide");
 const sheet=document.getElementById("sheet");
 
 /* RENDER */
 function render(){
+  const c=flow[catIndex];
+  const card=c.cards[cardIndex];
+
   qWrap.innerHTML="";
   const q=document.createElement("div");
   q.className="question";
-  q.textContent=session[idx][0];
+  q.textContent=card[0];
   qWrap.appendChild(q);
 
-  note.textContent=session[idx][1];
-  insight.textContent=session[idx][2];
-  progress.textContent=`Obrolan ${idx+1} dari ${session.length}`;
+  note.textContent=card[1];
+  insight.textContent=card[2];
+
+  progress.textContent=`Obrolan ${cardIndex+1} dari ${c.cards.length}`;
+  category.textContent=`· ${c.name}`;
   guide.classList.remove("show");
+}
+
+/* NEXT (auto category) */
+function next(){
+  cardIndex++;
+  if(cardIndex>=flow[catIndex].cards.length){
+    catIndex++;
+    cardIndex=0;
+    if(catIndex>=flow.length){
+      catIndex=flow.length-1;
+      cardIndex=flow[catIndex].cards.length-1;
+      return;
+    }
+  }
+  render();
 }
 
 /* EVENTS */
@@ -346,26 +337,23 @@ startBtn.onclick=()=>{
   cardScreen.classList.add("active");
   render();
 };
+nextBtn.onclick=next;
 
-nextBtn.onclick=()=>{
-  idx=(idx+1)%session.length;
-  render();
-};
+category.onclick=()=>sheet.classList.add("show");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
+document.querySelectorAll("#sheet [data-i]").forEach(el=>{
+  el.onclick=()=>{
+    catIndex=+el.dataset.i;
+    cardIndex=0;
+    sheet.classList.remove("show");
+    render();
+  };
+});
 
-document.getElementById("guide-toggle").onclick=()=>{
-  guide.classList.toggle("show");
-};
-
-category.onclick=()=>{
-  sheet.classList.add("show");
-};
-
-sheet.onclick=e=>{
-  if(e.target===sheet) sheet.classList.remove("show");
-};
-
-document.getElementById("themeToggle").onchange=e=>{
-  document.body.classList.toggle("dark",e.target.checked);
+document.getElementById("guide-toggle").onclick=()=>guide.classList.toggle("show");
+document.getElementById("darkBtn").onclick=()=>{
+  document.body.classList.toggle("dark");
+  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
 </script>
 
