@@ -204,6 +204,30 @@ button.main{
   color:var(--muted);
   text-align:center;
 }
+
+/* SUBTLE PAPER NOISE */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.015),
+      rgba(0,0,0,0.015) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  opacity:.35;
+}
+
+/* pastikan konten di atas noise */
+#app, #splash{
+  position:relative;
+  z-index:1;
+}
 </style>
 </head>
 
