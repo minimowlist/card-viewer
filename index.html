@@ -119,11 +119,13 @@ button.main{
 #card{
   background:var(--card);
   border-radius:22px;
-  padding:24px 20px;
-  min-height:260px;
+  padding:24px 20px 18px;
+  min-height:300px;
+  position:relative;
+  touch-action:pan-y;
 }
 
-/* 🔥 SATU-SATUNYA ANIMASI */
+/* QUESTION FADE */
 .question{
   font-size:21px;
   font-weight:600;
@@ -157,6 +159,22 @@ button.main{
   color:var(--muted);
   cursor:pointer;
 }
+
+/* DOT INDICATOR */
+.dots{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
+}
+.dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--muted);
+  opacity:.4;
+}
+.dot.active{opacity:1}
 
 /* CATEGORY SHEET */
 #sheet{
@@ -225,9 +243,17 @@ button.main{
 
   <div id="card">
     <div id="question" class="question"></div>
+
     <div id="guide">
       <div id="note"></div>
       <div id="insight"></div>
+    </div>
+
+    <!-- DOTS -->
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
     </div>
   </div>
 
@@ -237,7 +263,6 @@ button.main{
 
 </div>
 
-<!-- CATEGORY -->
 <div id="sheet">
   <div class="sheet-box">
     <div data-i="0">💬 Pembuka</div>
@@ -250,22 +275,23 @@ button.main{
 
 <script>
 /* DOM */
-const splash = document.getElementById("splash");
-const menu = document.getElementById("menu");
-const cardScreen = document.getElementById("card-screen");
-const startBtn = document.getElementById("startBtn");
-const nextBtn = document.getElementById("nextBtn");
-const question = document.getElementById("question");
-const note = document.getElementById("note");
-const insight = document.getElementById("insight");
-const progress = document.getElementById("progress");
-const categoryChip = document.getElementById("category-chip");
-const guide = document.getElementById("guide");
-const guideToggle = document.getElementById("guide-toggle");
-const darkBtn = document.getElementById("dark-btn");
-const sheet = document.getElementById("sheet");
-const previewQ = document.getElementById("previewQ");
-const previewN = document.getElementById("previewN");
+const splash=document.getElementById("splash");
+const menu=document.getElementById("menu");
+const cardScreen=document.getElementById("card-screen");
+const startBtn=document.getElementById("startBtn");
+const nextBtn=document.getElementById("nextBtn");
+const question=document.getElementById("question");
+const note=document.getElementById("note");
+const insight=document.getElementById("insight");
+const progress=document.getElementById("progress");
+const categoryChip=document.getElementById("category-chip");
+const guide=document.getElementById("guide");
+const guideToggle=document.getElementById("guide-toggle");
+const darkBtn=document.getElementById("dark-btn");
+const sheet=document.getElementById("sheet");
+const previewQ=document.getElementById("previewQ");
+const previewN=document.getElementById("previewN");
+const card=document.getElementById("card");
 
 /* SPLASH */
 setTimeout(()=>{
@@ -283,7 +309,7 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA (33) */
+/* DATA */
 const flow=[
 {icon:"💬",name:"Pembuka",cards:[
 "Hal kecil apa hari ini yang bikin kamu senyum?",
@@ -330,54 +356,74 @@ const flow=[
 
 let catIndex=0, cardIndex=0;
 
-/* RENDER — SATU ATURAN */
+/* RENDER */
 function render(){
-  const c = flow[catIndex];
-  const q = c.cards[cardIndex];
+  const c=flow[catIndex];
+  const q=c.cards[cardIndex];
 
   question.classList.remove("show");
-  question.textContent = "";
-  void question.offsetWidth;   // pastikan opacity 0 terbaca
-  question.textContent = q;
+  question.textContent="";
+  void question.offsetWidth;
+  question.textContent=q;
   question.classList.add("show");
 
-  note.textContent = "Dengarkan tanpa menyela.";
-  insight.textContent = "Biarkan obrolan mengalir.";
+  note.textContent="Dengarkan tanpa menyela.";
+  insight.textContent="Biarkan obrolan mengalir.";
 
-  progress.textContent = `Obrolan ${cardIndex+1} / ${c.cards.length}`;
-  categoryChip.textContent = ` ${c.icon} ${c.name}`;
+  progress.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
+  categoryChip.textContent=` ${c.icon} ${c.name}`;
   guide.classList.remove("show");
 }
 
-/* EVENTS */
-startBtn.onclick = ()=>{
+/* FLOW */
+startBtn.onclick=()=>{
   menu.classList.remove("active");
   cardScreen.classList.add("active");
   render();
 };
+nextBtn.onclick=()=>goNext();
 
-nextBtn.onclick = ()=>{
+function goNext(){
   cardIndex++;
-  if(cardIndex >= flow[catIndex].cards.length){
-    catIndex = Math.min(catIndex+1, flow.length-1);
-    cardIndex = 0;
+  if(cardIndex>=flow[catIndex].cards.length){
+    catIndex=Math.min(catIndex+1,flow.length-1);
+    cardIndex=0;
   }
   render();
-};
+}
+function goPrev(){
+  cardIndex--;
+  if(cardIndex<0){
+    catIndex=Math.max(catIndex-1,0);
+    cardIndex=flow[catIndex].cards.length-1;
+  }
+  render();
+}
 
-guideToggle.onclick = ()=>guide.classList.toggle("show");
+/* SWIPE */
+let startX=0;
+card.addEventListener("touchstart",e=>{
+  startX=e.touches[0].clientX;
+},{passive:true});
+card.addEventListener("touchend",e=>{
+  const dx=e.changedTouches[0].clientX-startX;
+  if(Math.abs(dx)>50){
+    dx<0 ? goNext() : goPrev();
+  }
+},{passive:true});
 
-darkBtn.onclick = ()=>{
+/* OTHERS */
+guideToggle.onclick=()=>guide.classList.toggle("show");
+darkBtn.onclick=()=>{
   document.body.classList.toggle("dark");
-  darkBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
-
-categoryChip.onclick = ()=>sheet.classList.add("show");
-sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("show"); };
+categoryChip.onclick=()=>sheet.classList.add("show");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
 document.querySelectorAll("[data-i]").forEach(el=>{
-  el.onclick = ()=>{
-    catIndex = +el.dataset.i;
-    cardIndex = 0;
+  el.onclick=()=>{
+    catIndex=+el.dataset.i;
+    cardIndex=0;
     sheet.classList.remove("show");
     render();
   };
