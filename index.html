@@ -80,7 +80,7 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
 
-/* 🔥 OUTLINE BUTTON */
+/* OUTLINE BUTTON */
 button.main{
   width:100%;
   height:52px;
@@ -123,7 +123,7 @@ button.main{
   min-height:260px;
 }
 
-/* 🔥 SATU-SATUNYA ANIMASI */
+/* ANIMASI PERTANYAAN */
 .question{
   font-size:21px;
   font-weight:600;
@@ -164,11 +164,7 @@ button.main{
   gap:10px;
   margin-top:16px;
 }
-
-/* 👉 Hierarki halus: Lanjut sedikit lebih tegas */
-#nextBtn{
-  border-color:var(--text);
-}
+#nextBtn{border-color:var(--text)}
 
 /* CATEGORY SHEET */
 #sheet{
@@ -300,48 +296,48 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA */
+/* DATA DENGAN PANDUAN UNIK */
 const flow=[
 {icon:"💬",name:"Pembuka",cards:[
-"Hal kecil apa hari ini yang bikin kamu senyum?",
-"Ada kejadian sederhana yang masih kamu ingat?",
-"Siapa orang yang paling kamu ingat hari ini?",
-"Apa bagian paling nyaman dari harimu?",
-"Kalau hari ini pelan, rasanya seperti apa?",
-"Ada hal yang ingin kamu ceritakan tapi belum sempat?",
-"Kalau hari ini punya judul, apa judulnya?",
-"Ada satu momen yang ingin kamu ulangi?"
+{q:"Hal kecil apa hari ini yang bikin kamu senyum?",n:"Biarkan anak memilih ceritanya sendiri.",i:"Hal kecil sering membuka pintu ke perasaan yang lebih besar."},
+{q:"Ada kejadian sederhana yang masih kamu ingat?",n:"Jangan buru-buru pindah topik.",i:"Kenangan sederhana membantu anak merasa didengarkan."},
+{q:"Siapa orang yang paling kamu ingat hari ini?",n:"Tahan komentar tentang orang tersebut.",i:"Jawaban ini sering berkaitan dengan rasa aman anak."},
+{q:"Apa bagian paling nyaman dari harimu?",n:"Ikuti nada ceritanya.",i:"Rasa nyaman memberi petunjuk tentang kebutuhan emosional anak."},
+{q:"Kalau hari ini pelan, rasanya seperti apa?",n:"Terima jawabannya apa adanya.",i:"Bahasa perasaan tidak selalu logis."},
+{q:"Ada hal yang ingin kamu ceritakan tapi belum sempat?",n:"Beri waktu hening sejenak.",i:"Keheningan sering membantu anak berani bicara."},
+{q:"Kalau hari ini punya judul, apa judulnya?",n:"Tidak perlu menafsirkan.",i:"Judul adalah cara anak menyederhanakan pengalaman."},
+{q:"Ada satu momen yang ingin kamu ulangi?",n:"Dengarkan alasannya.",i:"Momen yang ingin diulang sering bermakna."}
 ]},
 {icon:"📖",name:"Cerita",cards:[
-"Bagian mana dari hari ini yang paling seru?",
-"Ada kejadian lucu yang ingin kamu ceritakan?",
-"Apa hal baru yang kamu alami hari ini?",
-"Ada cerita yang ingin kamu simpan lama-lama?",
-"Kalau kamu jadi tokoh cerita hari ini, kamu digambarkan seperti apa?",
-"Ada kejadian yang bikin kamu berpikir?",
-"Bagian hari ini yang paling menantang apa?",
-"Kalau cerita hari ini diceritakan lagi, bagian mana yang penting?",
-"Apa cerita kecil yang hampir terlupa?"
+{q:"Bagian mana dari hari ini yang paling seru?",n:"Biarkan ceritanya mengalir.",i:"Detail cerita menunjukkan apa yang menarik bagi anak."},
+{q:"Ada kejadian lucu yang ingin kamu ceritakan?",n:"Tertawalah bersama.",i:"Humor membangun kedekatan emosional."},
+{q:"Apa hal baru yang kamu alami hari ini?",n:"Hargai usahanya.",i:"Pengalaman baru membantu anak mengenal dirinya."},
+{q:"Ada cerita yang ingin kamu simpan lama-lama?",n:"Jangan menilai ceritanya.",i:"Cerita yang disimpan biasanya bermakna personal."},
+{q:"Kalau kamu jadi tokoh cerita hari ini, seperti apa kamu?",n:"Dengarkan gambaran dirinya.",i:"Cara anak menggambarkan diri mencerminkan kepercayaan diri."},
+{q:"Ada kejadian yang bikin kamu berpikir?",n:"Tahan keinginan memberi jawaban.",i:"Berpikir mandiri tumbuh dari didengar."},
+{q:"Bagian hari ini yang paling menantang apa?",n:"Validasi perasaannya.",i:"Tantangan yang diakui terasa lebih ringan."},
+{q:"Kalau cerita hari ini diulang, bagian mana yang penting?",n:"Ikuti penekanannya.",i:"Yang dianggap penting menunjukkan nilai anak."},
+{q:"Apa cerita kecil yang hampir terlupa?",n:"Dengarkan tanpa menyela.",i:"Cerita kecil sering menyimpan emosi tersembunyi."}
 ]},
 {icon:"😊",name:"Perasaan",cards:[
-"Kalau perasaanmu hari ini jadi warna, warnanya apa?",
-"Ada perasaan yang paling sering muncul hari ini?",
-"Hari ini lebih banyak senang atau capek?",
-"Ada perasaan yang sulit kamu jelaskan?",
-"Kalau perasaanmu punya suara, nadanya bagaimana?",
-"Ada hal yang bikin kamu kesal hari ini?",
-"Perasaan apa yang ingin kamu rasakan besok?",
-"Apa perasaan yang ingin kamu simpan?"
+{q:"Kalau perasaanmu hari ini jadi warna, warnanya apa?",n:"Terima tanpa bertanya panjang.",i:"Metafora membantu anak menamai perasaan."},
+{q:"Ada perasaan yang paling sering muncul hari ini?",n:"Dengarkan tanpa memperbaiki.",i:"Perasaan yang diakui lebih mudah dikelola."},
+{q:"Hari ini lebih banyak senang atau capek?",n:"Jangan bandingkan.",i:"Setiap hari punya bebannya sendiri."},
+{q:"Ada perasaan yang sulit kamu jelaskan?",n:"Biarkan tanpa dipaksa.",i:"Tidak semua perasaan siap dijelaskan."},
+{q:"Kalau perasaanmu punya suara, nadanya bagaimana?",n:"Terima metaforanya.",i:"Bahasa imajinatif memudahkan ekspresi emosi."},
+{q:"Ada hal yang bikin kamu kesal hari ini?",n:"Tahan solusi cepat.",i:"Didengar lebih dulu membuat anak merasa aman."},
+{q:"Perasaan apa yang ingin kamu rasakan besok?",n:"Jangan menjanjikan.",i:"Harapan kecil memberi arah emosional."},
+{q:"Apa perasaan yang ingin kamu simpan?",n:"Hargai pilihannya.",i:"Menyimpan perasaan adalah bentuk kontrol diri."}
 ]},
 {icon:"🌙",name:"Penutup",cards:[
-"Ada hal yang ingin kamu syukuri hari ini?",
-"Kalau hari ini ditutup doa, mau doa apa?",
-"Apa satu kata untuk hari ini?",
-"Ada hal yang ingin kamu lepaskan sebelum tidur?",
-"Sebelum tidur, mau bilang apa ke diri sendiri?",
-"Apa hal kecil yang membuatmu tenang malam ini?",
-"Besok ada hal yang kamu tunggu?",
-"Siapkah kita istirahat bersama?"
+{q:"Ada hal yang ingin kamu syukuri hari ini?",n:"Ikuti ritmenya.",i:"Rasa syukur membantu menutup hari dengan tenang."},
+{q:"Kalau hari ini ditutup doa, mau doa apa?",n:"Biarkan sederhana.",i:"Doa mencerminkan kebutuhan batin anak."},
+{q:"Apa satu kata untuk hari ini?",n:"Terima kata apa pun.",i:"Satu kata sering merangkum perasaan."},
+{q:"Ada hal yang ingin kamu lepaskan sebelum tidur?",n:"Jangan mendalami terlalu jauh.",i:"Melepaskan membantu tidur lebih nyenyak."},
+{q:"Sebelum tidur, mau bilang apa ke diri sendiri?",n:"Biarkan hening sebentar.",i:"Dialog batin menumbuhkan refleksi diri."},
+{q:"Apa hal kecil yang membuatmu tenang malam ini?",n:"Ikuti jawabannya.",i:"Rasa tenang memberi sinyal aman."},
+{q:"Besok ada hal yang kamu tunggu?",n:"Dengarkan antusiasmenya.",i:"Harapan kecil memberi semangat."},
+{q:"Siapkah kita istirahat bersama?",n:"Tutup dengan kehadiran.",i:"Kehadiran orang tua memberi rasa aman sebelum tidur."}
 ]}
 ];
 
@@ -350,15 +346,15 @@ let catIndex=0, cardIndex=0;
 /* RENDER */
 function render(){
   const c = flow[catIndex];
-  const q = c.cards[cardIndex];
+  const item = c.cards[cardIndex];
 
   question.classList.remove("show");
   void question.offsetWidth;
-  question.textContent = q;
+  question.textContent = item.q;
   question.classList.add("show");
 
-  note.textContent = "Dengarkan tanpa menyela.";
-  insight.textContent = "Biarkan obrolan mengalir.";
+  note.textContent = item.n;
+  insight.textContent = item.i;
 
   progress.textContent = `Obrolan ${cardIndex+1} / ${c.cards.length}`;
   categoryChip.textContent = ` ${c.icon} ${c.name}`;
