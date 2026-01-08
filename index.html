@@ -19,7 +19,6 @@
   --text:#1f2937;
   --muted:#6b7280;
   --card:#ffffff;
-  --primary:#3b82f6;
   --border:rgba(0,0,0,.18);
 }
 body.dark{
@@ -81,14 +80,15 @@ h1{text-align:center;font-size:26px;margin-bottom:6px}
 .preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
 .micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
 
+/* 🔥 OUTLINE BUTTON */
 button.main{
   width:100%;
-  height:54px;
-  border:none;
-  border-radius:16px;
-  background:var(--primary);
-  color:#fff;
-  font-size:16px;
+  height:52px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:transparent;
+  color:var(--text);
+  font-size:15.5px;
   font-weight:600;
   cursor:pointer;
 }
@@ -158,14 +158,16 @@ button.main{
   cursor:pointer;
 }
 
-/* NAV BUTTONS */
+/* NAV */
 .nav{
   display:flex;
   gap:10px;
   margin-top:16px;
 }
-.nav button{
-  flex:1;
+
+/* 👉 Hierarki halus: Lanjut sedikit lebih tegas */
+#nextBtn{
+  border-color:var(--text);
 }
 
 /* CATEGORY SHEET */
@@ -299,7 +301,7 @@ previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
 /* DATA */
-const flow=[ /* sama seperti punyamu */ 
+const flow=[
 {icon:"💬",name:"Pembuka",cards:[
 "Hal kecil apa hari ini yang bikin kamu senyum?",
 "Ada kejadian sederhana yang masih kamu ingat?",
