@@ -1,1 +1,443 @@
-u
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>☁️</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruang Cerita</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  transition:background-color .15s,color .15s,border-color .15s;
+}
+
+:root{
+  --bg:#f6f7f4;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.18);
+}
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#020617;
+  --border:rgba(255,255,255,.25);
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* SPLASH */
+#splash{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#splash span{
+  font-size:13px;
+  color:var(--muted);
+  animation:splashPulse 3.6s ease-in-out forwards;
+}
+@keyframes splashPulse{
+  0%{opacity:0}
+  25%{opacity:.8}
+  40%{opacity:0}
+  60%{opacity:.8}
+  80%{opacity:0}
+  100%{opacity:0}
+}
+
+/* APP */
+#app{width:100%;max-width:420px;padding:24px}
+.screen{display:none;opacity:0}
+.screen.active{display:block;animation:fadeIn 1s ease forwards}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* MENU */
+h1{
+  text-align:center;
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:-0.01em;
+  margin-bottom:8px;
+}
+
+.title-icon{
+  margin-right:6px;
+  font-size:0.9em;
+  vertical-align:middle;
+  opacity:0.85;
+}
+
+.subtitle{
+  text-align:center;
+  font-size:15px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+.preview-card{
+  background:var(--card);
+  border-radius:20px;
+  padding:20px;
+  margin:22px 0;
+}
+.preview-divider{margin:12px 0;border-top:1px dashed var(--border)}
+.preview-note{font-size:13.5px;color:var(--muted);font-style:italic}
+.micro{text-align:center;font-size:13px;color:var(--muted);margin-bottom:26px}
+
+/* BUTTON */
+button.main{
+  width:100%;
+  height:52px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:transparent;
+  color:var(--text);
+  font-size:15.5px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* CARD */
+#top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  margin-bottom:10px;
+  color:var(--muted);
+}
+#category-chip{
+  border:1px solid var(--border);
+  padding:2px 10px;
+  border-radius:999px;
+  font-size:12px;
+  cursor:pointer;
+}
+#dark-btn{
+  border:1px solid var(--border);
+  padding:6px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  background:var(--card);
+}
+#card{
+  background:var(--card);
+  border-radius:22px;
+  padding:24px 20px;
+  min-height:260px;
+}
+.question{
+  font-size:21px;
+  font-weight:600;
+  line-height:1.5;
+  opacity:0;
+  transition:opacity 1s ease;
+}
+.question.show{opacity:1}
+
+/* GUIDE */
+#guide{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px dashed var(--border);
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:.35s;
+}
+#guide.show{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+#note{font-size:14px;margin-bottom:8px}
+#insight{font-size:13.5px;color:var(--muted);font-style:italic}
+#guide-toggle{
+  text-align:center;
+  margin-top:14px;
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
+}
+
+/* NAV */
+.nav{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+#nextBtn{border-color:var(--text)}
+
+/* CATEGORY SHEET */
+#sheet{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  justify-content:center;
+  align-items:flex-end;
+}
+#sheet.show{display:flex}
+.sheet-box{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:18px 18px 0 0;
+  padding:20px;
+}
+.sheet-box div{
+  padding:12px 0;
+  cursor:pointer;
+}
+.sheet-box div:not(:last-child){
+  border-bottom:1px dashed var(--border);
+}
+.sheet-action{
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px dashed var(--border);
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  cursor:pointer;
+}
+.sheet-box small{
+  display:block;
+  margin-top:12px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+}
+
+button.start{
+  background:#111827;      /* hitam lembut (charcoal) */
+  border-color:#111827;
+  color:#ffffff;
+}
+
+button.start:hover{
+  background:#0b1220;
+}
+
+button.start:active{
+  transform:translateY(1px);
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash"><span>made with ❤️ by bekaldigital</span></div>
+
+<div id="app">
+
+<!-- MENU -->
+<div id="menu" class="screen">
+  <h1><span class="title-icon">☁️</span>Ruang Cerita</h1>
+  <div class="subtitle">Obrolan sederhana untuk membangun kedekatan orang tua dan anak</div>
+  <div class="preview-card">
+    <div>Apa satu hal kecil yang kamu ingat hari ini?</div>
+    <div class="preview-divider"></div>
+    <div class="preview-note">Pembuka yang ringan untuk mulai terhubung.</div>
+  </div>
+  <div class="micro">Tidak perlu lama. Yang penting hadir.</div>
+  <button class="main start" id="startBtn">Mulai obrolan</button>
+</div>
+
+<!-- CARD -->
+<div id="card-screen" class="screen">
+  <div id="top">
+    <div>
+      <span id="progress"></span>
+      <span id="category-chip"></span>
+    </div>
+    <button id="dark-btn">🌙</button>
+  </div>
+
+  <div id="card">
+    <div id="question" class="question"></div>
+    <div id="guide">
+      <div id="note"></div>
+      <div id="insight"></div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="main" id="backBtn">Kembali</button>
+    <button class="main" id="nextBtn">Lanjut</button>
+  </div>
+
+  <div id="guide-toggle">Panduan obrolan</div>
+</div>
+
+</div>
+
+<!-- CATEGORY SHEET -->
+<div id="sheet">
+  <div class="sheet-box">
+    <div data-i="0">💬 Pembuka</div>
+    <div data-i="1">📖 Cerita</div>
+    <div data-i="2">😊 Perasaan</div>
+    <div data-i="3">🌙 Penutup</div>
+
+    <div id="backToMenu" class="sheet-action">🏠 Menu utama</div>
+    <small>Pilih sesi</small>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY="pqt_progress";
+
+/* DATA 33 KARTU */
+const flow=[
+{icon:"💬",name:"Pembuka",cards:[
+{q:"Hal kecil apa hari ini yang bikin kamu senyum?",n:"Biarkan anak memilih ceritanya.",i:"Hal kecil sering jadi pintu masuk emosi besar."},
+{q:"Ada kejadian sederhana yang masih kamu ingat?",n:"Jangan buru-buru menyimpulkan.",i:"Kenangan kecil membantu anak merasa dihargai."},
+{q:"Siapa orang yang paling kamu ingat hari ini?",n:"Tahan komentar tentang orang itu.",i:"Pilihan orang sering terkait rasa aman."},
+{q:"Apa bagian paling tenang dari harimu?",n:"Ikuti alurnya.",i:"Rasa tenang memberi petunjuk kebutuhan anak."},
+{q:"Kalau hari ini pelan, rasanya seperti apa?",n:"Terima jawabannya.",i:"Bahasa perasaan tidak selalu logis."},
+{q:"Ada hal yang ingin kamu ceritakan tapi belum sempat?",n:"Beri jeda.",i:"Keheningan sering membantu anak bicara."},
+{q:"Kalau hari ini punya judul, apa judulnya?",n:"Tidak perlu menafsirkan.",i:"Judul membantu anak merangkum pengalaman."},
+{q:"Ada satu momen yang ingin kamu ulangi?",n:"Dengarkan alasannya.",i:"Yang ingin diulang biasanya bermakna."},
+{q:"Apa hal paling ringan yang kamu rasakan hari ini?",n:"Jangan arahkan jawabannya.",i:"Ringan memberi sinyal rasa aman."}
+]},
+{icon:"📖",name:"Cerita",cards:[
+{q:"Bagian mana dari hari ini yang paling seru?",n:"Biarkan ceritanya mengalir.",i:"Detail cerita menunjukkan minat anak."},
+{q:"Ada kejadian lucu hari ini?",n:"Tertawalah bersama.",i:"Humor memperkuat kedekatan."},
+{q:"Apa hal baru yang kamu alami?",n:"Hargai usahanya.",i:"Pengalaman baru membangun percaya diri."},
+{q:"Ada cerita yang ingin kamu simpan?",n:"Jangan menilai.",i:"Cerita personal butuh ruang aman."},
+{q:"Kalau kamu jadi tokoh cerita hari ini, seperti apa?",n:"Dengarkan gambaran dirinya.",i:"Cara anak melihat diri mencerminkan rasa diri."},
+{q:"Ada kejadian yang bikin kamu berpikir?",n:"Tahan solusi.",i:"Didengar lebih penting dari dijawab."},
+{q:"Bagian hari ini yang paling menantang apa?",n:"Validasi perasaannya.",i:"Tantangan yang diakui terasa lebih ringan."},
+{q:"Apa cerita kecil yang hampir terlupa?",n:"Jangan menyela.",i:"Cerita kecil sering menyimpan emosi."}
+]},
+{icon:"😊",name:"Perasaan",cards:[
+{q:"Kalau perasaanmu hari ini jadi warna, apa warnanya?",n:"Terima tanpa penjelasan panjang.",i:"Metafora memudahkan ekspresi emosi."},
+{q:"Perasaan apa yang paling sering muncul hari ini?",n:"Dengarkan tanpa memperbaiki.",i:"Perasaan yang diakui lebih mudah dikelola."},
+{q:"Hari ini lebih banyak senang atau capek?",n:"Jangan membandingkan.",i:"Setiap hari punya bebannya sendiri."},
+{q:"Ada perasaan yang sulit kamu jelaskan?",n:"Biarkan tanpa dipaksa.",i:"Tidak semua perasaan siap diungkap."},
+{q:"Kalau perasaanmu punya suara, nadanya bagaimana?",n:"Terima metaforanya.",i:"Imajinasi membantu anak bicara jujur."},
+{q:"Ada hal yang bikin kamu kesal hari ini?",n:"Tahan nasihat cepat.",i:"Didengar membuat anak merasa aman."},
+{q:"Perasaan apa yang ingin kamu rasakan besok?",n:"Jangan menjanjikan.",i:"Harapan kecil memberi arah emosi."},
+{q:"Apa perasaan yang ingin kamu simpan?",n:"Hargai pilihannya.",i:"Menyimpan perasaan adalah kontrol diri."}
+]},
+{icon:"🌙",name:"Penutup",cards:[
+{q:"Ada hal yang ingin kamu syukuri hari ini?",n:"Ikuti ritmenya.",i:"Syukur menutup hari dengan tenang."},
+{q:"Kalau hari ini ditutup doa, mau doa apa?",n:"Biarkan sederhana.",i:"Doa mencerminkan kebutuhan batin."},
+{q:"Apa satu kata untuk hari ini?",n:"Terima apa pun katanya.",i:"Satu kata sering merangkum emosi."},
+{q:"Ada hal yang ingin kamu lepaskan sebelum tidur?",n:"Jangan mendalami.",i:"Melepaskan membantu tidur nyenyak."},
+{q:"Sebelum tidur, mau bilang apa ke diri sendiri?",n:"Biarkan hening.",i:"Dialog batin menumbuhkan refleksi."},
+{q:"Apa hal kecil yang membuatmu tenang malam ini?",n:"Ikuti jawabannya.",i:"Tenang memberi sinyal aman."},
+{q:"Besok ada hal yang kamu tunggu?",n:"Dengarkan antusiasmenya.",i:"Harapan kecil memberi semangat."},
+{q:"Siapkah kita istirahat bersama?",n:"Tutup dengan kehadiran.",i:"Kehadiran orang tua memberi rasa aman."}
+]}
+];
+
+let catIndex=0,cardIndex=0;
+
+/* DOM */
+const menu=document.getElementById("menu");
+const card=document.getElementById("card-screen");
+const splash=document.getElementById("splash");
+const qEl=document.getElementById("question");
+const nEl=document.getElementById("note");
+const iEl=document.getElementById("insight");
+const pEl=document.getElementById("progress");
+const cEl=document.getElementById("category-chip");
+const gEl=document.getElementById("guide");
+const gT=document.getElementById("guide-toggle");
+const backBtn=document.getElementById("backBtn");
+const sheet=document.getElementById("sheet");
+
+/* SAVE / LOAD */
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify({catIndex,cardIndex}))}
+function load(){
+  const d=localStorage.getItem(STORAGE_KEY);
+  if(!d)return false;
+  try{
+    const o=JSON.parse(d);
+    catIndex=o.catIndex||0;cardIndex=o.cardIndex||0;
+    return true;
+  }catch{return false}
+}
+
+/* RENDER */
+function render(){
+  const c=flow[catIndex],it=c.cards[cardIndex];
+  qEl.classList.remove("show");void qEl.offsetWidth;
+  qEl.textContent=it.q;qEl.classList.add("show");
+  nEl.textContent=it.n;iEl.textContent=it.i;
+  pEl.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
+  cEl.textContent=` ${c.icon} ${c.name}`;
+  gEl.classList.remove("show");gT.textContent="Panduan obrolan";
+  backBtn.style.opacity=(catIndex===0&&cardIndex===0)?.4:1;
+  backBtn.style.pointerEvents=(catIndex===0&&cardIndex===0)?"none":"auto";
+  save();
+}
+
+/* INIT */
+setTimeout(()=>{
+  splash.remove();
+  if(load()){card.classList.add("active");render();}
+  else menu.classList.add("active");
+},3600);
+
+/* EVENTS */
+document.getElementById("startBtn").onclick=()=>{
+  menu.classList.remove("active");
+  card.classList.add("active");
+  render();
+};
+document.getElementById("nextBtn").onclick=()=>{
+  cardIndex++;
+  if(cardIndex>=flow[catIndex].cards.length){
+    if(catIndex<flow.length-1){catIndex++;cardIndex=0}
+    else cardIndex=flow[catIndex].cards.length-1;
+  }
+  render();
+};
+backBtn.onclick=()=>{
+  if(cardIndex>0)cardIndex--;
+  else if(catIndex>0){catIndex--;cardIndex=flow[catIndex].cards.length-1}
+  render();
+};
+gT.onclick=()=>gEl.classList.toggle("show");
+document.getElementById("dark-btn").onclick=()=>{
+  document.body.classList.toggle("dark");
+};
+cEl.onclick=()=>sheet.classList.add("show");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
+document.querySelectorAll("[data-i]").forEach(el=>{
+  el.onclick=()=>{
+    catIndex=+el.dataset.i;
+    cardIndex=0;
+    sheet.classList.remove("show");
+    render();
+  };
+});
+document.getElementById("backToMenu").onclick=()=>{
+  sheet.classList.remove("show");
+  card.classList.remove("active");
+  menu.classList.add("active");
+};
+</script>
+
+</body>
+</html>
