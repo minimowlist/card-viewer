@@ -121,6 +121,7 @@ button.main{
   padding:2px 10px;
   border-radius:999px;
   font-size:12px;
+  cursor:pointer;
 }
 #dark-btn{
   border:1px solid var(--border);
@@ -169,6 +170,39 @@ button.main{
   font-size:14px;
   color:var(--muted);
   cursor:pointer;
+}
+
+/* ===== CATEGORY SHEET ===== */
+#sheet{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  display:none;
+  justify-content:center;
+  align-items:flex-end;
+  z-index:50;
+}
+#sheet.show{display:flex}
+.sheet-box{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:18px 18px 0 0;
+  padding:20px;
+}
+.sheet-box div{
+  padding:12px 0;
+  cursor:pointer;
+}
+.sheet-box div:not(:last-child){
+  border-bottom:1px dashed var(--border);
+}
+.sheet-box small{
+  display:block;
+  margin-top:12px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
 }
 </style>
 </head>
@@ -224,6 +258,17 @@ button.main{
 
 </div>
 
+<!-- CATEGORY PICKER -->
+<div id="sheet">
+  <div class="sheet-box">
+    <div data-i="0">Pembuka</div>
+    <div data-i="1">Cerita</div>
+    <div data-i="2">Perasaan</div>
+    <div data-i="3">Penutup</div>
+    <small>Pilih sesi yang ingin dilanjutkan</small>
+  </div>
+</div>
+
 <script>
 /* SPLASH */
 setTimeout(()=>{
@@ -241,7 +286,7 @@ const p=previews[Math.floor(Math.random()*previews.length)];
 previewQ.textContent=p[0];
 previewN.textContent=p[1];
 
-/* DATA PER KATEGORI (4 KARTU PER SESI) */
+/* DATA */
 const flow=[
  {name:"Pembuka",cards:[
   ["Ada hal kecil hari ini yang bikin kamu senyum?","Biarkan anak menjawab bebas.","Hal kecil membuka obrolan."],
@@ -282,6 +327,7 @@ const progress=document.getElementById("progress");
 const categoryChip=document.getElementById("category-chip");
 const guide=document.getElementById("guide");
 const darkBtn=document.getElementById("dark-btn");
+const sheet=document.getElementById("sheet");
 
 /* RENDER */
 function render(){
@@ -302,7 +348,7 @@ function render(){
   guide.classList.remove("show");
 }
 
-/* NEXT LOGIC */
+/* NEXT */
 function next(){
   cardIndex++;
   if(cardIndex >= flow[catIndex].cards.length){
@@ -331,6 +377,18 @@ darkBtn.onclick=()=>{
   document.body.classList.toggle("dark");
   darkBtn.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
 };
+
+/* CATEGORY CLICK */
+categoryChip.onclick=()=>sheet.classList.add("show");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
+document.querySelectorAll("#sheet [data-i]").forEach(el=>{
+  el.onclick=()=>{
+    catIndex=+el.dataset.i;
+    cardIndex=0;
+    sheet.classList.remove("show");
+    render();
+  };
+});
 </script>
 
 </body>
