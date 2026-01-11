@@ -439,6 +439,13 @@ function load(){
   }catch{return false}
 }
 
+/*RESET PROGRESS*/
+function resetProgress(){
+  catIndex = 0;
+  cardIndex = 0;
+  localStorage.removeItem(STORAGE_KEY);
+}
+
 /* RENDER */
 function render(){
   const c=flow[catIndex],it=c.cards[cardIndex];
@@ -450,6 +457,15 @@ qEl.style.opacity = 0;
 
 // 3. ganti teks
 qEl.textContent = it.q;
+
+const isLastCategory = catIndex === flow.length - 1;
+const isLastCard = cardIndex === c.cards.length - 1;
+
+if (isLastCategory && isLastCard) {
+  nextBtn.textContent = "Selesai";
+} else {
+  nextBtn.textContent = "Lanjut";
+}
 
 // 4. paksa browser nge-paint kondisi ini
 void qEl.offsetHeight;
@@ -478,10 +494,11 @@ setTimeout(()=>{
 },3600);
 
 /* EVENTS */
-document.getElementById("startBtn").onclick=()=>{
+document.getElementById("startBtn").onclick = () => {
+  resetProgress();           // ⬅️ reset ke awal
   menu.classList.remove("active");
   card.classList.add("active");
-  render();
+  render();                  // mulai dari Pembuka, kartu 1
 };
 nextBtn.onclick = () => {
   const c = flow[catIndex];
