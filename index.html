@@ -439,12 +439,20 @@ function applyTheme(isDark){
   localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
 }
 
-// init saat load
-if (localStorage.getItem(THEME_KEY) === "dark") {
-  applyTheme(true);
+// ===== INIT THEME (AUTO DARK BY JAM) =====
+const savedTheme = localStorage.getItem(THEME_KEY);
+
+if (savedTheme) {
+  // user pernah pilih → hormati
+  applyTheme(savedTheme === "dark");
+} else {
+  // user baru → cek jam
+  const hour = new Date().getHours();
+  const isNight = hour >= 18 || hour < 6;
+  applyTheme(isNight);
 }
 
-// toggle
+// ===== TOGGLE MANUAL =====
 darkBtn.onclick = () => {
   applyTheme(!document.body.classList.contains("dark"));
 };
