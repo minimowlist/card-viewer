@@ -185,15 +185,23 @@ button.main{
 }
 #insight{font-size:13.5px;color:var(--muted);font-style:italic}
 #guide-toggle{
-  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
   margin-top:14px;
   font-size:14px;
   color:var(--muted);
   cursor:pointer;
   opacity:.85;
 }
+
 #guide-toggle:hover{
   opacity:1;
+}
+
+#guide-arrow{
+  transition:transform .25s ease;
 }
 
 /* NAV */
@@ -328,7 +336,9 @@ button.start:active{
     <button class="main" id="nextBtn">Lanjut</button>
   </div>
 
-  <div id="guide-toggle">Panduan obrolan</div>
+  <div id="guide-toggle">
+  <span id="guide-label">Panduan obrolan</span>
+  <span id="guide-arrow">▾</span>
 </div>
 
 </div>
@@ -462,9 +472,13 @@ backBtn.onclick=()=>{
   else if(catIndex>0){catIndex--;cardIndex=flow[catIndex].cards.length-1}
   render();
 };
+const guideLabel = document.getElementById("guide-label");
+const guideArrow = document.getElementById("guide-arrow");
+
 gT.onclick = () => {
   const isOpen = gEl.classList.toggle("show");
-  gT.textContent = isOpen ? "Tutup panduan" : "Panduan obrolan";
+  guideLabel.textContent = isOpen ? "Tutup panduan" : "Panduan obrolan";
+  guideArrow.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
 };
 const darkBtn = document.getElementById("dark-btn");
 const THEME_KEY = "pqt_theme";
