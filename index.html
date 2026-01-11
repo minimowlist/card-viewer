@@ -151,18 +151,16 @@ button.main{
   min-height:260px;
 }
 .question{
-  font-size:21px;
+  font-size:22px;
   font-weight:600;
   line-height:1.5;
+  letter-spacing:-0.01em;
   opacity:0;
   transition:opacity 1s ease;
 }
-.question.show{opacity:1}
 
-/* ===== QUESTION EMPHASIS ===== */
-.question{
-  font-size:22px;
-  letter-spacing:-0.01em;
+.question.show{
+  opacity:1;
 }
 
 /* GUIDE */
@@ -435,8 +433,16 @@ function load(){
 /* RENDER */
 function render(){
   const c=flow[catIndex],it=c.cards[cardIndex];
-  qEl.classList.remove("show");void qEl.offsetWidth;
-  qEl.textContent=it.q;qEl.classList.add("show");
+  // reset dulu (hilang)
+qEl.classList.remove("show");
+
+// ganti teks
+qEl.textContent = it.q;
+
+// fade in 1 detik
+requestAnimationFrame(() => {
+  qEl.classList.add("show");
+});
   nEl.textContent=it.n;iEl.textContent=it.i;
   pEl.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
   cEl.textContent=` ${c.icon} ${c.name}`;
