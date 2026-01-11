@@ -30,7 +30,7 @@ body.dark{
   --text:#e5e7eb;
   --muted:#9ca3af;
   --card:#020617;
-  --border:rgba(255,255,255,.25);
+  --border:rgba(255,255,255,.12);
   --primary:#e5e7eb;
   --primary-text:#020617;
 }
@@ -135,6 +135,7 @@ button.main{
   border-radius:999px;
   font-size:12px;
   cursor:pointer;
+  opacity:.7;
 }
 #dark-btn{
   border:1px solid var(--border);
@@ -157,6 +158,12 @@ button.main{
   transition:opacity 1s ease;
 }
 .question.show{opacity:1}
+
+/* ===== QUESTION EMPHASIS ===== */
+.question{
+  font-size:22px;
+  letter-spacing:-0.01em;
+}
 
 /* GUIDE */
 #guide{
@@ -190,6 +197,17 @@ button.main{
   margin-top:16px;
 }
 #nextBtn{border-color:var(--text)}
+
+/* ===== ACTION HIERARCHY ===== */
+#nextBtn{
+  background:var(--primary);
+  color:var(--primary-text);
+  border-color:var(--primary);
+}
+
+#backBtn{
+  opacity:.6;
+}
 
 /* CATEGORY SHEET */
 #sheet{
@@ -249,6 +267,14 @@ button.start:hover{
 
 button.start:active{
   transform:translateY(1px);
+}
+
+/* ===== SECONDARY TEXT ===== */
+.subtitle,
+.preview-note,
+#insight,
+.micro{
+  opacity:.85;
 }
 </style>
 </head>
