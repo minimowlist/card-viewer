@@ -76,6 +76,16 @@ body{
 .screen.active{display:block;animation:fadeIn 1s ease forwards}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
+/* ===== FADE OUT SCREEN ===== */
+.screen.fade-out{
+  animation:fadeOut .3s ease forwards;
+}
+
+@keyframes fadeOut{
+  from{opacity:1}
+  to{opacity:0}
+}
+
 /* MENU */
 h1{
   text-align:center;
@@ -415,6 +425,7 @@ const gEl=document.getElementById("guide");
 const gT=document.getElementById("guide-toggle");
 const backBtn=document.getElementById("backBtn");
 const sheet=document.getElementById("sheet");
+const nextBtn = document.getElementById("nextBtn");
 
 /* SAVE / LOAD */
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify({catIndex,cardIndex}))}
@@ -472,12 +483,34 @@ document.getElementById("startBtn").onclick=()=>{
   card.classList.add("active");
   render();
 };
-document.getElementById("nextBtn").onclick=()=>{
-  cardIndex++;
-  if(cardIndex>=flow[catIndex].cards.length){
-    if(catIndex<flow.length-1){catIndex++;cardIndex=0}
-    else cardIndex=flow[catIndex].cards.length-1;
+nextBtn.onclick = () => {
+  const c = flow[catIndex];
+  const isLastCategory = catIndex === flow.length - 1;
+  const isLastCard = cardIndex === c.cards.length - 1;
+
+  // === KARTU TERAKHIR → SELESAI ===
+  if (isLastCategory && isLastCard) {
+    // fade out card
+    card.classList.add("fade-out");
+
+    setTimeout(() => {
+      card.classList.remove("fade-out");
+      card.classList.remove("active");
+
+      // masuk menu (menu akan fade-in otomatis)
+      menu.classList.add("active");
+    }, 300);
+
+    return;
   }
+
+  // === LANJUT NORMAL ===
+  cardIndex++;
+  if (cardIndex >= c.cards.length) {
+    catIndex++;
+    cardIndex = 0;
+  }
+
   render();
 };
 backBtn.onclick=()=>{
