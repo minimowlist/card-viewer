@@ -429,16 +429,22 @@ function load(){
 /* RENDER */
 function render(){
   const c=flow[catIndex],it=c.cards[cardIndex];
-  // ganti teks
-qEl.textContent = it.q;
+  // 1. matikan transisi sementara
+qEl.style.transition = "none";
 
-// paksa opacity 0
+// 2. set ke transparan
 qEl.style.opacity = 0;
 
-// paksa browser reflow
+// 3. ganti teks
+qEl.textContent = it.q;
+
+// 4. paksa browser nge-paint kondisi ini
 void qEl.offsetHeight;
 
-// fade in 1 detik
+// 5. hidupkan lagi transisi
+qEl.style.transition = "opacity 1s ease";
+
+// 6. fade in
 qEl.style.opacity = 1;
   nEl.textContent=it.n;iEl.textContent=it.i;
   pEl.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
