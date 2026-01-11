@@ -159,10 +159,6 @@ button.main{
   transition:opacity 1s ease;
 }
 
-.question.show{
-  opacity:1;
-}
-
 /* GUIDE */
 #guide{
   margin-top:14px;
@@ -433,16 +429,17 @@ function load(){
 /* RENDER */
 function render(){
   const c=flow[catIndex],it=c.cards[cardIndex];
-  // reset dulu (hilang)
-qEl.classList.remove("show");
-
-// ganti teks
+  // ganti teks
 qEl.textContent = it.q;
 
+// paksa opacity 0
+qEl.style.opacity = 0;
+
+// paksa browser reflow
+void qEl.offsetHeight;
+
 // fade in 1 detik
-requestAnimationFrame(() => {
-  qEl.classList.add("show");
-});
+qEl.style.opacity = 1;
   nEl.textContent=it.n;iEl.textContent=it.i;
   pEl.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
   cEl.textContent=` ${c.icon} ${c.name}`;
