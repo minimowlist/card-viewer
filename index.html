@@ -440,7 +440,9 @@ function render(){
   nEl.textContent=it.n;iEl.textContent=it.i;
   pEl.textContent=`Obrolan ${cardIndex+1} / ${c.cards.length}`;
   cEl.textContent=` ${c.icon} ${c.name}`;
-  gEl.classList.remove("show");gT.textContent="Panduan obrolan";
+  gEl.classList.remove("show");gEl.classList.remove("show");
+guideLabel.textContent = "Panduan obrolan";
+guideArrow.style.transform = "rotate(0deg)";
   backBtn.style.opacity=(catIndex===0&&cardIndex===0)?.4:1;
   backBtn.style.pointerEvents=(catIndex===0&&cardIndex===0)?"none":"auto";
   save();
