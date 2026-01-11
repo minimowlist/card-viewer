@@ -419,8 +419,23 @@ backBtn.onclick=()=>{
   render();
 };
 gT.onclick=()=>gEl.classList.toggle("show");
-document.getElementById("dark-btn").onclick=()=>{
-  document.body.classList.toggle("dark");
+const darkBtn = document.getElementById("dark-btn");
+const THEME_KEY = "pqt_theme";
+
+function applyTheme(isDark){
+  document.body.classList.toggle("dark", isDark);
+  darkBtn.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+}
+
+// init saat load
+if (localStorage.getItem(THEME_KEY) === "dark") {
+  applyTheme(true);
+}
+
+// toggle
+darkBtn.onclick = () => {
+  applyTheme(!document.body.classList.contains("dark"));
 };
 cEl.onclick=()=>sheet.classList.add("show");
 sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("show")};
