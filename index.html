@@ -456,7 +456,10 @@ backBtn.onclick=()=>{
   else if(catIndex>0){catIndex--;cardIndex=flow[catIndex].cards.length-1}
   render();
 };
-gT.onclick=()=>gEl.classList.toggle("show");
+gT.onclick = () => {
+  const isOpen = gEl.classList.toggle("show");
+  gT.textContent = isOpen ? "Tutup panduan" : "Panduan obrolan";
+};
 const darkBtn = document.getElementById("dark-btn");
 const THEME_KEY = "pqt_theme";
 
