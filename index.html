@@ -21,6 +21,8 @@
   --muted:#6b7280;
   --card:#ffffff;
   --border:rgba(0,0,0,.18);
+  --primary:#111827;
+  --primary-text:#ffffff;
 }
 
 body.dark{
@@ -29,6 +31,8 @@ body.dark{
   --muted:#9ca3af;
   --card:#020617;
   --border:rgba(255,255,255,.25);
+  --primary:#e5e7eb;
+  --primary-text:#020617;
 }
 
 body{
@@ -229,9 +233,14 @@ button.main{
 }
 
 button.start{
-  background:#111827;      /* hitam lembut (charcoal) */
-  border-color:#111827;
-  color:#ffffff;
+  button.start{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:var(--primary-text);
+}
+
+button.start:hover{
+  filter:brightness(0.95);
 }
 
 button.start:hover{
