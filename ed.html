@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayar via BRIVA</title>
+
+<style>
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 16px;
+    color: #111;
+  }
+  .container {
+    max-width: 460px;
+    margin: auto;
+  }
+  h2 {
+    text-align: center;
+    margin: 8px 0 16px;
+  }
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .va {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 8px 0;
+  }
+  .amount {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .btn-copy {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    margin-top: 8px;
+  }
+  .btn-wa {
+    width: 100%;
+    background: #16a34a;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+  }
+  .note {
+    font-size: 12px;
+    color: #555;
+    margin-top: 6px;
+    text-align: center;
+  }
+  .method {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+  }
+  .method-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .steps {
+    font-size: 13px;
+    color: #444;
+    margin: 6px 0 6px;
+    padding-left: 18px;
+  }
+  .estimate {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+  }
+  .video-box {
+    display: none;
+    margin-top: 8px;
+  }
+  iframe {
+    width: 100%;
+    height: 220px;
+    border-radius: 8px;
+  }
+</style>
+
+<script>
+  function copyVA() {
+    navigator.clipboard.writeText("800008080024066");
+    alert("Nomor Virtual Account berhasil disalin");
+  }
+
+  function toggleVideo(id) {
+    const boxes = document.querySelectorAll('.video-box');
+    boxes.forEach(b => {
+      if (b.id !== id) b.style.display = 'none';
+    });
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === 'block' ? 'none' : 'block';
+  }
+</script>
+</head>
+
+<body>
+<div class="container">
+
+<h2>Bayar via BRIVA</h2>
+
+<!-- VA -->
+<div class="card">
+  <h3>Nomor Virtual Account (BRIVA)</h3>
+  <div class="va">80000 808 0024066</div>
+  <button class="btn-copy" onclick="copyVA()">📋 Salin Kode</button>
+  <div class="note">Gunakan nomor ini saat melakukan pembayaran</div>
+</div>
+
+<!-- Nominal -->
+<div class="card">
+  <h3>Nominal Pembayaran</h3>
+  <div class="amount">Rp 200.000</div>
+  <div class="note">Pastikan nominal sesuai tagihan</div>
+</div>
+
+<!-- Cara Pembayaran -->
+<div class="card">
+  <h3>Cara Pembayaran</h3>
+
+  <!-- Mobile Banking BRI -->
+  <div class="method">
+    <div class="method-header">
+      <strong>📱 Mobile Banking BRI</strong>
+      <button onclick="toggleVideo('v-mbri')">🎥 Video</button>
+    </div>
+    <ol class="steps">
+      <li>Buka aplikasi BRI Mobile, pilih menu BRIVA</li>
+      <li>Masukkan nomor Virtual Account</li>
+      <li>Periksa nama & nominal, lalu konfirmasi</li>
+    </ol>
+    <div class="estimate">⏱ Estimasi waktu: ±1 menit</div>
+    <div id="v-mbri" class="video-box">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_MBRI" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- ATM BRI -->
+  <div class="method">
+    <div class="method-header">
+      <strong>🏧 ATM BRI</strong>
+      <button onclick="toggleVideo('v-atm')">🎥 Video</button>
+    </div>
+    <ol class="steps">
+      <li>Masukkan kartu ATM dan PIN</li>
+      <li>Pilih Pembayaran → BRIVA</li>
+      <li>Masukkan nomor VA dan konfirmasi</li>
+    </ol>
+    <div class="estimate">⏱ Estimasi waktu: ±2 menit</div>
+    <div id="v-atm" class="video-box">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_ATM" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Bank Lain -->
+  <div class="method">
+    <div class="method-header">
+      <strong>🏦 Bank Lain</strong>
+      <button onclick="toggleVideo('v-bank')">🎥 Video</button>
+    </div>
+    <ol class="steps">
+      <li>Pilih transfer antar bank</li>
+      <li>Masukkan kode BRI (002) + nomor VA</li>
+      <li>Isi nominal sesuai tagihan dan konfirmasi</li>
+    </ol>
+    <div class="estimate">⏱ Estimasi waktu: ±2–3 menit</div>
+    <div id="v-bank" class="video-box">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_BANKLAIN" allowfullscreen></iframe>
+    </div>
+  </div>
+
+</div>
+
+<!-- Konfirmasi -->
+<div class="card">
+  <a href="https://wa.me/62812XXXXXXX?text=Saya%20sudah%20transfer%20pembayaran%20BRIVA.%20Mohon%20dicek.%20Terima%20kasih."
+     target="_blank" style="text-decoration:none;">
+    <button class="btn-wa">Saya Sudah Transfer</button>
+  </a>
+  <div class="note">Anda akan diarahkan ke WhatsApp bendahara</div>
+</div>
+
+</div>
+</body>
+</html>
