@@ -221,24 +221,42 @@ function toggleVideo(id){
 <div class="card">
   <h3>Cara Pembayaran</h3>
 
+ <div class="method">
   <div class="method-header">
-  <div class="bank-label">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Bank_Rakyat_Indonesia_logo.svg"
-         alt="BRI" class="bank-icon">
-      <strong>📱 BRI Mobile / Internet Banking</strong>
-      <button class="btn-video" onclick="toggleVideo('v-mbanking')">🎥 Video</button>
+    <div class="bank-label">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/6/68/Bank_Rakyat_Indonesia_logo.svg"
+        alt="BRI"
+        class="bank-icon"
+      >
+      <strong>BRI Mobile / Internet Banking</strong>
     </div>
-    <ol class="steps">
-      <li>Buka aplikasi bank Anda</li>
-      <li>Pilih menu Virtual Account / Pembayaran</li>
-      <li>Masukkan nomor pembayaran</li>
-      <li>Konfirmasi transaksi</li>
-    </ol>
-    <div class="estimate">⏱ Estimasi waktu: ±1 menit</div>
-    <div id="v-mbanking" class="video-box">
-      <iframe src="https://www.youtube.com/embed/VIDEO_ID_MBANKING" allowfullscreen></iframe>
-    </div>
+
+    <button class="btn-video" onclick="toggleVideo('v-brimo')">
+      🎥 Video
+    </button>
   </div>
+
+  <!-- STEPS (TIDAK HILANG) -->
+  <ol class="steps">
+    <li>Buka aplikasi <b>BRI Mobile</b></li>
+    <li>Pilih menu <b>BRIVA / Virtual Account</b></li>
+    <li>Masukkan <b>Nomor Pembayaran</b></li>
+    <li>Periksa nama dan nominal, lalu konfirmasi</li>
+  </ol>
+
+  <div class="estimate">⏱ Estimasi waktu: ±1 menit</div>
+
+  <!-- VIDEO -->
+  <div id="v-brimo" class="video-box">
+    <iframe
+      src="https://www.youtube.com/embed/VIDEO_ID_BRIMO"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+</div>
+
 
   <div class="method">
     <div class="method-header">
