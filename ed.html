@@ -103,6 +103,66 @@ iframe{
   height:220px;
   border-radius:8px;
 }
+
+.bank-summary{
+  font-size:13px;
+  color:#444;
+  margin-bottom:12px;
+}
+.accordion{margin-top:8px;}
+.acc-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#f1f5f9;
+  margin-top:6px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+}
+.bank-icon{
+  width:28px;
+  height:auto;
+}
+.acc-panel{
+  display:none;
+  padding:8px 12px 10px;
+  border-left:2px solid #e5e7eb;
+  margin-left:10px;
+}
+.steps{
+  font-size:13px;
+  color:#444;
+  padding-left:18px;
+  margin:6px 0;
+}
+.estimate{
+  font-size:12px;
+  color:#666;
+  margin-bottom:6px;
+}
+.btn-video{
+  background:#e5e7eb;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+.video-box{
+  display:none;
+  margin-top:8px;
+}
+.video-box iframe{
+  width:100%;
+  height:220px;
+  border-radius:8px;
+}
+
 </style>
 
 <script>
@@ -110,6 +170,22 @@ function copyVA(){
   navigator.clipboard.writeText("800008080024066");
   alert("Nomor pembayaran berhasil disalin");
 }
+function toggleVideo(id){
+  document.querySelectorAll('.video-box').forEach(v=>{
+    if(v.id!==id) v.style.display='none';
+  });
+  const el=document.getElementById(id);
+  el.style.display = el.style.display==='block' ? 'none' : 'block';
+}
+<script>
+function toggleAcc(id){
+  document.querySelectorAll('.acc-panel').forEach(p=>{
+    if(p.id!==id) p.style.display='none';
+  });
+  const el=document.getElementById(id);
+  el.style.display = el.style.display==='block' ? 'none' : 'block';
+}
+
 function toggleVideo(id){
   document.querySelectorAll('.video-box').forEach(v=>{
     if(v.id!==id) v.style.display='none';
@@ -180,6 +256,103 @@ function toggleVideo(id){
     </div>
   </div>
 
+  <!-- BANK LAIN -->
+<div class="card">
+  <h3>🏦 Pembayaran melalui Bank Lain</h3>
+
+  <!-- Ringkasan Umum -->
+  <div class="bank-summary">
+    <strong>Alur Umum Pembayaran:</strong><br>
+    1) Buka aplikasi mobile banking / internet banking bank Anda<br>
+    2) Pilih menu <b>Pembayaran</b> atau <b>Virtual Account</b><br>
+    3) Masukkan <b>Nomor Pembayaran</b><br>
+    4) Periksa informasi, lalu konfirmasi transaksi<br>
+    <span class="estimate">⏱ Estimasi waktu: ±1–2 menit</span>
+  </div>
+
+  <!-- Accordion -->
+  <div class="accordion">
+
+    <!-- BCA -->
+    <button class="acc-btn" onclick="toggleAcc('bca')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" class="bank-icon">
+      Bank Central Asia (BCA)
+    </button>
+    <div id="bca" class="acc-panel">
+      <ol class="steps">
+        <li>Buka <b>BCA Mobile</b> atau <b>KlikBCA</b></li>
+        <li>Pilih menu <b>Pembayaran / Virtual Account</b></li>
+        <li>Masukkan Nomor Pembayaran</li>
+        <li>Konfirmasi transaksi</li>
+      </ol>
+      <div class="estimate">⏱ ±1 menit</div>
+      <button class="btn-video" onclick="toggleVideo('vid-bca')">🎥 Lihat Video Panduan</button>
+      <div id="vid-bca" class="video-box">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID_BCA" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- BNI -->
+    <button class="acc-btn" onclick="toggleAcc('bni')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Bank_Negara_Indonesia.svg" class="bank-icon">
+      Bank Negara Indonesia (BNI)
+    </button>
+    <div id="bni" class="acc-panel">
+      <ol class="steps">
+        <li>Buka <b>BNI Mobile Banking</b></li>
+        <li>Pilih menu <b>Pembayaran / Virtual Account</b></li>
+        <li>Masukkan Nomor Pembayaran</li>
+        <li>Konfirmasi transaksi</li>
+      </ol>
+      <div class="estimate">⏱ ±1 menit</div>
+      <button class="btn-video" onclick="toggleVideo('vid-bni')">🎥 Lihat Video Panduan</button>
+      <div id="vid-bni" class="video-box">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID_BNI" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- BSI -->
+    <button class="acc-btn" onclick="toggleAcc('bsi')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Bank_Syariah_Indonesia.svg" class="bank-icon">
+      Bank Syariah Indonesia (BSI)
+    </button>
+    <div id="bsi" class="acc-panel">
+      <ol class="steps">
+        <li>Buka <b>BSI Mobile</b></li>
+        <li>Pilih menu <b>Pembayaran / Virtual Account</b></li>
+        <li>Masukkan Nomor Pembayaran</li>
+        <li>Konfirmasi transaksi</li>
+      </ol>
+      <div class="estimate">⏱ ±1–2 menit</div>
+      <button class="btn-video" onclick="toggleVideo('vid-bsi')">🎥 Lihat Video Panduan</button>
+      <div id="vid-bsi" class="video-box">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID_BSI" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Mandiri -->
+    <button class="acc-btn" onclick="toggleAcc('mandiri')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Bank_Mandiri_logo.svg" class="bank-icon">
+      Bank Mandiri
+    </button>
+    <div id="mandiri" class="acc-panel">
+      <ol class="steps">
+        <li>Buka aplikasi <b>Livin’ by Mandiri</b></li>
+        <li>Pilih menu <b>Pembayaran / Virtual Account</b></li>
+        <li>Masukkan Nomor Pembayaran</li>
+        <li>Konfirmasi transaksi</li>
+      </ol>
+      <div class="estimate">⏱ ±1 menit</div>
+      <button class="btn-video" onclick="toggleVideo('vid-mandiri')">🎥 Lihat Video Panduan</button>
+      <div id="vid-mandiri" class="video-box">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID_MANDIRI" allowfullscreen></iframe>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  
 </div>
 
 <!-- KONFIRMASI / BANTUAN -->
