@@ -170,30 +170,24 @@ function copyVA(){
   navigator.clipboard.writeText("800008080024066");
   alert("Nomor pembayaran berhasil disalin");
 }
-function toggleVideo(id){
-  document.querySelectorAll('.video-box').forEach(v=>{
-    if(v.id!==id) v.style.display='none';
-  });
-  const el=document.getElementById(id);
-  el.style.display = el.style.display==='block' ? 'none' : 'block';
-}
-<script>
+
 function toggleAcc(id){
   document.querySelectorAll('.acc-panel').forEach(p=>{
-    if(p.id!==id) p.style.display='none';
+    if(p.id !== id) p.style.display = 'none';
   });
-  const el=document.getElementById(id);
-  el.style.display = el.style.display==='block' ? 'none' : 'block';
+  const el = document.getElementById(id);
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
 }
 
 function toggleVideo(id){
   document.querySelectorAll('.video-box').forEach(v=>{
-    if(v.id!==id) v.style.display='none';
+    if(v.id !== id) v.style.display = 'none';
   });
-  const el=document.getElementById(id);
-  el.style.display = el.style.display==='block' ? 'none' : 'block';
+  const el = document.getElementById(id);
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
 }
 </script>
+
 </head>
 
 <body>
