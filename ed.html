@@ -128,6 +128,11 @@ iframe{
   width:28px;
   height:auto;
 }
+.bank-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
 .acc-panel{
   display:none;
   padding:8px 12px 10px;
@@ -162,7 +167,6 @@ iframe{
   height:220px;
   border-radius:8px;
 }
-
 </style>
 
 <script>
@@ -217,9 +221,11 @@ function toggleVideo(id){
 <div class="card">
   <h3>Cara Pembayaran</h3>
 
-  <div class="method">
-    <div class="method-header">
-      <strong>📱 Mobile / Internet Banking</strong>
+  <div class="method-header">
+  <div class="bank-label">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Bank_Rakyat_Indonesia_logo.svg"
+         alt="BRI" class="bank-icon">
+      <strong>📱 BRI Mobile / Internet Banking</strong>
       <button class="btn-video" onclick="toggleVideo('v-mbanking')">🎥 Video</button>
     </div>
     <ol class="steps">
