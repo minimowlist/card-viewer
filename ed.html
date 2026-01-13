@@ -3,19 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bayar via BRIVA</title>
+<title>Pembayaran SPP</title>
 
 <style>
 body{
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   background:#f5f7fa;
   margin:0;
   padding:16px;
   color:#111;
 }
-.container{max-width:480px;margin:auto;}
-h2{text-align:center;margin:8px 0 16px;}
-h3{margin:0 0 8px;font-size:16px;}
+.container{
+  max-width:480px;
+  margin:auto;
+}
+h2{
+  text-align:center;
+  margin:8px 0 16px;
+}
+h3{
+  margin:0 0 8px;
+  font-size:16px;
+}
 .card{
   background:#fff;
   border-radius:12px;
@@ -23,36 +32,41 @@ h3{margin:0 0 8px;font-size:16px;}
   margin-bottom:16px;
   box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
-.va-box{
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:12px;
-  margin-top:10px;
-}
 .va{
-  font-size:20px;
+  font-size:22px;
   font-weight:bold;
   text-align:center;
   letter-spacing:1px;
-  margin:6px 0;
+  margin:10px 0;
 }
-.label{font-size:13px;font-weight:600;color:#374151;}
+.amount{
+  font-size:18px;
+  font-weight:bold;
+  text-align:center;
+}
 button{
   width:100%;
-  padding:10px;
+  padding:12px;
   border-radius:8px;
   border:none;
   cursor:pointer;
-  font-size:14px;
-  margin-top:6px;
+  font-size:15px;
 }
-.btn-copy{background:#2563eb;color:#fff;}
+.btn-copy{
+  background:#2563eb;
+  color:#fff;
+  margin-top:8px;
+}
+.btn-video{
+  width:auto;
+  padding:6px 10px;
+  font-size:13px;
+}
 .btn-wa{
   background:#16a34a;
   color:#fff;
   font-size:16px;
   font-weight:bold;
-  padding:12px;
 }
 .note{
   font-size:12px;
@@ -79,23 +93,29 @@ button{
 .estimate{
   font-size:12px;
   color:#666;
-  margin-bottom:6px;
 }
-.video-box{display:none;margin-top:8px;}
-iframe{width:100%;height:220px;border-radius:8px;}
+.video-box{
+  display:none;
+  margin-top:8px;
+}
+iframe{
+  width:100%;
+  height:220px;
+  border-radius:8px;
+}
 </style>
 
 <script>
-function copyText(text){
-  navigator.clipboard.writeText(text);
-  alert("Nomor berhasil disalin");
+function copyVA(){
+  navigator.clipboard.writeText("800008080024066");
+  alert("Nomor pembayaran berhasil disalin");
 }
 function toggleVideo(id){
   document.querySelectorAll('.video-box').forEach(v=>{
     if(v.id!==id) v.style.display='none';
   });
   const el=document.getElementById(id);
-  el.style.display=el.style.display==='block'?'none':'block';
+  el.style.display = el.style.display==='block' ? 'none' : 'block';
 }
 </script>
 </head>
@@ -103,95 +123,72 @@ function toggleVideo(id){
 <body>
 <div class="container">
 
-<h2>Bayar via BRIVA</h2>
+<h2>Pembayaran SPP</h2>
 
-<!-- VA -->
+<!-- NOMOR PEMBAYARAN -->
 <div class="card">
-<h3>Nomor Virtual Account</h3>
-
-<div class="va-box">
-<div class="label">Transfer dari BRI</div>
-<div class="va">80000 808 0024066</div>
-<button class="btn-copy" onclick="copyText('800008080024066')">📋 Salin Nomor</button>
-<div class="note">Tanpa kode bank</div>
+  <h3>Nomor Pembayaran (Virtual Account)</h3>
+  <div class="va">80000 808 0024066</div>
+  <button class="btn-copy" onclick="copyVA()">📋 Salin Nomor</button>
+  <div class="note">
+    Gunakan nomor ini pada menu <b>Virtual Account / Pembayaran</b>  
+    di aplikasi bank Anda
+  </div>
 </div>
 
-<div class="va-box">
-<div class="label">Transfer dari Bank Lain</div>
-<div class="va">002 80000 808 0024066</div>
-<button class="btn-copy" onclick="copyText('002800008080024066')">📋 Salin Nomor</button>
-<div class="note">Kode BRI <b>002</b> wajib digunakan</div>
-</div>
-</div>
-
-<!-- Nominal -->
+<!-- NOMINAL -->
 <div class="card">
-<h3>Nominal Pembayaran</h3>
-<div class="va">Rp 200.000</div>
-<div class="note">Pastikan nominal sesuai tagihan</div>
+  <h3>Nominal yang Dibayarkan</h3>
+  <div class="amount">Rp 550.000</div>
+  <div class="note">Status pembayaran akan tercatat otomatis</div>
 </div>
 
-<!-- TUTORIAL -->
+<!-- CARA PEMBAYARAN -->
 <div class="card">
-<h3>Cara Pembayaran</h3>
+  <h3>Cara Pembayaran</h3>
 
-<div class="method">
-<div class="method-header">
-<strong>📱 Mobile Banking BRI</strong>
-<button onclick="toggleVideo('v-mbri')">🎥 Video</button>
-</div>
-<ol class="steps">
-<li>Pilih menu BRIVA</li>
-<li>Masukkan nomor Virtual Account</li>
-<li>Periksa data lalu konfirmasi</li>
-</ol>
-<div class="estimate">⏱ Estimasi waktu: ±1 menit</div>
-<div id="v-mbri" class="video-box">
-<iframe src="https://www.youtube.com/embed/VIDEO_ID_MBRI" allowfullscreen></iframe>
-</div>
-</div>
+  <div class="method">
+    <div class="method-header">
+      <strong>📱 Mobile / Internet Banking</strong>
+      <button class="btn-video" onclick="toggleVideo('v-mbanking')">🎥 Video</button>
+    </div>
+    <ol class="steps">
+      <li>Buka aplikasi bank Anda</li>
+      <li>Pilih menu Virtual Account / Pembayaran</li>
+      <li>Masukkan nomor pembayaran</li>
+      <li>Konfirmasi transaksi</li>
+    </ol>
+    <div class="estimate">⏱ Estimasi waktu: ±1 menit</div>
+    <div id="v-mbanking" class="video-box">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_MBANKING" allowfullscreen></iframe>
+    </div>
+  </div>
 
-<div class="method">
-<div class="method-header">
-<strong>🏧 ATM BRI</strong>
-<button onclick="toggleVideo('v-atm')">🎥 Video</button>
-</div>
-<ol class="steps">
-<li>Pilih Pembayaran → BRIVA</li>
-<li>Masukkan nomor Virtual Account</li>
-<li>Konfirmasi pembayaran</li>
-</ol>
-<div class="estimate">⏱ Estimasi waktu: ±2 menit</div>
-<div id="v-atm" class="video-box">
-<iframe src="https://www.youtube.com/embed/VIDEO_ID_ATM" allowfullscreen></iframe>
-</div>
-</div>
-
-<div class="method">
-<div class="method-header">
-<strong>🏦 Bank Lain</strong>
-<button onclick="toggleVideo('v-bank')">🎥 Video</button>
-</div>
-<ol class="steps">
-<li>Pilih transfer antar bank</li>
-<li>Masukkan kode BRI (002) + VA</li>
-<li>Isi nominal lalu konfirmasi</li>
-</ol>
-<div class="estimate">⏱ Estimasi waktu: ±2–3 menit</div>
-<div id="v-bank" class="video-box">
-<iframe src="https://www.youtube.com/embed/VIDEO_ID_BANKLAIN" allowfullscreen></iframe>
-</div>
-</div>
+  <div class="method">
+    <div class="method-header">
+      <strong>🏧 ATM</strong>
+      <button class="btn-video" onclick="toggleVideo('v-atm')">🎥 Video</button>
+    </div>
+    <ol class="steps">
+      <li>Pilih menu Pembayaran / Virtual Account</li>
+      <li>Masukkan nomor pembayaran</li>
+      <li>Konfirmasi transaksi</li>
+    </ol>
+    <div class="estimate">⏱ Estimasi waktu: ±2 menit</div>
+    <div id="v-atm" class="video-box">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_ATM" allowfullscreen></iframe>
+    </div>
+  </div>
 
 </div>
 
-<!-- KONFIRMASI -->
+<!-- KONFIRMASI / BANTUAN -->
 <div class="card">
-<a href="https://wa.me/62812XXXXXXX?text=Saya%20sudah%20transfer%20pembayaran%20BRIVA.%20Mohon%20dicek.%20Terima%20kasih."
-   target="_blank" style="text-decoration:none;">
-<button class="btn-wa">Saya Sudah Transfer</button>
-</a>
-<div class="note">Anda akan diarahkan ke WhatsApp bendahara</div>
+  <a href="https://wa.me/62812XXXXXXX?text=Assalamu%E2%80%99alaikum%2C%20saya%20ingin%20konfirmasi%20pembayaran%20SPP.%20Terima%20kasih."
+     target="_blank" style="text-decoration:none;">
+    <button class="btn-wa">Butuh Bantuan? Hubungi Bendahara</button>
+  </a>
+  <div class="note">Pembayaran online lebih cepat dan tidak perlu datang ke sekolah</div>
 </div>
 
 </div>
